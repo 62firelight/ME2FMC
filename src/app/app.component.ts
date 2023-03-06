@@ -28,6 +28,13 @@ export class AppComponent {
     { name: 'Jack', recruited: true, loyal: true },
     { name: 'Kasumi', recruited: true, loyal: true }
   ];
+  requiredSquadmates = [
+    'Jacob',
+    'Miranda',
+    'Mordin',
+    'Garrus',
+    'Jack',
+  ];
 
   shipUpgradeColumns = ['name', 'included'];
   shipUpgradeData = [
