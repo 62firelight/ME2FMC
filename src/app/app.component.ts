@@ -31,18 +31,35 @@ export class AppComponent {
     { name: 'Thanix Cannon', included: false }
   ];
 
-  foods = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'},
-  ];
   ventSpecialists = [
-    {value: 'tali', viewValue: 'Tali'},
-    {value: 'mordin', viewValue: 'Mordin'},
-    {value: 'thane', viewValue: 'Thane'},
-    {value: 'kasumi', viewValue: 'Kasumi'},
-    {value: 'garrus', viewValue: 'Garrus'},
-    {value: 'jacob', viewValue: 'Jacob'},
-    {value: 'legion', viewValue: 'Legion'},
+    'Tali',
+    'Mordin',
+    'Thane',
+    'Kasumi',
+    'Garrus',
+    'Jacob',
+    'Legion',
+  ];
+  fireteamLeaders = [
+    'Tali',
+    'Mordin',
+    'Zaeed',
+    'Grunt',
+    'Samara',
+    'Jack',
+    'Thane',
+    'Kasumi',
+    'Garrus',
+    'Miranda',
+    'Jacob',
+    'Legion',
+  ];
+
+  bioticSpecialists = [
+    'Samara',
+    'Jack',
+    'Thane',
+    'Miranda',
+    'Jacob',
   ];
 }

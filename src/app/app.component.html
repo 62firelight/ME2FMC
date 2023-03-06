@@ -1,5 +1,3 @@
-
-
 <div class="main">
   <h1>ME2 Final Mission Calculator</h1>
 
@@ -32,44 +30,143 @@
   <mat-checkbox [labelPosition]="'before'">Samara is Morinth</mat-checkbox>
 
   <h2>Ship Upgrades</h2>
-  
+
   <table mat-table [dataSource]="shipUpgradeData">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
     </ng-container>
-  
+
     <ng-container matColumnDef="included">
       <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element"> 
-        <mat-checkbox [checked]="element.included"></mat-checkbox> 
+      <td mat-cell *matCellDef="let element">
+        <mat-checkbox [checked]="element.included"></mat-checkbox>
       </td>
     </ng-container>
-  
+
     <!-- <tr mat-header-row *matHeaderRowDef="shipUpgradeColumns"></tr> -->
     <tr mat-row *matRowDef="let myRowData; columns: shipUpgradeColumns"></tr>
   </table>
-  
+
   <h2>Omega-4 Relay: The Oculus</h2>
-  
-  <h2>Collector Base: The Vents</h2>
-  
+
   <mat-form-field appearance="fill">
-    <mat-label>Vent Specialist</mat-label>
+    <mat-label>Squadmate 1</mat-label>
     <mat-select>
-      <mat-option *ngFor="let specialist of ventSpecialists" [value]="specialist.value">
-        {{specialist.viewValue}}
+      <mat-option
+        *ngFor="let squadmate of squadmateStatusData"
+        [value]="squadmate.name"
+      >
+        {{ squadmate.name }}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  
+
+  <mat-form-field appearance="fill">
+    <mat-label>Squadmate 2</mat-label>
+    <mat-select>
+      <mat-option
+        *ngFor="let squadmate of squadmateStatusData"
+        [value]="squadmate.name"
+      >
+        {{ squadmate.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <h2>Collector Base: The Vents</h2>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Vent Specialist</mat-label>
+    <mat-select>
+      <mat-option
+        *ngFor="let specialist of ventSpecialists"
+        [value]="specialist"
+      >
+        {{ specialist }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Fireteam Leader 1</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let leader of fireteamLeaders" [value]="leader">
+        {{ leader }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <h2>Collector Base: The Long Walk</h2>
-  
+
+  <mat-form-field appearance="fill">
+    <mat-label>Biotic Specialist</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let specialist of bioticSpecialists" [value]="specialist">
+        {{ specialist }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Fireteam Leader 2</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let leader of fireteamLeaders" [value]="leader">
+        {{ leader }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Crew Escort</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let squadmate of squadmateStatusData" [value]="squadmate.name">
+        {{ squadmate.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Squadmate 1</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let squadmate of squadmateStatusData" [value]="squadmate.name">
+        {{ squadmate.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Squadmate 2</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let squadmate of squadmateStatusData" [value]="squadmate.name">
+        {{ squadmate.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <h2>Collector Base: Final Boss</h2>
-  
+
+  <mat-form-field appearance="fill">
+    <mat-label>Squadmate 1</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let squadmate of squadmateStatusData" [value]="squadmate.name">
+        {{ squadmate.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Squadmate 2</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let squadmate of squadmateStatusData" [value]="squadmate.name">
+        {{ squadmate.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <h2>Collector Base: Hold the Line</h2>
-  
-  HTL Score: 0
-  
+
+  <!-- HTL Score: 0 -->
+
   <h2>Final Outcome</h2>
 </div>

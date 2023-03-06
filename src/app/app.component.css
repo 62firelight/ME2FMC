@@ -1,4 +1,7 @@
 .main {
     max-width: 960px;
     margin: auto;
+    display: flex;
+    flex-flow: column nowrap;
+    /* align-items: flex-start; */
 }
