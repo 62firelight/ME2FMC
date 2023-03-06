@@ -6,6 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { MatSelectModule } from '@angular/material/select';
     BrowserAnimationsModule,
     MatCheckboxModule,
     MatTableModule,
-    MatSelectModule
+    MatSelectModule,
+    MatStepperModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ME2FMC';
+
+  firstFormGroup = this._formBuilder.group({
+    firstCtrl: ['', Validators.required],
+  });
 
   squadmateColumns = ['name', 'recruited', 'loyal'];
   squadmateStatusData = [
@@ -62,4 +67,6 @@ export class AppComponent {
     'Miranda',
     'Jacob',
   ];
+
+  constructor(private _formBuilder: FormBuilder) {}
 }

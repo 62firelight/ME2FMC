@@ -1,172 +1,242 @@
 <div class="main">
   <h1>ME2 Final Mission Calculator</h1>
 
-  <h2>Squadmate Status</h2>
+  <mat-stepper orientation="vertical" [linear]="true" #stepper>
+    <mat-step [editable]="false">
+      <ng-template matStepLabel>Squadmate Status</ng-template>
+      <table mat-table [dataSource]="squadmateStatusData">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
 
-  <table mat-table [dataSource]="squadmateStatusData">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-    </ng-container>
+        <ng-container matColumnDef="recruited">
+          <th mat-header-cell *matHeaderCellDef>Recruited?</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox [checked]="element.recruited"></mat-checkbox>
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="recruited">
-      <th mat-header-cell *matHeaderCellDef>Recruited?</th>
-      <td mat-cell *matCellDef="let element">
-        <mat-checkbox [checked]="element.recruited"></mat-checkbox>
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="loyal">
+          <th mat-header-cell *matHeaderCellDef>Loyal?</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox [checked]="element.loyal"></mat-checkbox>
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="loyal">
-      <th mat-header-cell *matHeaderCellDef>Loyal?</th>
-      <td mat-cell *matCellDef="let element">
-        <mat-checkbox [checked]="element.loyal"></mat-checkbox>
-      </td>
-    </ng-container>
+        <tr mat-header-row *matHeaderRowDef="squadmateColumns"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: squadmateColumns"></tr>
+      </table>
+      <!-- <mat-checkbox [labelPosition]="'before'">Samara is Morinth</mat-checkbox> -->
+      <button mat-raised-button color="primary" matStepperNext>Next</button>
+    </mat-step>
 
-    <tr mat-header-row *matHeaderRowDef="squadmateColumns"></tr>
-    <tr mat-row *matRowDef="let myRowData; columns: squadmateColumns"></tr>
-  </table>
+    <mat-step [editable]="false">
+      <ng-template matStepLabel>Ship Upgrades</ng-template>
 
-  <mat-checkbox [labelPosition]="'before'">Samara is Morinth</mat-checkbox>
+      <table mat-table [dataSource]="shipUpgradeData">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
 
-  <h2>Ship Upgrades</h2>
+        <ng-container matColumnDef="included">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox [checked]="element.included"></mat-checkbox>
+          </td>
+        </ng-container>
 
-  <table mat-table [dataSource]="shipUpgradeData">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-    </ng-container>
+        <!-- <tr mat-header-row *matHeaderRowDef="shipUpgradeColumns"></tr> -->
+        <tr
+          mat-row
+          *matRowDef="let myRowData; columns: shipUpgradeColumns"
+        ></tr>
+      </table>
 
-    <ng-container matColumnDef="included">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <mat-checkbox [checked]="element.included"></mat-checkbox>
-      </td>
-    </ng-container>
+      <button mat-raised-button color="primary" matStepperNext>Next</button>
+    </mat-step>
 
-    <!-- <tr mat-header-row *matHeaderRowDef="shipUpgradeColumns"></tr> -->
-    <tr mat-row *matRowDef="let myRowData; columns: shipUpgradeColumns"></tr>
-  </table>
+    <mat-step [editable]="false">
+      <ng-template matStepLabel>Omega-4 Relay: The Oculus</ng-template>
 
-  <h2>Omega-4 Relay: The Oculus</h2>
+      <div class="multiple-select">
+        <mat-form-field appearance="fill">
+          <mat-label>Squadmate 1</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let squadmate of squadmateStatusData"
+              [value]="squadmate.name"
+            >
+              {{ squadmate.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Squadmate 1</mat-label>
-    <mat-select>
-      <mat-option
-        *ngFor="let squadmate of squadmateStatusData"
-        [value]="squadmate.name"
-      >
-        {{ squadmate.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Squadmate 2</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let squadmate of squadmateStatusData"
+              [value]="squadmate.name"
+            >
+              {{ squadmate.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Squadmate 2</mat-label>
-    <mat-select>
-      <mat-option
-        *ngFor="let squadmate of squadmateStatusData"
-        [value]="squadmate.name"
-      >
-        {{ squadmate.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+      <button mat-raised-button color="primary" matStepperNext>Next</button>
+    </mat-step>
 
-  <h2>Collector Base: The Vents</h2>
+    <mat-step [editable]="false">
+      <ng-template matStepLabel>Collector Base: Infiltration</ng-template>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Vent Specialist</mat-label>
-    <mat-select>
-      <mat-option
-        *ngFor="let specialist of ventSpecialists"
-        [value]="specialist"
-      >
-        {{ specialist }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+      <div class="multiple-select">
+        <mat-form-field appearance="fill">
+          <mat-label>Vent Specialist</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let specialist of ventSpecialists"
+              [value]="specialist"
+            >
+              {{ specialist }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Fireteam Leader 1</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let leader of fireteamLeaders" [value]="leader">
-        {{ leader }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Fireteam Leader 1</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let leader of fireteamLeaders" [value]="leader">
+              {{ leader }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <h2>Collector Base: The Long Walk</h2>
+      <button mat-raised-button color="primary" matStepperNext>Next</button>
+    </mat-step>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Biotic Specialist</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let specialist of bioticSpecialists" [value]="specialist">
-        {{ specialist }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-step [editable]="false">
+      <ng-template matStepLabel>Collector Base: The Long Walk</ng-template>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Fireteam Leader 2</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let leader of fireteamLeaders" [value]="leader">
-        {{ leader }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+      <div class="multiple-select">
+        <mat-form-field appearance="fill">
+          <mat-label>Biotic Specialist</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let specialist of bioticSpecialists"
+              [value]="specialist"
+            >
+              {{ specialist }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Crew Escort</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let squadmate of squadmateStatusData" [value]="squadmate.name">
-        {{ squadmate.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Fireteam Leader 2</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let leader of fireteamLeaders" [value]="leader">
+              {{ leader }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Squadmate 1</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let squadmate of squadmateStatusData" [value]="squadmate.name">
-        {{ squadmate.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Crew Escort</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let squadmate of squadmateStatusData"
+              [value]="squadmate.name"
+            >
+              {{ squadmate.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Squadmate 2</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let squadmate of squadmateStatusData" [value]="squadmate.name">
-        {{ squadmate.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Squadmate 1</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let squadmate of squadmateStatusData"
+              [value]="squadmate.name"
+            >
+              {{ squadmate.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <h2>Collector Base: Final Boss</h2>
+        <mat-form-field appearance="fill">
+          <mat-label>Squadmate 2</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let squadmate of squadmateStatusData"
+              [value]="squadmate.name"
+            >
+              {{ squadmate.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Squadmate 1</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let squadmate of squadmateStatusData" [value]="squadmate.name">
-        {{ squadmate.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+      <button mat-raised-button color="primary" matStepperNext>Next</button>
+    </mat-step>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Squadmate 2</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let squadmate of squadmateStatusData" [value]="squadmate.name">
-        {{ squadmate.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-step [editable]="false">
+      <ng-template matStepLabel>Collector Base: Final Battle</ng-template>
 
-  <h2>Collector Base: Hold the Line</h2>
+      <div class="multiple-select">
+        <mat-form-field appearance="fill">
+          <mat-label>Squadmate 1</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let squadmate of squadmateStatusData"
+              [value]="squadmate.name"
+            >
+              {{ squadmate.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <!-- HTL Score: 0 -->
+        <mat-form-field appearance="fill">
+          <mat-label>Squadmate 2</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let squadmate of squadmateStatusData"
+              [value]="squadmate.name"
+            >
+              {{ squadmate.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <h2>Final Outcome</h2>
+      <button mat-raised-button color="primary" matStepperNext>
+        Next
+      </button>
+    </mat-step>
+
+    <mat-step [editable]="false">
+      <ng-template matStepLabel>Collector Base: Hold the Line</ng-template>
+
+      <div class="multiple-select">
+        Score: 0
+      </div>
+
+      <button mat-raised-button color="primary" matStepperNext>Calculate</button>
+    </mat-step>
+
+    <mat-step [editable]="false">
+      <ng-template matStepLabel>Final Outcome</ng-template>
+
+      <button mat-raised-button color="primary" (click)="stepper.reset()">Reset</button>
+    </mat-step>
+
+    <!--  <mat-step [editable]="false">
+      <ng-template matStepLabel>Ship Upgrades</ng-template>
+
+      <button mat-raised-button color="primary" matStepperNext>Next</button>
+    </mat-step> -->
+  </mat-stepper>
 </div>
