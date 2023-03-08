@@ -8,10 +8,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NameEditorComponent } from './components/name-editor/name-editor.component';
+import { ProfileEditorComponent } from './components/profile-editor/profile-editor.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NameEditorComponent,
+    ProfileEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +25,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatTableModule,
     MatSelectModule,
     MatStepperModule,
-    MatButtonModule
+    MatButtonModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

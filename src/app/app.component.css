@@ -15,3 +15,28 @@
 #htl {
     margin-bottom: 0;
 }
+
+.squadmate-form {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.squadmate {
+    display: flex;
+    align-items: center;
+}
+
+.squadmate strong, mat-checkbox {
+    width: 12.5%;
+    text-align: center;
+}
+
+.squadmate p {
+    width: 12.5%;
+    margin: 0;
+}
+
+em {
+    font-style: normal;
+    color: red;
+}

@@ -2,14 +2,13 @@
   <h1>ME2 Final Mission Calculator</h1>
 
   <mat-stepper orientation="vertical" [linear]="true" #stepper>
-
     <!-- 1. Squadmate Status -->
-    <mat-step [editable]="false">
+    <mat-step [stepControl]="squadmates" [editable]="false">
       <ng-template matStepLabel>Squadmate Status</ng-template>
 
       <h2>What is the status of the squad?</h2>
 
-      <table mat-table [dataSource]="squadmateStatusData">
+      <!-- <table mat-table [dataSource]="squadmateStatusData" [formGroup]="squadmates">
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Name</th>
           <td mat-cell *matCellDef="let element">{{ element.name }}</td>
@@ -18,22 +17,114 @@
         <ng-container matColumnDef="recruited">
           <th mat-header-cell *matHeaderCellDef>Recruited?</th>
           <td mat-cell *matCellDef="let element">
-            <mat-checkbox [checked]="element.recruited" [disabled]="requiredSquadmates.includes(element.name)"></mat-checkbox>
+            <mat-checkbox></mat-checkbox>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="loyal">
           <th mat-header-cell *matHeaderCellDef>Loyal?</th>
           <td mat-cell *matCellDef="let element">
-            <mat-checkbox [checked]="element.loyal"></mat-checkbox>
+            <mat-checkbox></mat-checkbox>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="squadmateColumns"></tr>
         <tr mat-row *matRowDef="let myRowData; columns: squadmateColumns"></tr>
-      </table>
-      <!-- <mat-checkbox [labelPosition]="'before'">Samara is Morinth</mat-checkbox> -->
-      <button mat-raised-button color="primary" matStepperNext>Next</button>
+      </table> -->
+
+      <p>A minimum of 8 recruited squadmates is required to progress to the final mission.</p>
+
+      <form [formGroup]="squadmates" (ngSubmit)="submitSquadmateStatus(stepper)">
+        <div class="squadmate-form">
+          <div class="squadmate">
+            <p><strong>Name</strong></p>
+            <strong>Recruited?</strong>
+            <strong>Loyal?</strong>
+          </div>
+
+          <div class="squadmate" formGroupName="zaeed">
+            <p>Zaeed</p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="legion">
+            <p>Legion</p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="samara">
+            <p>Samara</p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="tali">
+            <p>Tali</p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="mordin">
+            <p>Mordin<em>*</em></p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="garrus">
+            <p>Garrus<em>*</em></p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="miranda">
+            <p>Miranda<em>*</em></p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="grunt">
+            <p>Grunt</p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="jacob">
+            <p>Jacob<em>*</em></p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="thane">
+            <p>Thane</p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="jack">
+            <p>Jack<em>*</em></p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="kasumi">
+            <p>Kasumi</p>
+            <mat-checkbox formControlName="recruited"></mat-checkbox>
+            <mat-checkbox formControlName="loyal"></mat-checkbox>
+          </div>
+        </div>
+
+        <!-- <mat-checkbox [labelPosition]="'before'">Samara is Morinth</mat-checkbox> -->
+
+        <p><small><em>*</em> indicates required squadmates.</small></p>
+
+        <div *ngIf="insufficientSquadmates">
+        <p><em>Less than 8 squadmates were recruited. A minimum of 8 recruited squadmates is required to progress to the final mission.</em></p>
+        </div>
+
+        <button mat-raised-button color="primary" [disabled]="!squadmates.valid">Next</button>
+      </form>
     </mat-step>
 
     <!-- 2. Ship Upgrades -->
@@ -102,7 +193,7 @@
 
     <!-- 4. Infiltration -->
     <mat-step [editable]="false">
-      <ng-template matStepLabel>Collector Base: Infiltration</ng-template>      
+      <ng-template matStepLabel>Collector Base: Infiltration</ng-template>
 
       <div class="multiple-select">
         <h2>Who will go through the vents?</h2>
@@ -139,7 +230,6 @@
       <ng-template matStepLabel>Collector Base: The Long Walk</ng-template>
 
       <div class="multiple-select">
-
         <h2>Who will create the biotic shield?</h2>
 
         <mat-form-field appearance="fill">
@@ -214,9 +304,11 @@
       <ng-template matStepLabel>Collector Base: Final Battle</ng-template>
 
       <div class="multiple-select">
-
         <h2 id="htl">Who will accompany Shepard to the final battle?</h2>
-        <p>Anyone who does not accompany Shepard will stay behind to hold the line.</p>
+        <p>
+          Anyone who does not accompany Shepard will stay behind to hold the
+          line.
+        </p>
 
         <mat-form-field appearance="fill">
           <mat-label>Squadmate 1</mat-label>
@@ -243,27 +335,27 @@
         </mat-form-field>
       </div>
 
-      <button mat-raised-button color="primary" matStepperNext>
-        Next
-      </button>
+      <button mat-raised-button color="primary" matStepperNext>Next</button>
     </mat-step>
 
     <!-- 7. Hold the Line -->
     <mat-step [editable]="false">
       <ng-template matStepLabel>Collector Base: Hold the Line</ng-template>
 
-      <div class="multiple-select">
-        Score: 0
-      </div>
+      <div class="multiple-select">Score: 0</div>
 
-      <button mat-raised-button color="primary" matStepperNext>Calculate</button>
+      <button mat-raised-button color="primary" matStepperNext>
+        Calculate
+      </button>
     </mat-step>
 
     <!-- 8. Final Outcome -->
     <mat-step [editable]="false">
       <ng-template matStepLabel>Final Outcome</ng-template>
 
-      <button mat-raised-button color="primary" (click)="stepper.reset()">Reset</button>
+      <button mat-raised-button color="primary" (click)="stepper.reset()">
+        Reset
+      </button>
     </mat-step>
 
     <!--  <mat-step [editable]="false">
