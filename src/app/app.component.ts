@@ -165,6 +165,10 @@ export class AppComponent {
     oculus2: [{value: '', disabled: true}, Validators.required]
   });
 
+  infiltrationTeam = this.fb.group({
+    ventSpecialist: ['', Validators.required],
+    fireteamOneLeader: [{value: '', disabled: true}, Validators.required]
+  });
   ventSpecialists = [
     'Tali',
     'Mordin',
@@ -173,6 +177,11 @@ export class AppComponent {
     'Garrus',
     'Jacob',
     'Legion',
+  ];
+  goodVentSpecialists = [
+    'Tali',
+    'Legion',
+    'Kasumi'
   ];
   fireteamLeaders = [
     'Tali',
@@ -188,6 +197,13 @@ export class AppComponent {
     'Jacob',
     'Legion',
   ];
+  goodFireteamLeaders = [
+    'Jacob',
+    'Miranda',
+    'Garrus'
+  ];
+  badVentSpecialistReason = 'Bad vent specialist';
+  badfireteamOneLeaderReason = 'Bad fireteam 1 leader';
 
   bioticSpecialists = [
     'Samara',
@@ -202,6 +218,10 @@ export class AppComponent {
   ngOnInit() {
     this.oculusSquadmates.get('oculus1')?.valueChanges.subscribe(
       result => this.oculusSquadmates.get('oculus2')?.enable()
+    );
+
+    this.infiltrationTeam.get('ventSpecialist')?.valueChanges.subscribe(
+      result => this.infiltrationTeam.get('fireteamOneLeader')?.enable()
     );
   }
 
@@ -298,6 +318,27 @@ export class AppComponent {
 
     // Unassign active squadmates
     this.assignSquadmates(activeSquadmates[0], activeSquadmates[1], false);
+
+    stepper.next();
+  }
+
+  submitInfiltrationTeam(stepper: MatStepper) {
+    var infiltrationTeam = [...Object.values(this.infiltrationTeam.value)];
+    var ventSpecialist = infiltrationTeam[0];
+    var fireteamOneLeader = infiltrationTeam[1];
+
+    if (ventSpecialist === null || fireteamOneLeader === null) {
+      // ERROR
+      return;
+    }
+
+    var ventSpecialistObj = this.availableSquadmates.find(squadmate => squadmate.name === ventSpecialist);
+    var fireteamOneLeaderObj = this.availableSquadmates.find(squadmate => squadmate.name === fireteamOneLeader);
+    if (!this.goodVentSpecialists.includes(ventSpecialist) || !ventSpecialistObj.loyal) {
+      this.killSquadmate([ventSpecialist], this.badVentSpecialistReason);
+    } else if (!this.goodFireteamLeaders.includes(fireteamOneLeader) || !fireteamOneLeaderObj.loyal) {
+      this.killSquadmate([ventSpecialist], this.badfireteamOneLeaderReason);
+    }
 
     stepper.next();
   }

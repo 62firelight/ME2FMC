@@ -194,9 +194,7 @@
           </div>
         </div>
 
-        <button mat-raised-button color="primary" type="submit">
-          Next
-        </button>
+        <button mat-raised-button color="primary" type="submit">Next</button>
       </form>
     </mat-step>
 
@@ -204,7 +202,10 @@
     <mat-step [editable]="false">
       <ng-template matStepLabel>Omega-4 Relay: The Oculus</ng-template>
 
-      <form [formGroup]="oculusSquadmates" (ngSubmit)="submitOculusSquadmates(stepper)">
+      <form
+        [formGroup]="oculusSquadmates"
+        (ngSubmit)="submitOculusSquadmates(stepper)"
+      >
         <div class="multiple-select">
           <h2>Who will accompany Shepard to fight the Oculus?</h2>
 
@@ -223,10 +224,7 @@
 
           <mat-form-field appearance="fill">
             <mat-label>Squadmate 2</mat-label>
-            <mat-select
-              formControlName="oculus2"
-              #oculus2
-            >
+            <mat-select formControlName="oculus2" #oculus2>
               <mat-option
                 *ngFor="let squadmate of squadmateStatusData"
                 [value]="squadmate.name"
@@ -253,34 +251,48 @@
     <mat-step [editable]="false">
       <ng-template matStepLabel>Collector Base: Infiltration</ng-template>
 
-      <div class="multiple-select">
-        <h2>Who will go through the vents?</h2>
+      <form [formGroup]="infiltrationTeam" (ngSubmit)="submitInfiltrationTeam(stepper)">
+        <div class="multiple-select">
+          <h2>Who will go through the vents?</h2>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Vent Specialist</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let specialist of ventSpecialists"
-              [value]="specialist"
-            >
-              {{ specialist }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Vent Specialist</mat-label>
+            <mat-select formControlName="ventSpecialist" #ventSpecialist>
+              <mat-option
+                *ngFor="let specialist of ventSpecialists"
+                [value]="specialist"
+                [disabled]="fireteamOneLeader.value === specialist"
+              >
+                {{ specialist }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <h2>Who will lead the first fireteam?</h2>
+          <h2>Who will lead the first fireteam?</h2>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Fireteam Leader 1</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let leader of fireteamLeaders" [value]="leader">
-              {{ leader }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+          <mat-form-field appearance="fill">
+            <mat-label>Fireteam Leader 1</mat-label>
+            <mat-select formControlName="fireteamOneLeader" #fireteamOneLeader>
+              <mat-option
+                *ngFor="let leader of fireteamLeaders"
+                [value]="leader"
+                [disabled]="ventSpecialist.value === leader"
+              >
+                {{ leader }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-      <button mat-raised-button color="primary" matStepperNext>Next</button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!infiltrationTeam.valid"
+        >
+          Next
+        </button>
+      </form>
     </mat-step>
 
     <!-- 5. The Long Walk -->
@@ -425,5 +437,5 @@
 
   <pre>{{ availableSquadmates | squadmatesStatus }}</pre>
 
-  <pre>{{ shipUpgrades.value | json }}</pre>
+  <!-- <pre>{{ shipUpgrades.value | json }}</pre> -->
 </div>
