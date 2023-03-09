@@ -517,17 +517,17 @@ export class AppComponent {
     if (numberOfDefenders >= 5) {
       if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 1.5) {
         // Kill one squadmate
-      } else if (this.averageHtlScore >= 0.5 && this.averageHtlScore < 1.5) {
+      } else if (this.averageHtlScore < 1.5 && this.averageHtlScore >= 0.5) {
         // Kill two squadmates
-      } else if (this.averageHtlScore >= 0.0 && this.averageHtlScore < 0.5) {
+      } else if (this.averageHtlScore < 0.5 && this.averageHtlScore >= 0.0) {
         // Kill three squadmates
       }
     } else if (numberOfDefenders === 4) {
       if (this.averageHtlScore < 2.0 && this.averageHtlScore > 1.0) {
         // Kill one squadmate
-      } else if (this.averageHtlScore >= 0.5 && this.averageHtlScore <= 1.0) {
+      } else if (this.averageHtlScore <= 1.0 && this.averageHtlScore >= 0.5) {
         // Kill two squadmates
-      } else if (this.averageHtlScore > 0.0 && this.averageHtlScore < 0.5) {
+      } else if (this.averageHtlScore < 0.5 && this.averageHtlScore > 0.0) {
         // Kill three squadmates
       } else if (this.averageHtlScore <= 0.0) {
         // Kill all squadmates
