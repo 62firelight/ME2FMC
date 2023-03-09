@@ -213,11 +213,11 @@
             <mat-label>Squadmate 1</mat-label>
             <mat-select formControlName="oculus1" #oculus1>
               <mat-option
-                *ngFor="let squadmate of squadmateStatusData"
-                [value]="squadmate.name"
-                [disabled]="oculus2.value === squadmate.name"
+                *ngFor="let squadmate of choosableSquadmates"
+                [value]="squadmate"
+                [disabled]="oculus2.value === squadmate"
               >
-                {{ squadmate.name }}
+                {{ squadmate }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -226,11 +226,11 @@
             <mat-label>Squadmate 2</mat-label>
             <mat-select formControlName="oculus2" #oculus2>
               <mat-option
-                *ngFor="let squadmate of squadmateStatusData"
-                [value]="squadmate.name"
-                [disabled]="oculus1.value === squadmate.name"
+                *ngFor="let squadmate of choosableSquadmates"
+                [value]="squadmate"
+                [disabled]="oculus1.value === squadmate"
               >
-                {{ squadmate.name }}
+                {{ squadmate }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -274,7 +274,7 @@
             <mat-label>Fireteam Leader 1</mat-label>
             <mat-select formControlName="fireteamOneLeader" #fireteamOneLeader>
               <mat-option
-                *ngFor="let leader of fireteamLeaders"
+                *ngFor="let leader of fireteamOneLeaders"
                 [value]="leader"
                 [disabled]="ventSpecialist.value === leader"
               >
@@ -319,7 +319,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Fireteam Leader 2</mat-label>
           <mat-select>
-            <mat-option *ngFor="let leader of fireteamLeaders" [value]="leader">
+            <mat-option *ngFor="let leader of fireteamOneLeaders" [value]="leader">
               {{ leader }}
             </mat-option>
           </mat-select>
@@ -331,10 +331,10 @@
           <mat-label>Crew Escort</mat-label>
           <mat-select>
             <mat-option
-              *ngFor="let squadmate of squadmateStatusData"
-              [value]="squadmate.name"
+              *ngFor="let squadmate of choosableSquadmates"
+              [value]="squadmate"
             >
-              {{ squadmate.name }}
+              {{ squadmate }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -345,10 +345,10 @@
           <mat-label>Squadmate 1</mat-label>
           <mat-select>
             <mat-option
-              *ngFor="let squadmate of squadmateStatusData"
-              [value]="squadmate.name"
+              *ngFor="let squadmate of choosableSquadmates"
+              [value]="squadmate"
             >
-              {{ squadmate.name }}
+              {{ squadmate }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -357,10 +357,10 @@
           <mat-label>Squadmate 2</mat-label>
           <mat-select>
             <mat-option
-              *ngFor="let squadmate of squadmateStatusData"
-              [value]="squadmate.name"
+              *ngFor="let squadmate of choosableSquadmates"
+              [value]="squadmate"
             >
-              {{ squadmate.name }}
+              {{ squadmate }}
             </mat-option>
           </mat-select>
         </mat-form-field>

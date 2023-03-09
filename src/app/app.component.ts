@@ -99,6 +99,20 @@ export class AppComponent {
   insufficientSquadmates = false;
 
   squadmateColumns = ['name', 'recruited', 'loyal'];
+  choosableSquadmates = [
+    'Zaeed',
+    'Legion',
+    'Samara',
+    'Tali',
+    'Mordin',
+    'Garrus',
+    'Miranda',
+    'Grunt',
+    'Jacob',
+    'Thane',
+    'Jack',
+    'Kasumi'
+  ];
   squadmateStatusData = [
     { name: 'Zaeed', recruited: true, loyal: true },
     { name: 'Legion', recruited: true, loyal: true },
@@ -162,12 +176,12 @@ export class AppComponent {
 
   oculusSquadmates = this.fb.group({
     oculus1: ['', Validators.required],
-    oculus2: [{value: '', disabled: true}, Validators.required]
+    oculus2: [{ value: '', disabled: true }, Validators.required]
   });
 
   infiltrationTeam = this.fb.group({
     ventSpecialist: ['', Validators.required],
-    fireteamOneLeader: [{value: '', disabled: true}, Validators.required]
+    fireteamOneLeader: [{ value: '', disabled: true }, Validators.required]
   });
   ventSpecialists = [
     'Tali',
@@ -183,7 +197,7 @@ export class AppComponent {
     'Legion',
     'Kasumi'
   ];
-  fireteamLeaders = [
+  fireteamOneLeaders = [
     'Tali',
     'Mordin',
     'Zaeed',
@@ -223,6 +237,13 @@ export class AppComponent {
     this.infiltrationTeam.get('ventSpecialist')?.valueChanges.subscribe(
       result => this.infiltrationTeam.get('fireteamOneLeader')?.enable()
     );
+  }
+
+  updateSquadmateOptions(squadmateOptions: string[]) {
+    return squadmateOptions.filter(squadmateOption => {
+      var squadmate = this.availableSquadmates.find(squadmate => squadmate.name === squadmateOption);
+      return squadmate.recruited && squadmate.deathReason == '';
+    });
   }
 
   killSquadmate(doomedSquadmates: string[], deathReason: string) {
@@ -294,6 +315,8 @@ export class AppComponent {
       this.killSquadmate(this.noArmorDeaths, this.noArmorReason);
     }
 
+    // Update list of choosable squadmates for next section
+    this.choosableSquadmates = this.updateSquadmateOptions(this.choosableSquadmates);
     stepper.next();
   }
 
@@ -319,6 +342,9 @@ export class AppComponent {
     // Unassign active squadmates
     this.assignSquadmates(activeSquadmates[0], activeSquadmates[1], false);
 
+    // Update lists for next section
+    this.ventSpecialists = this.updateSquadmateOptions(this.ventSpecialists);
+    this.fireteamOneLeaders = this.updateSquadmateOptions(this.fireteamOneLeaders);
     stepper.next();
   }
 
@@ -340,6 +366,10 @@ export class AppComponent {
       this.killSquadmate([ventSpecialist], this.badfireteamOneLeaderReason);
     }
 
+    // Update lists for next section
+    this.bioticSpecialists = this.updateSquadmateOptions(this.bioticSpecialists);
+    this.fireteamOneLeaders = this.updateSquadmateOptions(this.fireteamOneLeaders);
+    this.choosableSquadmates = this.updateSquadmateOptions(this.choosableSquadmates);
     stepper.next();
   }
 }
