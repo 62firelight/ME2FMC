@@ -312,10 +312,12 @@
               <mat-option
                 *ngFor="let specialist of bioticSpecialists"
                 [value]="specialist"
-                [disabled]="fireteamTwoLeader.value === specialist
-                            || crewEscort.value === specialist
-                            || swarmSquadmate1.value === specialist
-                            || swarmSquadmate2.value === specialist"
+                [disabled]="
+                  fireteamTwoLeader.value === specialist ||
+                  crewEscort.value === specialist ||
+                  swarmSquadmate1.value === specialist ||
+                  swarmSquadmate2.value === specialist
+                "
               >
                 {{ specialist }}
               </mat-option>
@@ -330,10 +332,12 @@
               <mat-option
                 *ngFor="let leader of fireteamOneLeaders"
                 [value]="leader"
-                [disabled]="bioticSpecialist.value === leader
-                            || crewEscort.value === leader
-                            || swarmSquadmate1.value === leader
-                            || swarmSquadmate2.value === leader"
+                [disabled]="
+                  bioticSpecialist.value === leader ||
+                  crewEscort.value === leader ||
+                  swarmSquadmate1.value === leader ||
+                  swarmSquadmate2.value === leader
+                "
               >
                 {{ leader }}
               </mat-option>
@@ -348,10 +352,12 @@
               <mat-option
                 *ngFor="let squadmate of choosableSquadmates"
                 [value]="squadmate"
-                [disabled]="bioticSpecialist.value === squadmate
-                            || fireteamTwoLeader.value === squadmate
-                            || swarmSquadmate1.value === squadmate
-                            || swarmSquadmate2.value === squadmate"
+                [disabled]="
+                  bioticSpecialist.value === squadmate ||
+                  fireteamTwoLeader.value === squadmate ||
+                  swarmSquadmate1.value === squadmate ||
+                  swarmSquadmate2.value === squadmate
+                "
               >
                 {{ squadmate }}
               </mat-option>
@@ -366,10 +372,12 @@
               <mat-option
                 *ngFor="let squadmate of choosableSquadmates"
                 [value]="squadmate"
-                [disabled]="bioticSpecialist.value === squadmate
-                            || fireteamTwoLeader.value === squadmate
-                            || crewEscort.value === squadmate
-                            || swarmSquadmate2.value === squadmate"
+                [disabled]="
+                  bioticSpecialist.value === squadmate ||
+                  fireteamTwoLeader.value === squadmate ||
+                  crewEscort.value === squadmate ||
+                  swarmSquadmate2.value === squadmate
+                "
               >
                 {{ squadmate }}
               </mat-option>
@@ -382,10 +390,12 @@
               <mat-option
                 *ngFor="let squadmate of choosableSquadmates"
                 [value]="squadmate"
-                [disabled]="bioticSpecialist.value === squadmate
-                            || fireteamTwoLeader.value === squadmate
-                            || crewEscort.value === squadmate
-                            || swarmSquadmate1.value === squadmate"
+                [disabled]="
+                  bioticSpecialist.value === squadmate ||
+                  fireteamTwoLeader.value === squadmate ||
+                  crewEscort.value === squadmate ||
+                  swarmSquadmate1.value === squadmate
+                "
               >
                 {{ squadmate }}
               </mat-option>
@@ -408,49 +418,77 @@
     <mat-step [editable]="false">
       <ng-template matStepLabel>Collector Base: Final Battle</ng-template>
 
-      <div class="multiple-select">
-        <h2 id="htl">Who will accompany Shepard to the final battle?</h2>
-        <p>
-          Anyone who does not accompany Shepard will stay behind to hold the
-          line.
-        </p>
+      <form
+        [formGroup]="finalBattleTeam"
+        (ngSubmit)="submitFinalBattle(stepper)"
+      >
+        <div class="multiple-select">
+          <h2 id="htl">Who will accompany Shepard to the final battle?</h2>
+          <p>
+            Anyone who does not accompany Shepard will stay behind to hold the
+            line.
+          </p>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Squadmate 1</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let squadmate of squadmateStatusData"
-              [value]="squadmate.name"
-            >
-              {{ squadmate.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Squadmate 1</mat-label>
+            <mat-select formControlName="finalSquadmate1" #finalSquadmate1>
+              <mat-option
+                *ngFor="let squadmate of choosableSquadmates"
+                [value]="squadmate"
+                [disabled]="finalSquadmate2.value === squadmate"
+              >
+                {{ squadmate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Squadmate 2</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let squadmate of squadmateStatusData"
-              [value]="squadmate.name"
-            >
-              {{ squadmate.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+          <mat-form-field appearance="fill">
+            <mat-label>Squadmate 2</mat-label>
+            <mat-select formControlName="finalSquadmate2" #finalSquadmate2>
+              <mat-option
+                *ngFor="let squadmate of choosableSquadmates"
+                [value]="squadmate"
+                [disabled]="finalSquadmate1.value === squadmate"
+              >
+                {{ squadmate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-      <button mat-raised-button color="primary" matStepperNext>Next</button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!finalBattleTeam.valid"
+        >
+          Next
+        </button>
+      </form>
     </mat-step>
 
     <!-- 7. Hold the Line -->
     <mat-step [editable]="false">
       <ng-template matStepLabel>Collector Base: Hold the Line</ng-template>
 
-      <div class="multiple-select">Score: 0</div>
+      <h2 id="htl">Hold the Line!</h2>
+      <p>
+        Squadmates holding the line are:
+      </p>
+
+      <ul>
+        <ng-container *ngFor="let entry of currentHtlScores | keyvalue">
+          <li>
+            {{ entry.key }}: {{ entry.value }}
+          </li>
+        </ng-container>
+      </ul>
+
+      <p>Total: {{ totalHtlScore }}</p>
+      <p>Average: {{ averageHtlScore }}</p>
 
       <button mat-raised-button color="primary" matStepperNext>
-        Calculate
+        Next
       </button>
     </mat-step>
 
@@ -470,7 +508,16 @@
     </mat-step> -->
   </mat-stepper>
 
-  <pre>{{ availableSquadmates | squadmatesStatus }}</pre>
+  <ul>
+    <li *ngFor="let squadmate of availableSquadmates">
+      {{ squadmate.name }} -
+      {{
+        squadmate.deathReason ? "Dead (" + squadmate.deathReason + ")" : "Alive"
+      }}
+    </li>
+  </ul>
+
+  <!-- <pre>{{ availableSquadmates | squadmatesStatus }}</pre> -->
 
   <!-- <pre>{{ shipUpgrades.value | json }}</pre> -->
 </div>

@@ -254,6 +254,30 @@ export class AppComponent {
   badfireteamTwoLeaderReason = 'Bad fireteam 2 leader';
   badCrewEscortReason = 'Disloyal escort';
 
+  finalBattleTeam = this.fb.group({
+    finalSquadmate1: ['', Validators.required],
+    finalSquadmate2: ['', Validators.required]
+  });
+  disloyalFinalSquadmateReason = 'Disloyal squadmate in final battle';
+  htlScores = new Map([
+    ['Grunt', 3],
+    ['Zaeed', 3],
+    ['Garrus', 3],
+    ['Thane', 1],
+    ['Legion', 1],
+    ['Samara', 1],
+    ['Jacob', 1],
+    ['Miranda', 1],
+    ['Jack', 0],
+    ['Kasumi', 0],
+    ['Tali', 0],
+    ['Mordin', 0],
+  ]);
+  currentHtlScores: Map<string, number> = new Map();
+  totalHtlScore = 0;
+  averageHtlScore = 0;
+  htlDeathReason = 'Died holding the line';
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -438,12 +462,106 @@ export class AppComponent {
     }
 
     var crewEscortObj = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
+    crewEscortObj.recruited = false;
     if (!crewEscortObj.loyal) {
       this.killSquadmate([crewEscort], this.badCrewEscortReason);
     }
     // TODO: Add 'No one' option and calculate crew survival
 
+    // Update list for next section
     this.choosableSquadmates = this.updateSquadmateOptions(this.choosableSquadmates);
     stepper.next();
+  }
+
+  submitFinalBattle(stepper: MatStepper) {
+    var finalBattleTeam = [...Object.values(this.finalBattleTeam.value)];
+    var finalSquadmate1 = finalBattleTeam[0];
+    var finalSquadmate2 = finalBattleTeam[1];
+
+    this.assignSquadmates(finalSquadmate1, finalSquadmate2);
+
+    if (finalSquadmate1 === null || finalSquadmate2 === null) {
+      // ERROR
+      return;
+    }
+
+    var finalSquadmate1Obj = this.availableSquadmates.find(squadmate => squadmate.name === finalSquadmate1);
+    if (!finalSquadmate1Obj.loyal) {
+      this.killSquadmate([finalSquadmate1], this.disloyalFinalSquadmateReason);
+    }
+
+    var finalSquadmate2Obj = this.availableSquadmates.find(squadmate => squadmate.name === finalSquadmate2);
+    if (!finalSquadmate2Obj.loyal) {
+      this.killSquadmate([finalSquadmate2], this.disloyalFinalSquadmateReason);
+    }
+
+    // Calculate scores for Hold the Line
+    for (var squadmate of this.availableSquadmates) {
+      if (!squadmate.recruited || squadmate.inCurrentSquad || squadmate.deathReason !== '') {
+        continue;
+      }
+
+      const htlScore = this.getHtlScore(squadmate.name, squadmate.loyal);
+
+      this.currentHtlScores.set(squadmate.name, htlScore);
+      this.totalHtlScore += htlScore;
+    }
+
+    // Calculate average
+    this.averageHtlScore = this.totalHtlScore / this.currentHtlScores.size;
+
+    // Round average to 1dp
+    this.averageHtlScore = Math.round(this.averageHtlScore * 10) / 10;
+
+    const numberOfDefenders = this.currentHtlScores.size;
+    if (numberOfDefenders >= 5) {
+      if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 1.5) {
+        // Kill one squadmate
+      } else if (this.averageHtlScore >= 0.5 && this.averageHtlScore < 1.5) {
+        // Kill two squadmates
+      } else if (this.averageHtlScore >= 0.0 && this.averageHtlScore < 0.5) {
+        // Kill three squadmates
+      }
+    } else if (numberOfDefenders === 4) {
+      if (this.averageHtlScore < 2.0 && this.averageHtlScore > 1.0) {
+        // Kill one squadmate
+      } else if (this.averageHtlScore >= 0.5 && this.averageHtlScore <= 1.0) {
+        // Kill two squadmates
+      } else if (this.averageHtlScore > 0.0 && this.averageHtlScore < 0.5) {
+        // Kill three squadmates
+      } else if (this.averageHtlScore <= 0.0) {
+        // Kill all squadmates
+      }
+    } else if (numberOfDefenders === 3) {
+      if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 1.0) {
+        // Kill one squadmate
+      } else if (this.averageHtlScore < 1.0 && this.averageHtlScore > 0.0) {
+        // Kill two squadmates
+      } else if (this.averageHtlScore <= 0.0) {
+        // Kill all three squadmates
+      }
+    } else if (numberOfDefenders === 2) {
+      if (this.averageHtlScore < 2.0 && this.averageHtlScore > 0.0) {
+        // Kill one squadmate
+      } else if (this.averageHtlScore <= 0.0) {
+        // Kill both squadmates
+      }
+    } else if (numberOfDefenders === 1) {
+      if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 0.0) {
+        // Kill squadmate
+      }
+    }
+
+    stepper.next();
+  }
+
+  getHtlScore(name: string, loyal: boolean): number {
+    const htlScore = this.htlScores.get(name);
+    
+    if (htlScore === undefined) {
+      return 0;
+    }
+
+    return htlScore + (loyal ? 1 : 0);
   }
 }
