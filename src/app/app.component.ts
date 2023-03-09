@@ -162,7 +162,7 @@ export class AppComponent {
 
   oculusSquadmates = this.fb.group({
     oculus1: ['', Validators.required],
-    oculus2: ['', Validators.required]
+    oculus2: [{value: '', disabled: true}, Validators.required]
   });
 
   ventSpecialists = [
@@ -199,7 +199,11 @@ export class AppComponent {
 
   constructor(private fb: FormBuilder) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.oculusSquadmates.get('oculus1')?.valueChanges.subscribe(
+      result => this.oculusSquadmates.get('oculus2')?.enable()
+    );
+  }
 
   killSquadmate(doomedSquadmates: string[], deathReason: string) {
     for (var doomedSquadmate of doomedSquadmates) {
