@@ -32,9 +32,15 @@
         <tr mat-row *matRowDef="let myRowData; columns: squadmateColumns"></tr>
       </table> -->
 
-      <p>A minimum of 8 recruited squadmates is required to progress to the final mission.</p>
+      <p>
+        A minimum of 8 recruited squadmates is required to progress to the final
+        mission.
+      </p>
 
-      <form [formGroup]="squadmates" (ngSubmit)="submitSquadmateStatus(stepper)">
+      <form
+        [formGroup]="squadmates"
+        (ngSubmit)="submitSquadmateStatus(stepper)"
+      >
         <div class="squadmate-form">
           <div class="squadmate">
             <p><strong>Name</strong></p>
@@ -117,13 +123,26 @@
 
         <!-- <mat-checkbox [labelPosition]="'before'">Samara is Morinth</mat-checkbox> -->
 
-        <p><small><em>*</em> indicates required squadmates.</small></p>
+        <p>
+          <small><em>*</em> indicates required squadmates.</small>
+        </p>
 
         <div *ngIf="insufficientSquadmates">
-        <p><em>Less than 8 squadmates were recruited. A minimum of 8 recruited squadmates is required to progress to the final mission.</em></p>
+          <p>
+            <em
+              >Less than 8 squadmates were recruited. A minimum of 8 recruited
+              squadmates is required to progress to the final mission.</em
+            >
+          </p>
         </div>
 
-        <button mat-raised-button color="primary" [disabled]="!squadmates.valid">Next</button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!squadmates.valid"
+        >
+          Next
+        </button>
       </form>
     </mat-step>
 
@@ -133,7 +152,7 @@
 
       <h2>What upgrades has the Normandy acquired?</h2>
 
-      <table mat-table [dataSource]="shipUpgradeData">
+      <!-- <table mat-table [dataSource]="shipUpgradeData">
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">{{ element.name }}</td>
@@ -146,49 +165,89 @@
           </td>
         </ng-container>
 
-        <!-- <tr mat-header-row *matHeaderRowDef="shipUpgradeColumns"></tr> -->
         <tr
           mat-row
           *matRowDef="let myRowData; columns: shipUpgradeColumns"
         ></tr>
-      </table>
+      </table> -->
 
-      <button mat-raised-button color="primary" matStepperNext>Next</button>
+      <form [formGroup]="shipUpgrades" (ngSubmit)="submitShipUpgrades(stepper)">
+        <div class="squadmate-form">
+          <!-- <div class="squadmate">
+            <p><strong>Name</strong></p>
+            <strong>Included?</strong>
+          </div> -->
+
+          <div class="squadmate" formGroupName="armor">
+            <p>Heavy Ship Armor</p>
+            <mat-checkbox formControlName="included"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="shield">
+            <p>Multicore Shielding</p>
+            <mat-checkbox formControlName="included"></mat-checkbox>
+          </div>
+
+          <div class="squadmate" formGroupName="weapons">
+            <p>Thanix Cannon</p>
+            <mat-checkbox formControlName="included"></mat-checkbox>
+          </div>
+        </div>
+
+        <button mat-raised-button color="primary" type="submit">
+          Next
+        </button>
+      </form>
     </mat-step>
 
     <!-- 3. The Oculus -->
     <mat-step [editable]="false">
       <ng-template matStepLabel>Omega-4 Relay: The Oculus</ng-template>
 
-      <div class="multiple-select">
-        <h2>Who will accompany Shepard to fight the Oculus?</h2>
+      <form [formGroup]="oculusSquadmates" (ngSubmit)="submitOculusSquadmates(stepper)">
+        <div class="multiple-select">
+          <h2>Who will accompany Shepard to fight the Oculus?</h2>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Squadmate 1</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let squadmate of squadmateStatusData"
-              [value]="squadmate.name"
+          <mat-form-field appearance="fill">
+            <mat-label>Squadmate 1</mat-label>
+            <mat-select formControlName="oculus1" #oculus1>
+              <mat-option
+                *ngFor="let squadmate of squadmateStatusData"
+                [value]="squadmate.name"
+                [disabled]="oculus2.value === squadmate.name"
+              >
+                {{ squadmate.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Squadmate 2</mat-label>
+            <mat-select
+              formControlName="oculus2"
+              [disabled]="!oculus1.value"
+              #oculus2
             >
-              {{ squadmate.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+              <mat-option
+                *ngFor="let squadmate of squadmateStatusData"
+                [value]="squadmate.name"
+                [disabled]="oculus1.value === squadmate.name"
+              >
+                {{ squadmate.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Squadmate 2</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let squadmate of squadmateStatusData"
-              [value]="squadmate.name"
-            >
-              {{ squadmate.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <button mat-raised-button color="primary" matStepperNext>Next</button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!oculusSquadmates.valid"
+        >
+          Next
+        </button>
+      </form>
     </mat-step>
 
     <!-- 4. Infiltration -->
@@ -364,4 +423,8 @@
       <button mat-raised-button color="primary" matStepperNext>Next</button>
     </mat-step> -->
   </mat-stepper>
+
+  <pre>{{ availableSquadmates | json }}</pre>
+
+  <pre>{{ shipUpgrades.value | json }}</pre>
 </div>
