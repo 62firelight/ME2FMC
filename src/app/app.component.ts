@@ -176,12 +176,12 @@ export class AppComponent {
 
   oculusSquadmates = this.fb.group({
     oculus1: ['', Validators.required],
-    oculus2: [{ value: '', disabled: true }, Validators.required]
+    oculus2: ['', Validators.required]
   });
 
   infiltrationTeam = this.fb.group({
     ventSpecialist: ['', Validators.required],
-    fireteamOneLeader: [{ value: '', disabled: true }, Validators.required]
+    fireteamOneLeader: ['', Validators.required]
   });
   ventSpecialists = [
     'Tali',
@@ -219,6 +219,13 @@ export class AppComponent {
   badVentSpecialistReason = 'Bad vent specialist';
   badfireteamOneLeaderReason = 'Bad fireteam 1 leader';
 
+  longWalkTeam = this.fb.group({
+    bioticSpecialist: ['', Validators.required],
+    fireteamTwoLeader: ['', Validators.required],
+    crewEscort: ['', Validators.required],
+    swarmSquadmate1: ['', Validators.required],
+    swarmSquadmate2: ['', Validators.required]
+  });
   bioticSpecialists = [
     'Samara',
     'Jack',
@@ -226,17 +233,37 @@ export class AppComponent {
     'Miranda',
     'Jacob',
   ];
+  goodBioticSpecialists = [
+    'Samara',
+    'Jack'
+  ];
+  badBioticSpecialistDeaths = [
+    'Thane',
+    'Jack',
+    'Garrus',
+    'Legion',
+    'Grunt',
+    'Samara',
+    'Jacob',
+    'Tali',
+    'Kasumi',
+    'Zaeed',
+    'Morinth'
+  ];
+  badBioticSpecialistReason = 'Bad biotic specialist';
+  badfireteamTwoLeaderReason = 'Bad fireteam 2 leader';
+  badCrewEscortReason = 'Disloyal escort';
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.oculusSquadmates.get('oculus1')?.valueChanges.subscribe(
-      result => this.oculusSquadmates.get('oculus2')?.enable()
-    );
+    // this.oculusSquadmates.get('oculus1')?.valueChanges.subscribe(
+    //   result => this.oculusSquadmates.get('oculus2')?.enable()
+    // );
 
-    this.infiltrationTeam.get('ventSpecialist')?.valueChanges.subscribe(
-      result => this.infiltrationTeam.get('fireteamOneLeader')?.enable()
-    );
+    // this.infiltrationTeam.get('ventSpecialist')?.valueChanges.subscribe(
+    //   result => this.infiltrationTeam.get('fireteamOneLeader')?.enable()
+    // );
   }
 
   updateSquadmateOptions(squadmateOptions: string[]) {
@@ -246,13 +273,18 @@ export class AppComponent {
     });
   }
 
-  killSquadmate(doomedSquadmates: string[], deathReason: string) {
+  killSquadmate(doomedSquadmates: string[], deathReason: string, outsideCurrentSquad = false) {
     for (var doomedSquadmate of doomedSquadmates) {
       var squadmateToDie = undefined;
 
       for (var squadmate of this.availableSquadmates) {
+        // If a squadmate is in the active squad and we are not allowed to kill anyone outside
+        // the current squad, skip to the next squadmate
+        if (outsideCurrentSquad && squadmate.inCurrentSquad) {
+          continue;
+        }
+
         if (squadmate.recruited === true
-          && squadmate.inCurrentSquad === false
           && squadmate.deathReason === ''
           && squadmate.name === doomedSquadmate) {
           squadmateToDie = squadmate;
@@ -276,9 +308,9 @@ export class AppComponent {
     for (var squadmate of this.availableSquadmates) {
       // TODO: Check if squadmate is recruited and alive
       if (squadmate.name === activeSquadmate1) {
-        squadmate.inCurrentSquad = assign ? true : false;
+        squadmate.inCurrentSquad = assign
       } else if (squadmate.name === activeSquadmate2) {
-        squadmate.inCurrentSquad = assign ? true : false;
+        squadmate.inCurrentSquad = assign;
       }
     }
   }
@@ -331,12 +363,12 @@ export class AppComponent {
 
     var shield = shipUpgradeObjects[1];
     if (shield !== undefined && shield.included == false) {
-      this.killSquadmate(this.noShieldDeaths, this.noShieldReason);
+      this.killSquadmate(this.noShieldDeaths, this.noShieldReason, true);
     }
 
     var weapons = shipUpgradeObjects[2];
     if (weapons !== undefined && weapons.included == false) {
-      this.killSquadmate(this.noWeaponsDeaths, this.noWeaponsReason);
+      this.killSquadmate(this.noWeaponsDeaths, this.noWeaponsReason, true);
     }
 
     // Unassign active squadmates
@@ -369,6 +401,48 @@ export class AppComponent {
     // Update lists for next section
     this.bioticSpecialists = this.updateSquadmateOptions(this.bioticSpecialists);
     this.fireteamOneLeaders = this.updateSquadmateOptions(this.fireteamOneLeaders);
+    this.choosableSquadmates = this.updateSquadmateOptions(this.choosableSquadmates);
+    stepper.next();
+  }
+
+  submitLongWalkTeam(stepper: MatStepper) {
+    var longWalkTeam = [...Object.values(this.longWalkTeam.value)];
+    var bioticSpecialist = longWalkTeam[0];
+    var fireteamTwoLeader = longWalkTeam[1];
+    var crewEscort = longWalkTeam[2];
+    var swarmSquadmate1 = longWalkTeam[3];
+    var swarmSquadmate2 = longWalkTeam[4];
+
+    if (bioticSpecialist === null || fireteamTwoLeader === null 
+    || crewEscort === null || swarmSquadmate1 === null 
+    || swarmSquadmate2 === null) {
+      // ERROR
+      return;
+    }
+
+    var bioticSpecialistObj = this.availableSquadmates.find(squadmate => squadmate.name === bioticSpecialist);
+    if (!this.goodBioticSpecialists.includes(bioticSpecialist) || !bioticSpecialistObj.loyal) {
+      var swarmSquadmate1Index = this.badBioticSpecialistDeaths.indexOf(swarmSquadmate1);
+      var swarmSquadmate2Index = this.badBioticSpecialistDeaths.indexOf(swarmSquadmate2);
+
+      if (swarmSquadmate2Index >= swarmSquadmate1Index) {
+        this.killSquadmate([swarmSquadmate1], this.badBioticSpecialistReason);
+      } else {
+        this.killSquadmate([swarmSquadmate2], this.badBioticSpecialistReason);
+      }
+    }
+
+    var fireteamTwoLeaderObj = this.availableSquadmates.find(squadmate => squadmate.name === fireteamTwoLeader);
+    if (fireteamTwoLeader !== 'Miranda' && (!fireteamTwoLeaderObj.loyal || !this.goodFireteamLeaders.includes(fireteamTwoLeader))) {
+      this.killSquadmate([fireteamTwoLeader], this.badfireteamTwoLeaderReason);
+    }
+
+    var crewEscortObj = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
+    if (!crewEscortObj.loyal) {
+      this.killSquadmate([crewEscort], this.badCrewEscortReason);
+    }
+    // TODO: Add 'No one' option and calculate crew survival
+
     this.choosableSquadmates = this.updateSquadmateOptions(this.choosableSquadmates);
     stepper.next();
   }

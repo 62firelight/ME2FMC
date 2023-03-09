@@ -251,7 +251,10 @@
     <mat-step [editable]="false">
       <ng-template matStepLabel>Collector Base: Infiltration</ng-template>
 
-      <form [formGroup]="infiltrationTeam" (ngSubmit)="submitInfiltrationTeam(stepper)">
+      <form
+        [formGroup]="infiltrationTeam"
+        (ngSubmit)="submitInfiltrationTeam(stepper)"
+      >
         <div class="multiple-select">
           <h2>Who will go through the vents?</h2>
 
@@ -299,74 +302,106 @@
     <mat-step [editable]="false">
       <ng-template matStepLabel>Collector Base: The Long Walk</ng-template>
 
-      <div class="multiple-select">
-        <h2>Who will create the biotic shield?</h2>
+      <form [formGroup]="longWalkTeam" (ngSubmit)="submitLongWalkTeam(stepper)">
+        <div class="multiple-select">
+          <h2>Who will create the biotic shield?</h2>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Biotic Specialist</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let specialist of bioticSpecialists"
-              [value]="specialist"
-            >
-              {{ specialist }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Biotic Specialist</mat-label>
+            <mat-select formControlName="bioticSpecialist" #bioticSpecialist>
+              <mat-option
+                *ngFor="let specialist of bioticSpecialists"
+                [value]="specialist"
+                [disabled]="fireteamTwoLeader.value === specialist
+                            || crewEscort.value === specialist
+                            || swarmSquadmate1.value === specialist
+                            || swarmSquadmate2.value === specialist"
+              >
+                {{ specialist }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <h2>Who will lead the second fireteam?</h2>
+          <h2>Who will lead the second fireteam?</h2>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Fireteam Leader 2</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let leader of fireteamOneLeaders" [value]="leader">
-              {{ leader }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Fireteam Leader 2</mat-label>
+            <mat-select formControlName="fireteamTwoLeader" #fireteamTwoLeader>
+              <mat-option
+                *ngFor="let leader of fireteamOneLeaders"
+                [value]="leader"
+                [disabled]="bioticSpecialist.value === leader
+                            || crewEscort.value === leader
+                            || swarmSquadmate1.value === leader
+                            || swarmSquadmate2.value === leader"
+              >
+                {{ leader }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <h2>Who will escort the crew?</h2>
+          <h2>Who will escort the crew?</h2>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Crew Escort</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let squadmate of choosableSquadmates"
-              [value]="squadmate"
-            >
-              {{ squadmate }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Crew Escort</mat-label>
+            <mat-select formControlName="crewEscort" #crewEscort>
+              <mat-option
+                *ngFor="let squadmate of choosableSquadmates"
+                [value]="squadmate"
+                [disabled]="bioticSpecialist.value === squadmate
+                            || fireteamTwoLeader.value === squadmate
+                            || swarmSquadmate1.value === squadmate
+                            || swarmSquadmate2.value === squadmate"
+              >
+                {{ squadmate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <h2>Who will accompany Shepard through the seeker swarms?</h2>
+          <h2>Who will accompany Shepard through the seeker swarms?</h2>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Squadmate 1</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let squadmate of choosableSquadmates"
-              [value]="squadmate"
-            >
-              {{ squadmate }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Squadmate 1</mat-label>
+            <mat-select formControlName="swarmSquadmate1" #swarmSquadmate1>
+              <mat-option
+                *ngFor="let squadmate of choosableSquadmates"
+                [value]="squadmate"
+                [disabled]="bioticSpecialist.value === squadmate
+                            || fireteamTwoLeader.value === squadmate
+                            || crewEscort.value === squadmate
+                            || swarmSquadmate2.value === squadmate"
+              >
+                {{ squadmate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Squadmate 2</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let squadmate of choosableSquadmates"
-              [value]="squadmate"
-            >
-              {{ squadmate }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+          <mat-form-field appearance="fill">
+            <mat-label>Squadmate 2</mat-label>
+            <mat-select formControlName="swarmSquadmate2" #swarmSquadmate2>
+              <mat-option
+                *ngFor="let squadmate of choosableSquadmates"
+                [value]="squadmate"
+                [disabled]="bioticSpecialist.value === squadmate
+                            || fireteamTwoLeader.value === squadmate
+                            || crewEscort.value === squadmate
+                            || swarmSquadmate1.value === squadmate"
+              >
+                {{ squadmate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-      <button mat-raised-button color="primary" matStepperNext>Next</button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!longWalkTeam.valid"
+        >
+          Next
+        </button>
+      </form>
     </mat-step>
 
     <!-- 6. Final Battle -->
