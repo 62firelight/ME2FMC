@@ -169,7 +169,7 @@ export class AppComponent {
     'Grunt',
     'Jack',
     'Samara'
-  ]
+  ];
   noArmorReason = 'No armor upgrade';
   noShieldReason = 'No shield upgrade';
   noWeaponsReason = 'No weapons upgrade';
@@ -276,6 +276,20 @@ export class AppComponent {
   currentHtlScores: Map<string, number> = new Map();
   totalHtlScore = 0;
   averageHtlScore = 0;
+  htlDeaths = [
+    'Mordin',
+    'Tali',
+    'Kasumi',
+    'Jack',
+    'Miranda',
+    'Jacob',
+    'Garrus',
+    'Samara',
+    'Legion',
+    'Thane',
+    'Zaeed',
+    'Grunt'
+  ];
   htlDeathReason = 'Died holding the line';
 
   constructor(private fb: FormBuilder) { }
@@ -297,14 +311,14 @@ export class AppComponent {
     });
   }
 
-  killSquadmate(doomedSquadmates: string[], deathReason: string, outsideCurrentSquad = false) {
+  killSquadmate(doomedSquadmates: string[], deathReason: string, onlyKillOutsideCurrentSquad = false) {
     for (var doomedSquadmate of doomedSquadmates) {
       var squadmateToDie = undefined;
 
       for (var squadmate of this.availableSquadmates) {
         // If a squadmate is in the active squad and we are not allowed to kill anyone outside
         // the current squad, skip to the next squadmate
-        if (outsideCurrentSquad && squadmate.inCurrentSquad) {
+        if (onlyKillOutsideCurrentSquad && squadmate.inCurrentSquad) {
           continue;
         }
 
