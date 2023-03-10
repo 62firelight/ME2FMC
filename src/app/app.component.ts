@@ -175,8 +175,8 @@ export class AppComponent {
   noWeaponsReason = 'No weapons upgrade';
 
   oculusSquadmates = this.fb.group({
-    oculus1: ['', Validators.required],
-    oculus2: ['', Validators.required]
+    oculusSquadmate1: ['', Validators.required],
+    oculusSquadmate2: ['', Validators.required]
   });
 
   infiltrationTeam = this.fb.group({
@@ -528,6 +528,7 @@ export class AppComponent {
     this.averageHtlScore = Math.round(this.averageHtlScore * 10) / 10;
 
     const numberOfDefenders = this.currentHtlScores.size;
+    // const defenders = Object.keys(this.currentHtlScores);
     if (numberOfDefenders >= 5) {
       if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 1.5) {
         // Kill one squadmate
@@ -566,6 +567,12 @@ export class AppComponent {
       }
     }
 
+    var crewEscort = this.longWalkTeam.value.crewEscort;
+    if (crewEscort !== undefined) {
+      var crewEscortObj = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
+      crewEscortObj.recruited = true;
+    }
+
     stepper.next();
   }
 
@@ -577,5 +584,12 @@ export class AppComponent {
     }
 
     return htlScore + (loyal ? 1 : 0);
+  }
+
+  convertFromCamelCase(text: string): string {
+    // insert a space before all caps
+    return text.replace(/([A-Z0-9])/g, ' $1')
+    // uppercase the first character
+    .replace(/^./, function(str){ return str.toUpperCase(); })
   }
 }
