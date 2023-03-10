@@ -496,9 +496,19 @@
     <mat-step [editable]="false">
       <ng-template matStepLabel>Final Outcome</ng-template>
 
-      <button mat-raised-button color="primary" (click)="stepper.reset()">
+      <ul>
+        <li *ngFor="let squadmate of availableSquadmates">
+          {{ squadmate.name }} -
+          {{
+            squadmate.deathReason ? "Died (" + squadmate.deathReason + ")" : "Survived"
+          }}
+        </li>
+      </ul>
+
+      Refresh the page to reset
+      <!-- <button mat-raised-button color="primary" (click)="squadmates.reset; stepper.reset()">
         Reset
-      </button>
+      </button> -->
     </mat-step>
 
     <!--  <mat-step [editable]="false">
@@ -508,14 +518,14 @@
     </mat-step> -->
   </mat-stepper>
 
-  <ul>
+  <!-- <ul>
     <li *ngFor="let squadmate of availableSquadmates">
       {{ squadmate.name }} -
       {{
         squadmate.deathReason ? "Dead (" + squadmate.deathReason + ")" : "Alive"
       }}
     </li>
-  </ul>
+  </ul> -->
 
   <!-- <pre>{{ availableSquadmates | squadmatesStatus }}</pre> -->
 

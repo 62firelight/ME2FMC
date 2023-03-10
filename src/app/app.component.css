@@ -19,6 +19,7 @@
 .squadmate-form {
     display: flex;
     flex-flow: column nowrap;
+    margin: 0 0 0.5em 0;
 }
 
 .squadmate {
