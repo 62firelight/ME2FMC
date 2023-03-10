@@ -473,24 +473,18 @@
       <ng-template matStepLabel>Collector Base: Hold the Line</ng-template>
 
       <h2 id="htl">Hold the Line!</h2>
-      <p>
-        Squadmates holding the line are:
-      </p>
+      <p>Squadmates holding the line are:</p>
 
       <ul>
         <ng-container *ngFor="let entry of currentHtlScores | keyvalue">
-          <li>
-            {{ entry.key }}: {{ entry.value }}
-          </li>
+          <li>{{ entry.key }}: {{ entry.value }}</li>
         </ng-container>
       </ul>
 
       <p>Total: {{ totalHtlScore }}</p>
       <p>Average: {{ averageHtlScore }}</p>
 
-      <button mat-raised-button color="primary" matStepperNext>
-        Next
-      </button>
+      <button mat-raised-button color="primary" matStepperNext>Next</button>
     </mat-step>
 
     <!-- 8. Final Outcome -->
@@ -498,12 +492,16 @@
       <ng-template matStepLabel>Final Outcome</ng-template>
 
       <ul>
-        <li *ngFor="let squadmate of availableSquadmates">
-          {{ squadmate.name }} -
-          {{
-            squadmate.deathReason ? "Died (" + squadmate.deathReason + ")" : "Survived"
-          }}
-        </li>
+        <ng-container *ngFor="let squadmate of availableSquadmates">
+          <li [style.color]="squadmate.deathReason ? 'red' : 'green'">
+            {{ squadmate.name }} -
+            {{
+              squadmate.deathReason
+                ? "Died (" + squadmate.deathReason.toLowerCase() + ")"
+                : "Survived"
+            }}
+          </li>
+        </ng-container>
       </ul>
 
       Refresh the page to reset
