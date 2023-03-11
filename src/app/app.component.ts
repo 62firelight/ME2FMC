@@ -97,12 +97,14 @@ export class AppComponent {
     }),
   });
   insufficientSquadmates = false;
+  samaraIsMorinth = false;
 
   squadmateColumns = ['name', 'recruited', 'loyal'];
   choosableSquadmates = [
     'Zaeed',
     'Legion',
     'Samara',
+    'Morinth',
     'Tali',
     'Mordin',
     'Garrus',
@@ -161,7 +163,8 @@ export class AppComponent {
     'Garrus',
     'Zaeed',
     'Grunt',
-    'Samara'
+    'Samara',
+    'Morinth'
   ];
   noWeaponsDeaths = [
     'Thane',
@@ -169,7 +172,8 @@ export class AppComponent {
     'Zaeed',
     'Grunt',
     'Jack',
-    'Samara'
+    'Samara',
+    'Morinth'
   ];
   noArmorReason = 'No armor upgrade';
   noShieldReason = 'No shield upgrade';
@@ -287,6 +291,7 @@ export class AppComponent {
     'Jacob',
     'Garrus',
     'Samara',
+    'Morinth',
     'Legion',
     'Thane',
     'Zaeed',
@@ -306,10 +311,10 @@ export class AppComponent {
     // );
   }
 
-  updateSquadmateOptions(squadmateOptions: string[]) {
+  updateSquadmateOptions(squadmateOptions: string[]): string[] {
     return squadmateOptions.filter(squadmateOption => {
       var squadmate = this.availableSquadmates.find(squadmate => squadmate.name === squadmateOption);
-      return squadmate.recruited && squadmate.deathReason == '';
+      return squadmate !== undefined && squadmate.recruited && squadmate.deathReason == '';
     });
   }
 
@@ -457,7 +462,12 @@ export class AppComponent {
     }
 
     if (recruitedSquadmates >= 8) {
+      if (this.samaraIsMorinth && this.squadmates.value.samara !== undefined) {
+        this.squadmates.value.samara.name = 'Morinth';
+      }
+
       this.availableSquadmates = [...Object.values(this.squadmates.value)];
+      console.log(this.availableSquadmates);
       stepper.next();
     } else {
       this.insufficientSquadmates = true;

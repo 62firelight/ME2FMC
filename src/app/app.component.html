@@ -61,7 +61,7 @@
           </div>
 
           <div class="squadmate" formGroupName="samara">
-            <p>Samara</p>
+            <p>{{ samaraIsMorinth ? 'Morinth' : 'Samara' }}</p>
             <mat-checkbox formControlName="recruited"></mat-checkbox>
             <mat-checkbox formControlName="loyal"></mat-checkbox>
           </div>
@@ -121,7 +121,7 @@
           </div>
         </div>
 
-        <!-- <mat-checkbox [labelPosition]="'before'">Samara is Morinth</mat-checkbox> -->
+        <mat-checkbox id="simCheckbox" [checked]="samaraIsMorinth" (change)="samaraIsMorinth = !samaraIsMorinth" [labelPosition]="'before'">Samara is Morinth</mat-checkbox>
 
         <p>
           <small><em>*</em> indicates required squadmates.</small>
