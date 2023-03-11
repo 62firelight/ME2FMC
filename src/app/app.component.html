@@ -483,7 +483,7 @@
       </ul>
 
       <p>
-        Score: {{ currentHtlScores.size }} / {{ totalHtlScore }} =
+        Score: {{ totalHtlScore }} / {{ currentHtlScores.size }}  =
         <strong>{{ averageHtlScore }}</strong>
       </p>
 
@@ -512,11 +512,11 @@
           Normandy Crew -
           {{ normandyCrewDead ? "Died (no escort)" : "Survived" }}
         </li>
-        <li [style.color]="getAliveSquadmates() <= 2 ? 'red' : 'green'">
+        <li [style.color]="getAliveSquadmates() < 2 ? 'red' : 'green'">
           Shepard -
           {{
-            getAliveSquadmates() <= 2
-              ? "Died (less than 2 squadmates alive)"
+            getAliveSquadmates() < 2
+              ? "Died (less than 2 squadmates survived)"
               : "Survived"
           }}
         </li>
@@ -607,7 +607,7 @@
         </li>
       </ul>
       <p>
-        Score: {{ currentHtlScores.size }} / {{ totalHtlScore }} =
+        Score: {{ totalHtlScore }} / {{ currentHtlScores.size }}  =
         <strong>{{ averageHtlScore }}</strong>
       </p>
     </mat-step>

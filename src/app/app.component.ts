@@ -246,6 +246,7 @@ export class AppComponent {
     'Grunt',
     'Samara',
     'Jacob',
+    'Mordin',
     'Tali',
     'Kasumi',
     'Zaeed',
@@ -385,8 +386,6 @@ export class AppComponent {
     // Sort order of squadmate deaths
     squadmateDeathOrderMap = new Map([...squadmateDeathOrderMap].sort());
 
-    console.log(squadmateDeathOrderMap);
-
     // Kill non-loyal squadmates first
     for (const [index, squadmateName] of squadmateDeathOrderMap) {
       var squadmateObj = undefined;
@@ -436,6 +435,10 @@ export class AppComponent {
         }
       }
     }
+  }
+
+  getAliveSquadmates(): number {
+    return this.availableSquadmates.filter(squadmate => squadmate.recruited && squadmate.deathReason === '').length;
   }
 
   submitSquadmateStatus(stepper: MatStepper) {
@@ -562,6 +565,7 @@ export class AppComponent {
 
     if (crewEscort === 'None') {
       this.normandyCrewDead = true;
+      console.log('Crew died for reason: No escort');
     } else {
       // var crewEscortObj = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
       var crewEscortObj = undefined;
@@ -693,10 +697,10 @@ export class AppComponent {
       }
     }
 
-    stepper.next();
-  }
+    if (this.getAliveSquadmates() <= 2) {
+      console.log('Shepard died for reason: Less than 2 squadmates survived');
+    }
 
-  getAliveSquadmates(): number {
-    return this.availableSquadmates.filter(squadmate => squadmate.recruited && squadmate.deathReason === '').length;
+    stepper.next();
   }
 }
