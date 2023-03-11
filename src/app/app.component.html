@@ -349,9 +349,7 @@
           <mat-form-field appearance="fill">
             <mat-label>Crew Escort</mat-label>
             <mat-select formControlName="crewEscort" #crewEscort>
-              <mat-option value="None">
-                None
-              </mat-option>
+              <mat-option value="None"> None </mat-option>
               <mat-option
                 *ngFor="let squadmate of choosableSquadmates"
                 [value]="squadmate"
@@ -498,7 +496,10 @@
 
       <ul>
         <ng-container *ngFor="let squadmate of availableSquadmates">
-          <li [style.color]="squadmate.deathReason ? 'red' : 'green'">
+          <li
+            *ngIf="squadmate.recruited"
+            [style.color]="squadmate.deathReason ? 'red' : 'green'"
+          >
             {{ squadmate.name }} -
             {{
               squadmate.deathReason
@@ -508,9 +509,15 @@
           </li>
         </ng-container>
         <li [style.color]="normandyCrewDead ? 'red' : 'green'">
-          Normandy Crew - 
+          Normandy Crew -
+          {{ normandyCrewDead ? "Died (no escort)" : "Survived" }}
+        </li>
+        <li [style.color]="getAliveSquadmates() <= 2 ? 'red' : 'green'">
+          Shepard -
           {{
-            normandyCrewDead ? 'Died (no escort)' : 'Survived'
+            getAliveSquadmates() <= 2
+              ? "Died (less than 2 squadmates alive)"
+              : "Survived"
           }}
         </li>
       </ul>

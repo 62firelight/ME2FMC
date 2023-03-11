@@ -695,4 +695,8 @@ export class AppComponent {
 
     stepper.next();
   }
+
+  getAliveSquadmates(): number {
+    return this.availableSquadmates.filter(squadmate => squadmate.recruited && squadmate.deathReason === '').length;
+  }
 }
