@@ -467,7 +467,6 @@ export class AppComponent {
       }
 
       this.availableSquadmates = [...Object.values(this.squadmates.value)];
-      console.log(this.availableSquadmates);
       stepper.next();
     } else {
       this.insufficientSquadmates = true;
@@ -707,7 +706,7 @@ export class AppComponent {
       }
     }
 
-    if (this.getAliveSquadmates() <= 2) {
+    if (this.getAliveSquadmates() < 2) {
       console.log('Shepard died for reason: Less than 2 squadmates survived');
     }
 
