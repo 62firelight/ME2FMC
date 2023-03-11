@@ -349,6 +349,9 @@
           <mat-form-field appearance="fill">
             <mat-label>Crew Escort</mat-label>
             <mat-select formControlName="crewEscort" #crewEscort>
+              <mat-option value="None">
+                None
+              </mat-option>
               <mat-option
                 *ngFor="let squadmate of choosableSquadmates"
                 [value]="squadmate"
@@ -504,6 +507,12 @@
             }}
           </li>
         </ng-container>
+        <li [style.color]="normandyCrewDead ? 'red' : 'green'">
+          Normandy Crew - 
+          {{
+            normandyCrewDead ? 'Died (no escort)' : 'Survived'
+          }}
+        </li>
       </ul>
 
       Refresh the page to reset.

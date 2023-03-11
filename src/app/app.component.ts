@@ -128,6 +128,7 @@ export class AppComponent {
     { name: 'Kasumi', recruited: true, loyal: true },
   ];
   availableSquadmates: any[] = [];
+  normandyCrewDead = false;
 
   shipUpgradeColumns = ['name', 'included'];
   shipUpgrades = this.fb.group({
@@ -252,7 +253,7 @@ export class AppComponent {
   ];
   badBioticSpecialistReason = 'Bad biotic specialist';
   badfireteamTwoLeaderReason = 'Bad fireteam 2 leader';
-  badCrewEscortReason = 'Disloyal escort';
+  badCrewEscortReason = 'Non-loyal escort';
 
   finalBattleTeam = this.fb.group({
     finalSquadmate1: ['', Validators.required],
@@ -559,12 +560,25 @@ export class AppComponent {
       this.killSquadmate([fireteamTwoLeader], this.badfireteamTwoLeaderReason);
     }
 
-    var crewEscortObj = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
-    crewEscortObj.recruited = false;
-    if (!crewEscortObj.loyal) {
-      this.killSquadmate([crewEscort], this.badCrewEscortReason);
+    if (crewEscort === 'None') {
+      this.normandyCrewDead = true;
+    } else {
+      // var crewEscortObj = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
+      var crewEscortObj = undefined;
+      for (var squadmate of this.availableSquadmates) {
+        if (squadmate.name === crewEscort) {
+          crewEscortObj = squadmate;
+          break;
+        }
+      }
+      if (crewEscortObj !== undefined) { 
+        if (!crewEscortObj.loyal) {
+          this.killSquadmate([crewEscort], this.badCrewEscortReason);
+        } else {
+          crewEscortObj.recruited = false;
+        }
+      }
     }
-    // TODO: Add 'No one' option and calculate crew survival
 
     // Update list for next section
     this.choosableSquadmates = this.updateSquadmateOptions(this.choosableSquadmates);
@@ -666,8 +680,17 @@ export class AppComponent {
 
     var crewEscort = this.longWalkTeam.value.crewEscort;
     if (crewEscort !== undefined) {
-      var crewEscortObj = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
-      crewEscortObj.recruited = true;
+      var crewEscortObj = undefined;
+      for (var squadmate of this.availableSquadmates) {
+        if (squadmate.name === crewEscort) {
+          crewEscortObj = squadmate;
+          break;
+        }
+      }
+      // var crewEscortObj = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
+      if (crewEscortObj !== undefined) {
+        crewEscortObj.recruited = true;
+      }
     }
 
     stepper.next();
