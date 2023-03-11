@@ -353,6 +353,90 @@ export class AppComponent {
     }
   }
 
+  getHtlScore(name: string, loyal: boolean): number {
+    const htlScore = this.htlScores.get(name);
+
+    if (htlScore === undefined) {
+      return 0;
+    }
+
+    return htlScore + (loyal ? 1 : 0);
+  }
+
+  convertFromCamelCase(text: string): string {
+    // insert a space before all caps
+    return text.replace(/([A-Z0-9])/g, ' $1')
+      // uppercase the first character
+      .replace(/^./, function (str) { return str.toUpperCase(); })
+  }
+
+  killHtlDefenders(defenders: any[], htlDeaths: number) {
+    var squadmateDeathOrderMap: Map<number, string> = new Map();
+    var deadSquadmateIndexes: Set<number> = new Set();
+
+    // Add each defender to a map
+    for (var defender of defenders) {
+      var squadmateDeathIndex = this.htlDeaths.indexOf(defender);
+
+      squadmateDeathOrderMap.set(squadmateDeathIndex, defender);
+    }
+
+    // Sort order of squadmate deaths
+    squadmateDeathOrderMap = new Map([...squadmateDeathOrderMap].sort());
+
+    console.log(squadmateDeathOrderMap);
+
+    // Kill non-loyal squadmates first
+    for (const [index, squadmateName] of squadmateDeathOrderMap) {
+      var squadmateObj = undefined;
+      for (var squadmate of this.availableSquadmates) {
+        if (squadmate.name === squadmateName) {
+          squadmateObj = squadmate;
+          break;
+        }
+      }
+      // var squadmateObj = this.availableSquadmates.find(squadmate => squadmate == squadmateName);
+
+      if (squadmateObj !== undefined && squadmateObj.loyal === false) {
+        this.killSquadmate([squadmateName], this.htlDeathReason);
+        htlDeaths--;
+        deadSquadmateIndexes.add(index);
+
+        if (htlDeaths <= 0) {
+          break;
+        }
+      }
+    }
+
+    if (htlDeaths > 0) {
+      // Kill left-over squadmates
+      for (const [index, squadmateName] of squadmateDeathOrderMap) {
+        if (deadSquadmateIndexes.has(index)) {
+          continue;
+        }
+
+        var squadmateObj = undefined;
+        for (var squadmate of this.availableSquadmates) {
+          if (squadmate.name === squadmateName) {
+            squadmateObj = squadmate;
+            break;
+          }
+        }
+        // var squadmateObj = this.availableSquadmates.find(squadmate => squadmate == squadmateName);
+
+        if (squadmateObj !== undefined) {
+          this.killSquadmate([squadmateName], this.htlDeathReason);
+          htlDeaths--;
+          deadSquadmateIndexes.add(index);
+
+          if (htlDeaths <= 0) {
+            break;
+          }
+        }
+      }
+    }
+  }
+
   submitSquadmateStatus(stepper: MatStepper) {
     this.insufficientSquadmates = false;
 
@@ -451,9 +535,9 @@ export class AppComponent {
     var swarmSquadmate1 = longWalkTeam[3];
     var swarmSquadmate2 = longWalkTeam[4];
 
-    if (bioticSpecialist === null || fireteamTwoLeader === null 
-    || crewEscort === null || swarmSquadmate1 === null 
-    || swarmSquadmate2 === null) {
+    if (bioticSpecialist === null || fireteamTwoLeader === null
+      || crewEscort === null || swarmSquadmate1 === null
+      || swarmSquadmate2 === null) {
       // ERROR
       return;
     }
@@ -528,42 +612,55 @@ export class AppComponent {
     this.averageHtlScore = Math.round(this.averageHtlScore * 10) / 10;
 
     const numberOfDefenders = this.currentHtlScores.size;
-    // const defenders = Object.keys(this.currentHtlScores);
+    const defenders = [...this.currentHtlScores.keys()];
     if (numberOfDefenders >= 5) {
       if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 1.5) {
         // Kill one squadmate
+        this.killHtlDefenders(defenders, 1);
       } else if (this.averageHtlScore < 1.5 && this.averageHtlScore >= 0.5) {
         // Kill two squadmates
+        this.killHtlDefenders(defenders, 2);
       } else if (this.averageHtlScore < 0.5 && this.averageHtlScore >= 0.0) {
         // Kill three squadmates
+        this.killHtlDefenders(defenders, 3);
       }
     } else if (numberOfDefenders === 4) {
       if (this.averageHtlScore < 2.0 && this.averageHtlScore > 1.0) {
         // Kill one squadmate
+        this.killHtlDefenders(defenders, 1);
       } else if (this.averageHtlScore <= 1.0 && this.averageHtlScore >= 0.5) {
         // Kill two squadmates
+        this.killHtlDefenders(defenders, 2);
       } else if (this.averageHtlScore < 0.5 && this.averageHtlScore > 0.0) {
         // Kill three squadmates
+        this.killHtlDefenders(defenders, 3);
       } else if (this.averageHtlScore <= 0.0) {
         // Kill all squadmates
+        this.killHtlDefenders(defenders, 4);
       }
     } else if (numberOfDefenders === 3) {
       if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 1.0) {
         // Kill one squadmate
+        this.killHtlDefenders(defenders, 1);
       } else if (this.averageHtlScore < 1.0 && this.averageHtlScore > 0.0) {
         // Kill two squadmates
+        this.killHtlDefenders(defenders, 2);
       } else if (this.averageHtlScore <= 0.0) {
         // Kill all three squadmates
+        this.killHtlDefenders(defenders, 3);
       }
     } else if (numberOfDefenders === 2) {
       if (this.averageHtlScore < 2.0 && this.averageHtlScore > 0.0) {
         // Kill one squadmate
+        this.killHtlDefenders(defenders, 1);
       } else if (this.averageHtlScore <= 0.0) {
         // Kill both squadmates
+        this.killHtlDefenders(defenders, 2);
       }
     } else if (numberOfDefenders === 1) {
       if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 0.0) {
         // Kill squadmate
+        this.killHtlDefenders(defenders, 1);
       }
     }
 
@@ -574,22 +671,5 @@ export class AppComponent {
     }
 
     stepper.next();
-  }
-
-  getHtlScore(name: string, loyal: boolean): number {
-    const htlScore = this.htlScores.get(name);
-    
-    if (htlScore === undefined) {
-      return 0;
-    }
-
-    return htlScore + (loyal ? 1 : 0);
-  }
-
-  convertFromCamelCase(text: string): string {
-    // insert a space before all caps
-    return text.replace(/([A-Z0-9])/g, ' $1')
-    // uppercase the first character
-    .replace(/^./, function(str){ return str.toUpperCase(); })
   }
 }
