@@ -8,30 +8,6 @@
 
       <h2>What is the status of the squad?</h2>
 
-      <!-- <table mat-table [dataSource]="squadmateStatusData" [formGroup]="squadmates">
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Name</th>
-          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="recruited">
-          <th mat-header-cell *matHeaderCellDef>Recruited?</th>
-          <td mat-cell *matCellDef="let element">
-            <mat-checkbox></mat-checkbox>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="loyal">
-          <th mat-header-cell *matHeaderCellDef>Loyal?</th>
-          <td mat-cell *matCellDef="let element">
-            <mat-checkbox></mat-checkbox>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="squadmateColumns"></tr>
-        <tr mat-row *matRowDef="let myRowData; columns: squadmateColumns"></tr>
-      </table> -->
-
       <p>
         A minimum of 8 recruited squadmates is required to progress to the final
         mission.
@@ -157,25 +133,6 @@
       <ng-template matStepLabel>Ship Upgrades</ng-template>
 
       <h2>What upgrades has the Normandy acquired?</h2>
-
-      <!-- <table mat-table [dataSource]="shipUpgradeData">
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="included">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">
-            <mat-checkbox [checked]="element.included"></mat-checkbox>
-          </td>
-        </ng-container>
-
-        <tr
-          mat-row
-          *matRowDef="let myRowData; columns: shipUpgradeColumns"
-        ></tr>
-      </table> -->
 
       <form [formGroup]="shipUpgrades" (ngSubmit)="submitShipUpgrades(stepper)">
         <div class="squadmate-form">

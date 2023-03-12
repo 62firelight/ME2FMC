@@ -115,20 +115,6 @@ export class AppComponent {
     'Jack',
     'Kasumi'
   ];
-  squadmateStatusData = [
-    { name: 'Zaeed', recruited: true, loyal: true },
-    { name: 'Legion', recruited: true, loyal: true },
-    { name: 'Samara', recruited: true, loyal: true },
-    { name: 'Tali', recruited: true, loyal: true },
-    { name: 'Mordin', recruited: true, loyal: true },
-    { name: 'Garrus', recruited: true, loyal: true },
-    { name: 'Miranda', recruited: true, loyal: true },
-    { name: 'Grunt', recruited: true, loyal: true },
-    { name: 'Jacob', recruited: true, loyal: true },
-    { name: 'Thane', recruited: true, loyal: true },
-    { name: 'Jack', recruited: true, loyal: true },
-    { name: 'Kasumi', recruited: true, loyal: true },
-  ];
   availableSquadmates: any[] = [];
   normandyCrewDead = false;
 
