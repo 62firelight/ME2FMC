@@ -468,6 +468,9 @@ export class AppComponent {
     if (recruitedSquadmates >= 8) {
       if (this.samaraIsMorinth && this.squadmates.value.samara !== undefined) {
         this.squadmates.value.samara.name = 'Morinth';
+
+        // Morinth's being present makes her loyal by default
+        this.squadmates.value.samara.loyal = true;
       }
 
       this.availableSquadmates = [...Object.values(this.squadmates.value)];

@@ -61,7 +61,7 @@
           </div>
 
           <div class="squadmate" formGroupName="samara">
-            <p>{{ samaraIsMorinth ? 'Morinth' : 'Samara' }}</p>
+            <p>{{ samaraIsMorinth ? "Morinth" : "Samara" }}</p>
             <mat-checkbox formControlName="recruited"></mat-checkbox>
             <mat-checkbox formControlName="loyal"></mat-checkbox>
           </div>
@@ -121,7 +121,13 @@
           </div>
         </div>
 
-        <mat-checkbox id="simCheckbox" [checked]="samaraIsMorinth" (change)="samaraIsMorinth = !samaraIsMorinth" [labelPosition]="'before'">Samara is Morinth</mat-checkbox>
+        <mat-checkbox
+          id="simCheckbox"
+          [checked]="samaraIsMorinth"
+          (change)="samaraIsMorinth = !samaraIsMorinth"
+          [labelPosition]="'before'"
+          >Samara is Morinth</mat-checkbox
+        >
 
         <p>
           <small><em>*</em> indicates required squadmates.</small>
@@ -483,7 +489,7 @@
       </ul>
 
       <p>
-        Score: {{ totalHtlScore }} / {{ currentHtlScores.size }}  =
+        Score: {{ totalHtlScore }} / {{ currentHtlScores.size }} =
         <strong>{{ averageHtlScore }}</strong>
       </p>
 
@@ -536,9 +542,9 @@
       <!-- <pre>{{ squadmates.value | json }}</pre> -->
       <ul>
         <li *ngFor="let squadmate of squadmates.value | keyvalue">
-          {{ squadmate.key | titlecase }}:
-          <ng-container *ngIf="squadmate.value"
-            >{{ squadmate.value.recruited ? "Recruited" : "Not Recruited" }}
+          <ng-container *ngIf="squadmate.value">
+            {{ squadmate.value.name | titlecase }}:
+            {{ squadmate.value.recruited ? "Recruited" : "Not Recruited" }}
             <ng-container *ngIf="squadmate.value.recruited"
               >and
               {{ squadmate.value.loyal ? "Loyal" : "Not Loyal" }}</ng-container
@@ -607,7 +613,7 @@
         </li>
       </ul>
       <p>
-        Score: {{ totalHtlScore }} / {{ currentHtlScores.size }}  =
+        Score: {{ totalHtlScore }} / {{ currentHtlScores.size }} =
         <strong>{{ averageHtlScore }}</strong>
       </p>
     </mat-step>
