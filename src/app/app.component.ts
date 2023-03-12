@@ -8,7 +8,7 @@ import { MatStepper } from '@angular/material/stepper';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'ME2FMC';
+  title = 'ME2 Final Mission Calculator';
 
   squadmates = this.fb.group({
     zaeed: this.fb.group({
