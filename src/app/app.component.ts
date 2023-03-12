@@ -208,6 +208,7 @@ export class AppComponent {
     'Zaeed',
     'Grunt',
     'Samara',
+    'Morinth',
     'Jack',
     'Thane',
     'Kasumi',
@@ -233,6 +234,7 @@ export class AppComponent {
   });
   bioticSpecialists = [
     'Samara',
+    'Morinth',
     'Jack',
     'Thane',
     'Miranda',
@@ -240,6 +242,7 @@ export class AppComponent {
   ];
   goodBioticSpecialists = [
     'Samara',
+    'Morinth',
     'Jack'
   ];
   badBioticSpecialistDeaths = [
@@ -272,6 +275,7 @@ export class AppComponent {
     ['Thane', 1],
     ['Legion', 1],
     ['Samara', 1],
+    ['Morinth', 1],
     ['Jacob', 1],
     ['Miranda', 1],
     ['Jack', 0],
