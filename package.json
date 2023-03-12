@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "gh-pages": "ng deploy --base-href=/ME2FMC/"
   },
   "private": true,
   "dependencies": {
