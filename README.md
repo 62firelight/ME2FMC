@@ -1,27 +1,18 @@
-# ME2FMC
+# Mass Effect 2 - Final Mission Calculator (ME2FMC)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.1.
+**WARNING: Contains major spoilers for the end of Mass Effect 2!**
 
-## Development server
+A calculator app that uses player-chosen decisions to determine the survival of squadmates during the final mission of the game Mass Effect 2. 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Access the app here: https://62firelight.github.io/ME2FMC
 
-## Code scaffolding
+**NOTE:** If you get a 404 error, the app is currently down. The app can still be used if you clone the Git repo and run it through the Angular CLI.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The logic of the app is based on the flowchart below:
 
-## Build
+![](https://i.imgur.com/nJPAc.jpeg)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Known Issues
+* Morinth is not an option for creating the biotic shield.
+* When going into the mission with 8 squadmates, it is possible to only have 4 squadmates by the time "The Long Walk" section is initiated. This can lead to a forced situation where there is no crew escort, and if 2 more squadmates die, no defenders to hold the line. According to wikis and guides, this should not be possible as the player needs to always be able to make the decision of having a crew escort and there must be at least one person holding the line as they will always communicate with Shepard during the final battle.
+* For the "Hold the Line" section, the app currently uses the logic from the flowchart. However, that is inaccurate as the game actually uses a much simpler formula for determining the fate of squadmates who are holding the line. This formula was derived from looking at the game files. **Source:** https://www.reddit.com/r/masseffect/comments/103np0o/the_actual_hold_the_line_calculation
