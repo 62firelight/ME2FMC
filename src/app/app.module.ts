@@ -12,6 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NameEditorComponent } from './components/name-editor/name-editor.component';
 import { ProfileEditorComponent } from './components/profile-editor/profile-editor.component';
 import { SquadmatesStatusPipe } from './pipes/squadmates-status.pipe';
+import { MatIconModule } from '@angular/material/icon';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { SquadmatesStatusPipe } from './pipes/squadmates-status.pipe';
     MatSelectModule,
     MatStepperModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule,
+    ClipboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
