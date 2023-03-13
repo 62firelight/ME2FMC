@@ -97,6 +97,7 @@ export class AppComponent {
     }),
   });
   insufficientSquadmates = false;
+  legionAs8thSquadmate = false;
   samaraIsMorinth = false;
 
   squadmateColumns = ['name', 'recruited', 'loyal'];
@@ -430,6 +431,7 @@ export class AppComponent {
 
   submitSquadmateStatus(stepper: MatStepper) {
     this.insufficientSquadmates = false;
+    this.legionAs8thSquadmate = false;
 
     var squadmateObjects = Object.values(this.squadmates.value);
 
@@ -443,12 +445,15 @@ export class AppComponent {
       }
     }
 
-    if (recruitedSquadmates >= 8) {
+    if (recruitedSquadmates == 8 && this.squadmates.value.legion?.recruited) {
+      // Check if Legion is part of the squad
+      this.legionAs8thSquadmate = true;
+    } else if (recruitedSquadmates >= 8) {
       if (this.samaraIsMorinth && this.squadmates.value.samara !== undefined) {
         this.squadmates.value.samara.name = 'Morinth';
-
-        // Morinth's being present makes her loyal by default
+        // Morinth being present makes her loyal by default
         this.squadmates.value.samara.loyal = true;
+        // TODO: Disable Morinth's loyalty checkbox if Samara is Morinth
       }
 
       this.availableSquadmates = [...Object.values(this.squadmates.value)];

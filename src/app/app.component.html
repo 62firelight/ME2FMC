@@ -118,6 +118,17 @@
           </p>
         </div>
 
+        <div *ngIf="legionAs8thSquadmate">
+          <p>
+            <em
+              >Legion cannot be the 8th squadmate as he can only be recruited
+              after the Collector Ship mission, which requires 8 other
+              squadmates to be recruited first. Either recruit another squadmate
+              or choose an alternative squadmate.
+            </em>
+          </p>
+        </div>
+
         <button
           mat-raised-button
           color="primary"
@@ -462,10 +473,10 @@
 
       <p>
         <strong>{{
-          htlScore == currentHtlScores.size ? 'All' : htlScore
+          htlScore == currentHtlScores.size ? "All" : htlScore
         }}</strong>
-        squadmate{{ htlScore > 1 ? 's' : '' }} holding the line will survive. ({{ totalHtlScore }} / 3 =
-        {{ htlScore }} rounded down)
+        squadmate{{ htlScore > 1 ? "s" : "" }} holding the line will survive.
+        ({{ totalHtlScore }} / 3 = {{ htlScore }} rounded down)
       </p>
 
       <button mat-raised-button color="primary" matStepperNext>Finish</button>
@@ -476,7 +487,7 @@
       <ng-template matStepLabel>Final Outcome</ng-template>
 
       <h2 id="htl">Mission complete!</h2>
-      
+
       <p>But at what cost...?</p>
 
       <ul>
@@ -619,10 +630,10 @@
 
       <p>
         <strong>{{
-          htlScore == currentHtlScores.size ? 'All' : htlScore
+          htlScore == currentHtlScores.size ? "All" : htlScore
         }}</strong>
-        squadmate{{ htlScore > 1 ? 's' : '' }} holding the line will survive. ({{ totalHtlScore }} / 3 =
-        {{ htlScore }} rounded down)
+        squadmate{{ htlScore > 1 ? "s" : "" }} holding the line will survive.
+        ({{ totalHtlScore }} / 3 = {{ htlScore }} rounded down)
       </p>
     </mat-step>
 
