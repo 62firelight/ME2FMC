@@ -313,19 +313,22 @@
             <mat-label>Crew Escort</mat-label>
             <mat-select formControlName="crewEscort" #crewEscort>
               <mat-option value="None"> None </mat-option>
-              <mat-option
-                *ngFor="let squadmate of choosableSquadmates"
-                [value]="squadmate"
-                [disabled]="
-                  bioticSpecialist.value === squadmate ||
-                  fireteamTwoLeader.value === squadmate ||
-                  swarmSquadmate1.value === squadmate ||
-                  swarmSquadmate2.value === squadmate ||
-                  squadmate === 'Miranda'
-                "
-              >
-                {{ squadmate }}
-              </mat-option>
+
+              <ng-container *ngIf="getAliveSquadmates() > 4">
+                <mat-option
+                  *ngFor="let squadmate of choosableSquadmates"
+                  [value]="squadmate"
+                  [disabled]="
+                    bioticSpecialist.value === squadmate ||
+                    fireteamTwoLeader.value === squadmate ||
+                    swarmSquadmate1.value === squadmate ||
+                    swarmSquadmate2.value === squadmate ||
+                    squadmate === 'Miranda'
+                  "
+                >
+                  {{ squadmate }}
+                </mat-option>
+              </ng-container>
             </mat-select>
           </mat-form-field>
 

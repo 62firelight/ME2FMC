@@ -560,11 +560,6 @@ export class AppComponent {
       }
     }
 
-    var fireteamTwoLeaderObj = this.availableSquadmates.find(squadmate => squadmate.name === fireteamTwoLeader);
-    if (fireteamTwoLeader !== 'Miranda' && (!fireteamTwoLeaderObj.loyal || !this.goodFireteamLeaders.includes(fireteamTwoLeader))) {
-      this.killSquadmate([fireteamTwoLeader], this.badfireteamTwoLeaderReason);
-    }
-
     if (crewEscort === 'None') {
       this.normandyCrewDead = true;
       console.log('Crew died for reason: No escort');
@@ -584,6 +579,12 @@ export class AppComponent {
           crewEscortObj.recruited = false;
         }
       }
+    }
+
+    var fireteamTwoLeaderObj = this.availableSquadmates.find(squadmate => squadmate.name === fireteamTwoLeader);
+    // Override death if there are only 3 more squadmates left
+    if (fireteamTwoLeader !== 'Miranda' && ((!fireteamTwoLeaderObj.loyal || !this.goodFireteamLeaders.includes(fireteamTwoLeader)) && this.getAliveSquadmates() > 3)) {
+      this.killSquadmate([fireteamTwoLeader], this.badfireteamTwoLeaderReason);
     }
 
     // Update list for next section
