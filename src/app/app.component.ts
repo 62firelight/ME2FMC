@@ -255,23 +255,23 @@ export class AppComponent {
   });
   disloyalFinalSquadmateReason = 'Disloyal squadmate in final battle';
   htlScores = new Map([
-    ['Grunt', 3],
-    ['Zaeed', 3],
-    ['Garrus', 3],
-    ['Thane', 1],
-    ['Legion', 1],
-    ['Samara', 1],
-    ['Morinth', 1],
-    ['Jacob', 1],
-    ['Miranda', 1],
-    ['Jack', 0],
-    ['Kasumi', 0],
-    ['Tali', 0],
-    ['Mordin', 0],
+    ['Grunt', 4],
+    ['Zaeed', 4],
+    ['Garrus', 4],
+    ['Thane', 2],
+    ['Legion', 2],
+    ['Samara', 2],
+    ['Morinth', 2],
+    ['Jacob', 2],
+    ['Miranda', 2],
+    ['Jack', 1],
+    ['Kasumi', 1],
+    ['Tali', 1],
+    ['Mordin', 1],
   ]);
   currentHtlScores: Map<string, number> = new Map();
   totalHtlScore = 0;
-  averageHtlScore = 0;
+  htlScore = 0;
   htlDeaths = [
     'Mordin',
     'Tali',
@@ -291,15 +291,7 @@ export class AppComponent {
 
   constructor(private fb: FormBuilder) { }
 
-  ngOnInit() {
-    // this.oculusSquadmates.get('oculus1')?.valueChanges.subscribe(
-    //   result => this.oculusSquadmates.get('oculus2')?.enable()
-    // );
-
-    // this.infiltrationTeam.get('ventSpecialist')?.valueChanges.subscribe(
-    //   result => this.infiltrationTeam.get('fireteamOneLeader')?.enable()
-    // );
-  }
+  ngOnInit() { }
 
   updateSquadmateOptions(squadmateOptions: string[]): string[] {
     return squadmateOptions.filter(squadmateOption => {
@@ -627,63 +619,76 @@ export class AppComponent {
     }
 
     // Calculate average
-    this.averageHtlScore = this.totalHtlScore / this.currentHtlScores.size;
+    // this.htlScore = this.totalHtlScore / this.currentHtlScores.size;
+    this.htlScore = this.totalHtlScore / 3;
 
     // Round average to 1dp
-    this.averageHtlScore = Math.round(this.averageHtlScore * 10) / 10;
+    // this.htlScore = Math.round(this.htlScore * 10) / 10;
+
+    // Round score down
+    this.htlScore = Math.floor(this.htlScore);
 
     const numberOfDefenders = this.currentHtlScores.size;
     const defenders = [...this.currentHtlScores.keys()];
-    if (numberOfDefenders >= 5) {
-      if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 1.5) {
-        // Kill one squadmate
-        this.killHtlDefenders(defenders, 1);
-      } else if (this.averageHtlScore < 1.5 && this.averageHtlScore >= 0.5) {
-        // Kill two squadmates
-        this.killHtlDefenders(defenders, 2);
-      } else if (this.averageHtlScore < 0.5 && this.averageHtlScore >= 0.0) {
-        // Kill three squadmates
-        this.killHtlDefenders(defenders, 3);
-      }
-    } else if (numberOfDefenders === 4) {
-      if (this.averageHtlScore < 2.0 && this.averageHtlScore > 1.0) {
-        // Kill one squadmate
-        this.killHtlDefenders(defenders, 1);
-      } else if (this.averageHtlScore <= 1.0 && this.averageHtlScore >= 0.5) {
-        // Kill two squadmates
-        this.killHtlDefenders(defenders, 2);
-      } else if (this.averageHtlScore < 0.5 && this.averageHtlScore > 0.0) {
-        // Kill three squadmates
-        this.killHtlDefenders(defenders, 3);
-      } else if (this.averageHtlScore <= 0.0) {
-        // Kill all squadmates
-        this.killHtlDefenders(defenders, 4);
-      }
-    } else if (numberOfDefenders === 3) {
-      if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 1.0) {
-        // Kill one squadmate
-        this.killHtlDefenders(defenders, 1);
-      } else if (this.averageHtlScore < 1.0 && this.averageHtlScore > 0.0) {
-        // Kill two squadmates
-        this.killHtlDefenders(defenders, 2);
-      } else if (this.averageHtlScore <= 0.0) {
-        // Kill all three squadmates
-        this.killHtlDefenders(defenders, 3);
-      }
-    } else if (numberOfDefenders === 2) {
-      if (this.averageHtlScore < 2.0 && this.averageHtlScore > 0.0) {
-        // Kill one squadmate
-        this.killHtlDefenders(defenders, 1);
-      } else if (this.averageHtlScore <= 0.0) {
-        // Kill both squadmates
-        this.killHtlDefenders(defenders, 2);
-      }
-    } else if (numberOfDefenders === 1) {
-      if (this.averageHtlScore < 2.0 && this.averageHtlScore >= 0.0) {
-        // Kill squadmate
-        this.killHtlDefenders(defenders, 1);
-      }
+
+    if (this.htlScore > numberOfDefenders) {
+      this.htlScore = numberOfDefenders;
     }
+
+    const numberOfDeaths = numberOfDefenders - this.htlScore;
+    if (numberOfDeaths > 0) {
+      this.killHtlDefenders(defenders, numberOfDeaths);
+    }
+    // if (numberOfDefenders >= 5) {
+    //   if (this.htlScore < 2.0 && this.htlScore >= 1.5) {
+    //     // Kill one squadmate
+    //     this.killHtlDefenders(defenders, 1);
+    //   } else if (this.htlScore < 1.5 && this.htlScore >= 0.5) {
+    //     // Kill two squadmates
+    //     this.killHtlDefenders(defenders, 2);
+    //   } else if (this.htlScore < 0.5 && this.htlScore >= 0.0) {
+    //     // Kill three squadmates
+    //     this.killHtlDefenders(defenders, 3);
+    //   }
+    // } else if (numberOfDefenders === 4) {
+    //   if (this.htlScore < 2.0 && this.htlScore > 1.0) {
+    //     // Kill one squadmate
+    //     this.killHtlDefenders(defenders, 1);
+    //   } else if (this.htlScore <= 1.0 && this.htlScore >= 0.5) {
+    //     // Kill two squadmates
+    //     this.killHtlDefenders(defenders, 2);
+    //   } else if (this.htlScore < 0.5 && this.htlScore > 0.0) {
+    //     // Kill three squadmates
+    //     this.killHtlDefenders(defenders, 3);
+    //   } else if (this.htlScore <= 0.0) {
+    //     // Kill all squadmates
+    //     this.killHtlDefenders(defenders, 4);
+    //   }
+    // } else if (numberOfDefenders === 3) {
+    //   if (this.htlScore < 2.0 && this.htlScore >= 1.0) {
+    //     // Kill one squadmate
+    //     this.killHtlDefenders(defenders, 1);
+    //   } else if (this.htlScore < 1.0 && this.htlScore > 0.0) {
+    //     // Kill two squadmates
+    //     this.killHtlDefenders(defenders, 2);
+    //   } else if (this.htlScore <= 0.0) {
+    //     // Kill all three squadmates
+    //     this.killHtlDefenders(defenders, 3);
+    //   }
+    // } else if (numberOfDefenders === 2) {
+    //   if (this.htlScore < 2.0 && this.htlScore > 0.0) {
+    //     // Kill one squadmate
+    //     this.killHtlDefenders(defenders, 1);
+    //   } else if (this.htlScore <= 0.0) {
+    //     // Kill both squadmates
+    //     this.killHtlDefenders(defenders, 2);
+    //   }
+    // } else if (numberOfDefenders === 1) {
+    //   if (this.htlScore < 2.0 && this.htlScore >= 0.0) {
+    //     // Kill squadmate
+    //     this.killHtlDefenders(defenders, 1);
+    //   }
+    // }
 
     var crewEscort = this.longWalkTeam.value.crewEscort;
     if (crewEscort !== undefined) {

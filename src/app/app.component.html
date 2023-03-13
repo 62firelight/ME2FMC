@@ -440,7 +440,16 @@
       <ng-template matStepLabel>Collector Base: Hold the Line</ng-template>
 
       <h2 id="htl">Hold the Line!</h2>
-      <p>Squadmates holding the line are:</p>
+      <p>
+        There {{ currentHtlScores.size > 1 ? "are" : "is" }}
+        <strong>{{ currentHtlScores.size }}</strong> squadmate{{
+          currentHtlScores.size > 1 ? "s" : ""
+        }}
+        holding the line. Their individual score{{
+          currentHtlScores.size > 1 ? "s are" : " is"
+        }}
+        as follows:
+      </p>
 
       <ul>
         <ng-container *ngFor="let entry of currentHtlScores | keyvalue">
@@ -448,12 +457,18 @@
         </ng-container>
       </ul>
 
+      The total squadmate score is <strong>{{ totalHtlScore }}</strong
+      >.
+
       <p>
-        Score: {{ totalHtlScore }} / {{ currentHtlScores.size }} =
-        <strong>{{ averageHtlScore }}</strong>
+        <strong>{{
+          htlScore == currentHtlScores.size ? 'All' : htlScore
+        }}</strong>
+        squadmate{{ htlScore > 1 ? 's' : '' }} holding the line will survive. ({{ totalHtlScore }} / 3 =
+        {{ htlScore }} rounded down)
       </p>
 
-      <button mat-raised-button color="primary" matStepperNext>Next</button>
+      <button mat-raised-button color="primary" matStepperNext>Finish</button>
     </mat-step>
 
     <!-- 8. Final Outcome -->
@@ -493,104 +508,118 @@
         Reset
       </button> -->
 
-      <code>
-        <h2>
-          Decisions Summary
-          <!-- <button
-            mat-icon-button
-            [cdkCopyToClipboard]="
-              'If you are seeing this, the copy text feature has not been fully implemented yet :('
-            "
+      <h2>
+        Decisions Summary
+        <!-- <button
+          mat-icon-button
+          [cdkCopyToClipboard]="
+            'If you are seeing this, the copy text feature has not been fully implemented yet :('
+          "
+        >
+          <mat-icon>content_copy</mat-icon>
+        </button> -->
+      </h2>
+
+      <!-- <h3>Squadmate Status</h3>
+<pre>{{ availableSquadmates | squadmatesStatus }}</pre> -->
+
+      <h3>Squadmate Status</h3>
+      <!-- <pre>{{ squadmates.value | json }}</pre> -->
+      <ul>
+        <li *ngFor="let squadmate of squadmates.value | keyvalue">
+          <ng-container *ngIf="squadmate.value">
+            {{ squadmate.value.name | titlecase }}:
+            {{ squadmate.value.recruited ? "Recruited" : "Not Recruited" }}
+            <ng-container *ngIf="squadmate.value.recruited"
+              >and
+              {{ squadmate.value.loyal ? "Loyal" : "Not Loyal" }}</ng-container
+            ></ng-container
           >
-            <mat-icon>content_copy</mat-icon>
-          </button> -->
-        </h2>
+        </li>
+      </ul>
 
-        <!-- <h3>Squadmate Status</h3>
-  <pre>{{ availableSquadmates | squadmatesStatus }}</pre> -->
+      <h3>Ship Upgrades</h3>
+      <!-- <pre>{{ shipUpgrades.value | json }}</pre> -->
+      <ul>
+        <li *ngFor="let shipUpgrade of shipUpgrades.value | keyvalue">
+          <ng-container *ngIf="shipUpgrade.value">
+            {{ shipUpgrade.value.name | titlecase }}:
+            {{ shipUpgrade.value.included ? "Acquired" : "Not Acquired" }}
+          </ng-container>
+        </li>
+      </ul>
 
-        <h3>Squadmate Status</h3>
-        <!-- <pre>{{ squadmates.value | json }}</pre> -->
-        <ul>
-          <li *ngFor="let squadmate of squadmates.value | keyvalue">
-            <ng-container *ngIf="squadmate.value">
-              {{ squadmate.value.name | titlecase }}:
-              {{ squadmate.value.recruited ? "Recruited" : "Not Recruited" }}
-              <ng-container *ngIf="squadmate.value.recruited"
-                >and
-                {{
-                  squadmate.value.loyal ? "Loyal" : "Not Loyal"
-                }}</ng-container
-              ></ng-container
-            >
-          </li>
-        </ul>
+      <h3>Oculus Squadmates</h3>
+      <!-- <pre>{{ oculusSquadmates.value | json }}</pre> -->
+      <ul>
+        <li *ngFor="let oculusSquadmate of oculusSquadmates.value | keyvalue">
+          <ng-container>
+            {{ convertFromCamelCase(oculusSquadmate.key) }}:
+            {{ oculusSquadmate.value }}
+          </ng-container>
+        </li>
+      </ul>
 
-        <h3>Ship Upgrades</h3>
-        <!-- <pre>{{ shipUpgrades.value | json }}</pre> -->
-        <ul>
-          <li *ngFor="let shipUpgrade of shipUpgrades.value | keyvalue">
-            <ng-container *ngIf="shipUpgrade.value">
-              {{ shipUpgrade.value.name | titlecase }}:
-              {{ shipUpgrade.value.included ? "Acquired" : "Not Acquired" }}
-            </ng-container>
-          </li>
-        </ul>
+      <h3>Infiltration</h3>
+      <!-- <pre>{{ infiltrationTeam.value | json }}</pre> -->
+      <ul>
+        <li *ngFor="let infiltration of infiltrationTeam.value | keyvalue">
+          <ng-container>
+            {{ convertFromCamelCase(infiltration.key) }}:
+            {{ infiltration.value }}
+          </ng-container>
+        </li>
+      </ul>
 
-        <h3>Oculus Squadmates</h3>
-        <!-- <pre>{{ oculusSquadmates.value | json }}</pre> -->
-        <ul>
-          <li *ngFor="let oculusSquadmate of oculusSquadmates.value | keyvalue">
-            <ng-container>
-              {{ convertFromCamelCase(oculusSquadmate.key) }}:
-              {{ oculusSquadmate.value }}
-            </ng-container>
-          </li>
-        </ul>
+      <h3>The Long Walk</h3>
+      <!-- <pre>{{ longWalkTeam.value | json }}</pre> -->
+      <ul>
+        <li *ngFor="let longWalk of longWalkTeam.value | keyvalue">
+          <ng-container>
+            {{ convertFromCamelCase(longWalk.key) }}: {{ longWalk.value }}
+          </ng-container>
+        </li>
+      </ul>
 
-        <h3>Infiltration</h3>
-        <!-- <pre>{{ infiltrationTeam.value | json }}</pre> -->
-        <ul>
-          <li *ngFor="let infiltration of infiltrationTeam.value | keyvalue">
-            <ng-container>
-              {{ convertFromCamelCase(infiltration.key) }}:
-              {{ infiltration.value }}
-            </ng-container>
-          </li>
-        </ul>
+      <h3>Final Battle</h3>
+      <!-- <pre>{{ finalBattleTeam.value | json }}</pre> -->
+      <ul>
+        <li *ngFor="let finalBattle of finalBattleTeam.value | keyvalue">
+          <ng-container>
+            {{ convertFromCamelCase(finalBattle.key) }}:
+            {{ finalBattle.value }}
+          </ng-container>
+        </li>
+      </ul>
 
-        <h3>The Long Walk</h3>
-        <!-- <pre>{{ longWalkTeam.value | json }}</pre> -->
-        <ul>
-          <li *ngFor="let longWalk of longWalkTeam.value | keyvalue">
-            <ng-container>
-              {{ convertFromCamelCase(longWalk.key) }}: {{ longWalk.value }}
-            </ng-container>
-          </li>
-        </ul>
+      <h3>Hold the Line</h3>
+      <p>
+        There {{ currentHtlScores.size > 1 ? "are" : "is" }}
+        <strong>{{ currentHtlScores.size }}</strong> squadmate{{
+          currentHtlScores.size > 1 ? "s" : ""
+        }}
+        holding the line. Their individual score{{
+          currentHtlScores.size > 1 ? "s are" : " is"
+        }}
+        as follows:
+      </p>
 
-        <h3>Final Battle</h3>
-        <!-- <pre>{{ finalBattleTeam.value | json }}</pre> -->
-        <ul>
-          <li *ngFor="let finalBattle of finalBattleTeam.value | keyvalue">
-            <ng-container>
-              {{ convertFromCamelCase(finalBattle.key) }}:
-              {{ finalBattle.value }}
-            </ng-container>
-          </li>
-        </ul>
+      <ul>
+        <ng-container *ngFor="let entry of currentHtlScores | keyvalue">
+          <li>{{ entry.key }}: {{ entry.value }}</li>
+        </ng-container>
+      </ul>
 
-        <h3>Hold the Line</h3>
-        <ul>
-          <li *ngFor="let defender of currentHtlScores | keyvalue">
-            {{ defender.key }}: {{ defender.value }}
-          </li>
-        </ul>
-        <p>
-          Score: {{ totalHtlScore }} / {{ currentHtlScores.size }} =
-          <strong>{{ averageHtlScore }}</strong>
-        </p>
-      </code>
+      The total squadmate score is <strong>{{ totalHtlScore }}</strong
+      >.
+
+      <p>
+        <strong>{{
+          htlScore == currentHtlScores.size ? 'All' : htlScore
+        }}</strong>
+        squadmate{{ htlScore > 1 ? 's' : '' }} holding the line will survive. ({{ totalHtlScore }} / 3 =
+        {{ htlScore }} rounded down)
+      </p>
     </mat-step>
 
     <!--  <mat-step [editable]="false">
