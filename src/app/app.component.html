@@ -222,10 +222,10 @@
           <h2>Who will go through the vents?</h2>
 
           <mat-form-field appearance="fill">
-            <mat-label>Vent Specialist</mat-label>
-            <mat-select formControlName="ventSpecialist" #ventSpecialist>
+            <mat-label>Tech Specialist</mat-label>
+            <mat-select formControlName="techSpecialist" #techSpecialist>
               <mat-option
-                *ngFor="let specialist of ventSpecialists"
+                *ngFor="let specialist of techSpecialists"
                 [value]="specialist"
                 [disabled]="fireteamOneLeader.value === specialist"
               >
@@ -242,7 +242,7 @@
               <mat-option
                 *ngFor="let leader of fireteamOneLeaders"
                 [value]="leader"
-                [disabled]="ventSpecialist.value === leader"
+                [disabled]="techSpecialist.value === leader"
               >
                 {{ leader }}
               </mat-option>

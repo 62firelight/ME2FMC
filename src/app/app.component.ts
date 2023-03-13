@@ -171,10 +171,10 @@ export class AppComponent {
   });
 
   infiltrationTeam = this.fb.group({
-    ventSpecialist: ['', Validators.required],
+    techSpecialist: ['', Validators.required],
     fireteamOneLeader: ['', Validators.required]
   });
-  ventSpecialists = [
+  techSpecialists = [
     'Tali',
     'Mordin',
     'Thane',
@@ -183,7 +183,7 @@ export class AppComponent {
     'Jacob',
     'Legion',
   ];
-  goodVentSpecialists = [
+  goodTechSpecialists = [
     'Tali',
     'Legion',
     'Kasumi'
@@ -208,7 +208,7 @@ export class AppComponent {
     'Miranda',
     'Garrus'
   ];
-  badVentSpecialistReason = 'Bad vent specialist';
+  badTechSpecialistReason = 'Bad tech specialist for vents';
   badfireteamOneLeaderReason = 'Bad fireteam 1 leader';
 
   longWalkTeam = this.fb.group({
@@ -495,27 +495,27 @@ export class AppComponent {
     this.assignSquadmates(activeSquadmates[0], activeSquadmates[1], false);
 
     // Update lists for next section
-    this.ventSpecialists = this.updateSquadmateOptions(this.ventSpecialists);
+    this.techSpecialists = this.updateSquadmateOptions(this.techSpecialists);
     this.fireteamOneLeaders = this.updateSquadmateOptions(this.fireteamOneLeaders);
     stepper.next();
   }
 
   submitInfiltrationTeam(stepper: MatStepper) {
     var infiltrationTeam = [...Object.values(this.infiltrationTeam.value)];
-    var ventSpecialist = infiltrationTeam[0];
+    var techSpecialist = infiltrationTeam[0];
     var fireteamOneLeader = infiltrationTeam[1];
 
-    if (ventSpecialist === null || fireteamOneLeader === null) {
+    if (techSpecialist === null || fireteamOneLeader === null) {
       // ERROR
       return;
     }
 
-    var ventSpecialistObj = this.availableSquadmates.find(squadmate => squadmate.name === ventSpecialist);
+    var techSpecialistObj = this.availableSquadmates.find(squadmate => squadmate.name === techSpecialist);
     var fireteamOneLeaderObj = this.availableSquadmates.find(squadmate => squadmate.name === fireteamOneLeader);
-    if (!this.goodVentSpecialists.includes(ventSpecialist) || !ventSpecialistObj.loyal) {
-      this.killSquadmate([ventSpecialist], this.badVentSpecialistReason);
+    if (!this.goodTechSpecialists.includes(techSpecialist) || !techSpecialistObj.loyal) {
+      this.killSquadmate([techSpecialist], this.badTechSpecialistReason);
     } else if (!this.goodFireteamLeaders.includes(fireteamOneLeader) || !fireteamOneLeaderObj.loyal) {
-      this.killSquadmate([ventSpecialist], this.badfireteamOneLeaderReason);
+      this.killSquadmate([techSpecialist], this.badfireteamOneLeaderReason);
     }
 
     // Update lists for next section
