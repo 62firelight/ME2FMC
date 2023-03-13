@@ -253,7 +253,7 @@ export class AppComponent {
     finalSquadmate1: ['', Validators.required],
     finalSquadmate2: ['', Validators.required]
   });
-  disloyalFinalSquadmateReason = 'Disloyal squadmate in final battle';
+  nonloyalFinalSquadmateReason = 'Non-loyal squadmate in final battle';
   htlScores = new Map([
     ['Grunt', 4],
     ['Zaeed', 4],
@@ -287,7 +287,7 @@ export class AppComponent {
     'Zaeed',
     'Grunt'
   ];
-  htlDeathReason = 'Died holding the line';
+  htlDeathReason = 'Fell holding the line';
 
   constructor(private fb: FormBuilder) { }
 
@@ -598,12 +598,12 @@ export class AppComponent {
 
     var finalSquadmate1Obj = this.availableSquadmates.find(squadmate => squadmate.name === finalSquadmate1);
     if (!finalSquadmate1Obj.loyal) {
-      this.killSquadmate([finalSquadmate1], this.disloyalFinalSquadmateReason);
+      this.killSquadmate([finalSquadmate1], this.nonloyalFinalSquadmateReason);
     }
 
     var finalSquadmate2Obj = this.availableSquadmates.find(squadmate => squadmate.name === finalSquadmate2);
     if (!finalSquadmate2Obj.loyal) {
-      this.killSquadmate([finalSquadmate2], this.disloyalFinalSquadmateReason);
+      this.killSquadmate([finalSquadmate2], this.nonloyalFinalSquadmateReason);
     }
 
     // Calculate scores for Hold the Line
