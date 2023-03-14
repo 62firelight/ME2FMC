@@ -17,7 +17,12 @@
         <strong [style.color]="recruitedSquadmates >= 8 ? 'green' : 'red'">{{
           recruitedSquadmates
         }}</strong>
-        squadmate{{ recruitedSquadmates == 1 ? ' has' : 's have' }} been recruited.
+        squadmate{{ recruitedSquadmates == 1 ? " has" : "s have" }} been
+        recruited.
+      </p>
+
+      <p>
+        <small><em>*</em> indicates required squadmates.</small>
       </p>
 
       <form
@@ -44,7 +49,7 @@
           </div>
 
           <div class="squadmate" formGroupName="samara">
-            <p>{{ squadmates.get('samara')?.get('name')?.value }}</p>
+            <p>{{ squadmates.get("samara")?.get("name")?.value }}</p>
             <mat-checkbox formControlName="recruited"></mat-checkbox>
             <mat-checkbox formControlName="loyal"></mat-checkbox>
           </div>
@@ -112,9 +117,9 @@
           >Samara is Morinth</mat-checkbox
         >
 
-        <p>
-          <small><em>*</em> indicates required squadmates.</small>
-        </p>
+        <button mat-raised-button color="accent" type="button" (click)="toggleAllLoyal()">
+          Toggle All Loyal
+        </button>
 
         <div *ngIf="insufficientSquadmates">
           <p>
@@ -464,7 +469,7 @@
           currentHtlScores.size == 1 ? "" : "s"
         }}
         holding the line. Their individual score{{
-          currentHtlScores.size == 1 ? " is" : "s are" 
+          currentHtlScores.size == 1 ? " is" : "s are"
         }}
         as follows:
       </p>
@@ -548,7 +553,7 @@
       <h3>Squadmate Status</h3>
       <!-- <pre>{{ squadmates.value | json }}</pre> -->
       <ul>
-        <li *ngFor="let squadmate of squadmates.value | keyvalue">
+        <li *ngFor="let squadmate of squadmates.getRawValue() | keyvalue">
           <ng-container *ngIf="squadmate.value">
             {{ squadmate.value.name | titlecase }}:
             {{ squadmate.value.recruited ? "Recruited" : "Not Recruited" }}

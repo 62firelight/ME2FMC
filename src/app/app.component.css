@@ -16,6 +16,16 @@ h1 {
     align-items: flex-start;
 }
 
+form {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+form button {
+    align-self: flex-start;
+    margin: 0.5em 0 0.5em 0;
+}
+
 #htl {
     margin-bottom: 0;
 }

@@ -320,7 +320,24 @@ export class AppComponent {
       });
       this.squadmates.get('samara')?.get('loyal')?.enable();
     }
-  } 
+  }
+  
+  toggleAllLoyal() {
+    var squadmates = Object.keys(this.squadmates.value);
+    var newLoyaltyValue = !Object.values(this.squadmates.value).some(squadmate => squadmate.loyal);
+
+    for (var squadmate of squadmates) {
+      if (this.samaraIsMorinth && squadmate == 'samara') {
+        continue;
+      }
+
+      this.squadmates.patchValue({
+        [squadmate]: {
+          loyal: newLoyaltyValue
+        }
+      })
+    }
+  }
 
   updateSquadmateOptions(squadmateOptions: string[]): string[] {
     return squadmateOptions.filter(squadmateOption => {
@@ -362,7 +379,6 @@ export class AppComponent {
     }
 
     for (var squadmate of this.availableSquadmates) {
-      // TODO: Check if squadmate is recruited and alive
       if (squadmate.name === activeSquadmate1) {
         squadmate.inCurrentSquad = assign
       } else if (squadmate.name === activeSquadmate2) {
@@ -400,7 +416,7 @@ export class AppComponent {
     }
 
     // Sort order of squadmate deaths
-    squadmateDeathOrderMap = new Map([...squadmateDeathOrderMap].sort());
+    squadmateDeathOrderMap = new Map([...squadmateDeathOrderMap].sort((a, b) => a[0] - b[0]));
 
     // Kill non-loyal squadmates first
     for (const [index, squadmateName] of squadmateDeathOrderMap) {
