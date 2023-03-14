@@ -209,7 +209,8 @@
         (ngSubmit)="submitOculusSquadmates(stepper)"
       >
         <div class="multiple-select">
-          <h2>Who will accompany Shepard to fight the Oculus?</h2>
+          <h2 id="htl">Who will accompany Shepard to fight the Oculus?</h2>
+          <p>Anyone who does not accompany Shepard will be at risk of dying.</p>
 
           <mat-form-field appearance="fill">
             <mat-label>Squadmate 1</mat-label>
@@ -500,12 +501,28 @@
       >.
 
       <p>
-        <strong>{{
+        <strong [style.color]="'green'">{{
           htlScore == currentHtlScores.size ? "All" : htlScore
         }}</strong>
         squadmate{{ htlScore == 1 ? "" : "s" }} holding the line will survive.
         ({{ totalHtlScore }} / 3 = {{ htlScore }} rounded down)
       </p>
+
+      <ng-container *ngIf="htlDeaths.length > 0">
+        <p>
+          <strong
+            ><em>{{ htlDeaths.length }}</em></strong
+          >
+          squadmate{{ htlDeaths.length == 1 ? "" : "s" }}
+          died holding the line, including:
+        </p>
+
+        <ul>
+          <li *ngFor="let htlDeath of htlDeaths">
+            <em>{{ htlDeath }}</em>
+          </li>
+        </ul>
+      </ng-container>
 
       <button mat-raised-button color="primary" matStepperNext>Finish</button>
     </mat-step>
@@ -518,13 +535,13 @@
 
       <p>But at what cost...?</p>
 
-      <ul>
+      <ul id="summary">
         <ng-container *ngFor="let squadmate of availableSquadmates">
           <li
             *ngIf="squadmate.recruited"
             [style.color]="squadmate.deathReason ? 'red' : 'green'"
           >
-            {{ squadmate.name }} -
+            <strong>{{ squadmate.name }}</strong> -
             {{
               squadmate.deathReason
                 ? "Died (" + squadmate.deathReason.toLowerCase() + ")"
@@ -533,11 +550,11 @@
           </li>
         </ng-container>
         <li [style.color]="normandyCrewDead ? 'red' : 'green'">
-          Normandy Crew -
+          <strong>Normandy Crew</strong> -
           {{ normandyCrewDead ? "Died (no escort)" : "Survived" }}
         </li>
         <li [style.color]="getAliveSquadmates() < 2 ? 'red' : 'green'">
-          Shepard -
+          <strong>Shepard</strong> -
           {{
             getAliveSquadmates() < 2
               ? "Died (less than 2 squadmates survived)"
@@ -546,7 +563,8 @@
         </li>
       </ul>
 
-      Refresh the page to reset.
+      <hr />
+
       <!-- <button mat-raised-button color="primary" (click)="squadmates.reset; stepper.reset()">
         Reset
       </button> -->
@@ -564,7 +582,6 @@
                 </button> -->
         </h2>
       </div>
-      <br />
 
       <!-- <h3>Squadmate Status</h3>
     <pre>{{ availableSquadmates | squadmatesStatus }}</pre> -->
@@ -587,7 +604,6 @@
           </li>
         </ul>
       </div>
-      <br />
 
       <div class="summary-section">
         <h3>Ship Upgrades</h3>
@@ -601,7 +617,6 @@
           </li>
         </ul>
       </div>
-      <br />
 
       <div class="summary-section">
         <h3>Oculus Squadmates</h3>
@@ -615,7 +630,6 @@
           </li>
         </ul>
       </div>
-      <br />
 
       <div class="summary-section">
         <h3>Infiltration</h3>
@@ -629,7 +643,6 @@
           </li>
         </ul>
       </div>
-      <br />
 
       <div class="summary-section">
         <h3>The Long Walk</h3>
@@ -643,7 +656,6 @@
           </li>
         </ul>
       </div>
-      <br />
 
       <div class="summary-section">
         <h3>Final Battle</h3>
@@ -657,7 +669,6 @@
           </li>
         </ul>
       </div>
-      <br />
 
       <div class="summary-section">
         <h3>Hold the Line</h3>
@@ -684,14 +695,60 @@
         </p>
 
         <p>
-          <strong>{{
+          <strong [style.color]="'green'">{{
             htlScore == currentHtlScores.size ? "All" : htlScore
           }}</strong>
           squadmate{{ htlScore == 1 ? "" : "s" }} holding the line will survive.
           ({{ totalHtlScore }} / 3 = {{ htlScore }} rounded down)
         </p>
+
+        <ng-container *ngIf="htlDeaths.length > 0">
+          <p>
+            <strong
+              ><em>{{ htlDeaths.length }}</em></strong
+            >
+            squadmate{{ htlDeaths.length == 1 ? "" : "s" }}
+            died holding the line, including:
+          </p>
+
+          <ul>
+            <li *ngFor="let htlDeath of htlDeaths">
+              <em>{{ htlDeath }}</em>
+            </li>
+          </ul>
+        </ng-container>
       </div>
-      <br />
+
+      <div class="summary-section">
+        <h3>Final Outcome</h3>
+        <ul id="summary">
+          <ng-container *ngFor="let squadmate of availableSquadmates">
+            <li
+              *ngIf="squadmate.recruited"
+              [style.color]="squadmate.deathReason ? 'red' : 'green'"
+            >
+              <strong>{{ squadmate.name }}</strong> -
+              {{
+                squadmate.deathReason
+                  ? "Died (" + squadmate.deathReason.toLowerCase() + ")"
+                  : "Survived"
+              }}
+            </li>
+          </ng-container>
+          <li [style.color]="normandyCrewDead ? 'red' : 'green'">
+            <strong>Normandy Crew</strong> -
+            {{ normandyCrewDead ? "Died (no escort)" : "Survived" }}
+          </li>
+          <li [style.color]="getAliveSquadmates() < 2 ? 'red' : 'green'">
+            <strong>Shepard</strong> -
+            {{
+              getAliveSquadmates() < 2
+                ? "Died (less than 2 squadmates survived)"
+                : "Survived"
+            }}
+          </li>
+        </ul>
+      </div>
     </mat-step>
 
     <!--  <mat-step [editable]="false">

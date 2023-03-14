@@ -210,7 +210,7 @@ export class AppComponent {
     'Miranda',
     'Garrus'
   ];
-  badTechSpecialistReason = 'Bad tech specialist for vents';
+  badTechSpecialistReason = 'Bad tech specialist';
   badfireteamOneLeaderReason = 'Bad fireteam 1 leader';
 
   longWalkTeam = this.fb.group({
@@ -274,7 +274,7 @@ export class AppComponent {
   currentHtlScores: Map<string, number> = new Map();
   totalHtlScore = 0;
   htlScore = 0;
-  htlDeaths = [
+  htlDeathsOrder = [
     'Mordin',
     'Tali',
     'Kasumi',
@@ -289,7 +289,8 @@ export class AppComponent {
     'Zaeed',
     'Grunt'
   ];
-  htlDeathReason = 'Fell holding the line';
+  htlDeaths: string[] = [];
+  htlDeathReason = 'Held the line';
 
   constructor(private fb: FormBuilder) { }
 
@@ -421,13 +422,13 @@ export class AppComponent {
       .replace(/^./, function (str) { return str.toUpperCase(); })
   }
 
-  killHtlDefenders(defenders: any[], htlDeaths: number) {
+  killHtlDefenders(defenders: any[], numberOfHtlDeaths: number) {
     var squadmateDeathOrderMap: Map<number, string> = new Map();
     var deadSquadmateIndexes: Set<number> = new Set();
 
     // Add each defender to a map
     for (var defender of defenders) {
-      var squadmateDeathIndex = this.htlDeaths.indexOf(defender);
+      var squadmateDeathIndex = this.htlDeathsOrder.indexOf(defender);
 
       squadmateDeathOrderMap.set(squadmateDeathIndex, defender);
     }
@@ -447,17 +448,18 @@ export class AppComponent {
       // var squadmateObj = this.availableSquadmates.find(squadmate => squadmate == squadmateName);
 
       if (squadmateObj !== undefined && squadmateObj.loyal === false) {
+        this.htlDeaths.push(squadmateName);
         this.killSquadmate([squadmateName], this.htlDeathReason);
-        htlDeaths--;
+        numberOfHtlDeaths--;
         deadSquadmateIndexes.add(index);
 
-        if (htlDeaths <= 0) {
+        if (numberOfHtlDeaths <= 0) {
           break;
         }
       }
     }
 
-    if (htlDeaths > 0) {
+    if (numberOfHtlDeaths > 0) {
       // Kill left-over squadmates
       for (const [index, squadmateName] of squadmateDeathOrderMap) {
         if (deadSquadmateIndexes.has(index)) {
@@ -474,11 +476,12 @@ export class AppComponent {
         // var squadmateObj = this.availableSquadmates.find(squadmate => squadmate == squadmateName);
 
         if (squadmateObj !== undefined) {
+          this.htlDeaths.push(squadmateName);
           this.killSquadmate([squadmateName], this.htlDeathReason);
-          htlDeaths--;
+          numberOfHtlDeaths--;
           deadSquadmateIndexes.add(index);
 
-          if (htlDeaths <= 0) {
+          if (numberOfHtlDeaths <= 0) {
             break;
           }
         }
