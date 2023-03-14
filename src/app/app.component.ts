@@ -321,6 +321,23 @@ export class AppComponent {
       this.squadmates.get('samara')?.get('loyal')?.enable();
     }
   }
+
+  toggleAllRecruited() {
+    var squadmates = Object.keys(this.squadmates.value);
+    var newRecruitedValue = !Object.values(this.squadmates.value).some(squadmate => squadmate.recruited);
+
+    for (var squadmate of squadmates) {
+      if (this.squadmates.get(squadmate)?.get('recruited')?.disabled) {
+        continue;
+      }
+
+      this.squadmates.patchValue({
+        [squadmate]: {
+          recruited: newRecruitedValue
+        }
+      })
+    }
+  }
   
   toggleAllLoyal() {
     var squadmates = Object.keys(this.squadmates.value);

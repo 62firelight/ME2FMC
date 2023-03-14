@@ -21,10 +21,6 @@
         recruited.
       </p>
 
-      <p>
-        <small><em>*</em> indicates required squadmates.</small>
-      </p>
-
       <form
         [formGroup]="squadmates"
         (ngSubmit)="submitSquadmateStatus(stepper)"
@@ -109,6 +105,30 @@
           </div>
         </div>
 
+        <p>
+          <small><em>*</em> indicates required squadmates.</small>
+        </p>
+
+        <div class="toggle-buttons">
+          <button
+            mat-raised-button
+            color="accent"
+            type="button"
+            (click)="toggleAllRecruited()"
+          >
+            Toggle All Recruited
+          </button>
+
+          <button
+            mat-raised-button
+            color="accent"
+            type="button"
+            (click)="toggleAllLoyal()"
+          >
+            Toggle All Loyal
+          </button>
+        </div>
+
         <mat-checkbox
           id="simCheckbox"
           [checked]="samaraIsMorinth"
@@ -116,10 +136,6 @@
           [labelPosition]="'before'"
           >Samara is Morinth</mat-checkbox
         >
-
-        <button mat-raised-button color="accent" type="button" (click)="toggleAllLoyal()">
-          Toggle All Loyal
-        </button>
 
         <div *ngIf="insufficientSquadmates">
           <p>
