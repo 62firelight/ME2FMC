@@ -833,7 +833,7 @@ export class AppComponent {
     summary += 'Final Outcome\n';
     for (var sm of this.availableSquadmates) {
       if (sm.recruited) {
-        summary += `${sm.name} - ${sm.deathReason ? `Died (${sm.deathReason})` : "Survived"}\n`;
+        summary += `${sm.name} - ${sm.deathReason ? `Died (${sm.deathReason.toLowerCase()})` : "Survived"}\n`;
       }
     }
     summary += `Normandy Crew - ${this.normandyCrewDead ? "Died (no escort)" : "Survived"}\n`;
