@@ -13,6 +13,13 @@
         mission.
       </p>
 
+      <p>
+        <strong [style.color]="recruitedSquadmates >= 8 ? 'green' : 'red'">{{
+          recruitedSquadmates
+        }}</strong>
+        squadmate{{ recruitedSquadmates == 1 ? ' has' : 's have' }} been recruited.
+      </p>
+
       <form
         [formGroup]="squadmates"
         (ngSubmit)="submitSquadmateStatus(stepper)"
@@ -122,8 +129,8 @@
           <p>
             <em
               >Legion cannot be the 8th squadmate as he can only be recruited
-              after the Collector Ship mission, which requires 8 other
-              squadmates to be recruited first. Either recruit another squadmate
+              after the Collector Ship mission, which only triggers after 8
+              other squadmates are recruited. Either recruit another squadmate
               or choose an alternative squadmate.
             </em>
           </p>
@@ -452,12 +459,12 @@
 
       <h2 id="htl">Hold the Line!</h2>
       <p>
-        There {{ currentHtlScores.size > 1 ? "are" : "is" }}
+        There {{ currentHtlScores.size == 1 ? "is" : "are" }}
         <strong>{{ currentHtlScores.size }}</strong> squadmate{{
-          currentHtlScores.size > 1 ? "s" : ""
+          currentHtlScores.size == 1 ? "" : "s"
         }}
         holding the line. Their individual score{{
-          currentHtlScores.size > 1 ? "s are" : " is"
+          currentHtlScores.size == 1 ? " is" : "s are" 
         }}
         as follows:
       </p>
@@ -475,7 +482,7 @@
         <strong>{{
           htlScore == currentHtlScores.size ? "All" : htlScore
         }}</strong>
-        squadmate{{ htlScore > 1 ? "s" : "" }} holding the line will survive.
+        squadmate{{ htlScore == 1 ? "" : "s" }} holding the line will survive.
         ({{ totalHtlScore }} / 3 = {{ htlScore }} rounded down)
       </p>
 
@@ -609,12 +616,12 @@
 
       <h3>Hold the Line</h3>
       <p>
-        There {{ currentHtlScores.size > 1 ? "are" : "is" }}
+        There {{ currentHtlScores.size > 1 ? "is" : "are" }}
         <strong>{{ currentHtlScores.size }}</strong> squadmate{{
-          currentHtlScores.size > 1 ? "s" : ""
+          currentHtlScores.size == 1 ? "" : "s"
         }}
         holding the line. Their individual score{{
-          currentHtlScores.size > 1 ? "s are" : " is"
+          currentHtlScores.size == 1 ? " is" : "s are"
         }}
         as follows:
       </p>
@@ -632,7 +639,7 @@
         <strong>{{
           htlScore == currentHtlScores.size ? "All" : htlScore
         }}</strong>
-        squadmate{{ htlScore > 1 ? "s" : "" }} holding the line will survive.
+        squadmate{{ htlScore == 1 ? "" : "s" }} holding the line will survive.
         ({{ totalHtlScore }} / 3 = {{ htlScore }} rounded down)
       </p>
     </mat-step>

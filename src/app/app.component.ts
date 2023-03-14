@@ -96,6 +96,7 @@ export class AppComponent {
       deathReason: ['']
     }),
   });
+  recruitedSquadmates = 12;
   insufficientSquadmates = false;
   legionAs8thSquadmate = false;
   samaraIsMorinth = false;
@@ -292,7 +293,13 @@ export class AppComponent {
 
   constructor(private fb: FormBuilder) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.recruitedSquadmates = [...Object.values(this.squadmates.value)].filter(squadmate => squadmate.recruited || squadmate.recruited == undefined).length;
+
+    this.squadmates.valueChanges.subscribe(result => {
+      this.recruitedSquadmates = [...Object.values(this.squadmates.value)].filter(squadmate => squadmate.recruited || squadmate.recruited == undefined).length;
+    });
+  }
 
   updateSquadmateOptions(squadmateOptions: string[]): string[] {
     return squadmateOptions.filter(squadmateOption => {
@@ -433,22 +440,10 @@ export class AppComponent {
     this.insufficientSquadmates = false;
     this.legionAs8thSquadmate = false;
 
-    var squadmateObjects = Object.values(this.squadmates.value);
-
-    // Count recruited squadmates
-    var recruitedSquadmates = 0;
-    for (var index in squadmateObjects) {
-      var squadmateObject = squadmateObjects[index];
-
-      if (squadmateObject.recruited === true || squadmateObject.recruited === undefined) {
-        recruitedSquadmates++;
-      }
-    }
-
-    if (recruitedSquadmates == 8 && this.squadmates.value.legion?.recruited) {
+    if (this.recruitedSquadmates == 8 && this.squadmates.value.legion?.recruited) {
       // Check if Legion is part of the squad
       this.legionAs8thSquadmate = true;
-    } else if (recruitedSquadmates >= 8) {
+    } else if (this.recruitedSquadmates >= 8) {
       if (this.samaraIsMorinth && this.squadmates.value.samara !== undefined) {
         this.squadmates.value.samara.name = 'Morinth';
         // Morinth being present makes her loyal by default
@@ -569,7 +564,7 @@ export class AppComponent {
           break;
         }
       }
-      if (crewEscortObj !== undefined) { 
+      if (crewEscortObj !== undefined) {
         if (!crewEscortObj.loyal) {
           this.killSquadmate([crewEscort], this.badCrewEscortReason);
         } else {
