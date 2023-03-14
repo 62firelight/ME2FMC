@@ -41,21 +41,21 @@ export class AppComponent {
     }),
     mordin: this.fb.group({
       name: ['Mordin'],
-      recruited: [{value: true, disabled: true}, Validators.requiredTrue],
+      recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
     garrus: this.fb.group({
       name: ['Garrus'],
-      recruited: [{value: true, disabled: true}, Validators.requiredTrue],
+      recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
     miranda: this.fb.group({
       name: ['Miranda'],
-      recruited: [{value: true, disabled: true}, Validators.requiredTrue],
+      recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
@@ -69,7 +69,7 @@ export class AppComponent {
     }),
     jacob: this.fb.group({
       name: ['Jacob'],
-      recruited: [{value: true, disabled: true}, Validators.requiredTrue],
+      recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
@@ -83,7 +83,7 @@ export class AppComponent {
     }),
     jack: this.fb.group({
       name: ['Jack'],
-      recruited: [{value: true, disabled: true}, Validators.requiredTrue],
+      recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
@@ -339,7 +339,7 @@ export class AppComponent {
       })
     }
   }
-  
+
   toggleAllLoyal() {
     var squadmates = Object.keys(this.squadmates.value);
     var newLoyaltyValue = !Object.values(this.squadmates.value).some(squadmate => squadmate.loyal);
@@ -760,5 +760,82 @@ export class AppComponent {
     }
 
     stepper.next();
+  }
+
+  getSummary(): string {
+    var summary =
+      `Mass Effect 2 Suicide Mission Summary
+    
+`;
+
+    summary += 'Squadmate Status\n';
+    for (var squadmate of Object.values(this.squadmates.getRawValue())) {
+      summary += `${squadmate.name}: ${squadmate.recruited ? 'Recruited' : 'Not Recruited'} and ${squadmate.loyal ? "Loyal" : "Not Loyal"}\n`;
+    }
+    summary += '\n';
+
+    summary += 'Ship Upgrades\n';
+    for (var shipUpgrade of Object.values(this.shipUpgrades.value)) {
+      summary += `${shipUpgrade.name}: ${shipUpgrade.included ? 'Acquired' : 'Not Acquired'}\n`
+    }
+    summary += '\n';
+
+    summary += 'Omega-4 Relay: The Oculus\n';
+    for (var os in this.oculusSquadmates.controls) {
+      const selection = this.oculusSquadmates.get(os)?.value;
+      summary += `${this.convertFromCamelCase(os)}: ${selection ? selection : 'None'}\n`;
+    }
+    summary += '\n';
+
+    summary += 'Collector Base: Infiltration\n';
+    for (var i in this.infiltrationTeam.controls) {
+      const selection = this.infiltrationTeam.get(i)?.value;
+      summary += `${this.convertFromCamelCase(i)}: ${selection ? selection : 'None'}\n`;
+    }
+    summary += '\n';
+
+    summary += 'Collector Base: The Long Walk\n';
+    for (var l in this.longWalkTeam.controls) {
+      const selection = this.longWalkTeam.get(l)?.value;
+      summary += `${this.convertFromCamelCase(l)}: ${selection ? selection : 'None'}\n`;
+    }
+    summary += '\n';
+
+    summary += 'Collector Base: Final Battle\n';
+    for (var f in this.finalBattleTeam.controls) {
+      const selection = this.finalBattleTeam.get(f)?.value;
+      summary += `${this.convertFromCamelCase(f)}: ${selection ? selection : 'None'}\n`;
+    }
+    summary += '\n';
+
+    summary += 'Collector Base: Hold the Line\n';
+    summary += `There ${this.currentHtlScores.size == 1 ? "is" : "are"} ${this.currentHtlScores.size} squadmate${this.currentHtlScores.size == 1 ? "" : "s"} holding the line. Their individual score${this.currentHtlScores.size == 1 ? " is" : "s are"} as follows:\n`
+    for (var [individual, score] of this.currentHtlScores) {
+      summary += `* ${individual}: ${score}\n`;
+    }
+    summary += `The total squadmate score is ${this.totalHtlScore}.`;
+
+    summary += `\n\n${this.htlScore == this.currentHtlScores.size ? "All" : this.htlScore} squadmate${this.htlScore == 1 ? "" : "s"} holding the line will survive. (${this.totalHtlScore} / 3 = ${this.htlScore} rounded down)\n`;
+
+    if (this.htlDeaths.length > 0) {
+      summary += `\n${this.htlDeaths.length} squadmate${this.htlDeaths.length == 1 ? "" : "s"} died holding the line, including:\n`
+      for (var death of this.htlDeaths) {
+        summary += `* ${death}\n`;
+      }
+    }
+    summary += '\n';
+
+    summary += 'Final Outcome\n';
+    for (var sm of this.availableSquadmates) {
+      if (sm.recruited) {
+        summary += `${sm.name} - ${sm.deathReason ? `Died (${sm.deathReason})` : "Survived"}\n`;
+      }
+    }
+    summary += `Normandy Crew - ${this.normandyCrewDead ? "Died (no escort)" : "Survived"}\n`;
+    summary += `Shepard - ${this.getAliveSquadmates() < 2 ? "Died (less than 2 squadmates survived)" : "Survived"}\n`;
+    summary += '\n';
+
+    return summary;
+    // return 'If you are seeing this, the copy text feature has not been fully implemented yet :(';
   }
 }

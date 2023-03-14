@@ -1,6 +1,10 @@
 <div class="main">
   <h1>Mass Effect 2 Final Mission Calculator</h1>
 
+  <!-- <button mat-raised-button color="primary" (click)="squadmates.reset; stepper.reset()">
+        Reset
+      </button> -->
+
   <mat-stepper orientation="vertical" [linear]="true" #stepper>
     <!-- 1. Squadmate Status -->
     <mat-step [stepControl]="squadmates" [editable]="false">
@@ -493,7 +497,9 @@
 
       <ul>
         <ng-container *ngFor="let entry of currentHtlScores | keyvalue">
-          <li>{{ entry.key }}: {{ entry.value }}</li>
+          <li>
+            <strong>{{ entry.key }}:</strong> {{ entry.value }}
+          </li>
         </ng-container>
       </ul>
 
@@ -565,13 +571,9 @@
 
       <hr />
 
-      <!-- <button mat-raised-button color="primary" (click)="squadmates.reset; stepper.reset()">
-        Reset
-      </button> -->
-
       <div class="summary-section">
         <h2>
-          Summary
+          Mass Effect 2 Suicide Mission Summary
           <!-- <button
                   mat-icon-button
                   [cdkCopyToClipboard]="
@@ -583,8 +585,15 @@
         </h2>
       </div>
 
-      <!-- <h3>Squadmate Status</h3>
-    <pre>{{ availableSquadmates | squadmatesStatus }}</pre> -->
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        id="copy"
+        [cdkCopyToClipboard]="getSummary()"
+      >
+        Copy to Clipboard
+      </button>
 
       <div class="summary-section">
         <h3>Squadmate Status</h3>
@@ -685,7 +694,9 @@
 
         <ul>
           <ng-container *ngFor="let entry of currentHtlScores | keyvalue">
-            <li>{{ entry.key }}: {{ entry.value }}</li>
+            <li>
+              <strong>{{ entry.key }}:</strong> {{ entry.value }}
+            </li>
           </ng-container>
         </ul>
 
