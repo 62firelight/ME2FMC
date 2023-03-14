@@ -44,7 +44,7 @@
           </div>
 
           <div class="squadmate" formGroupName="samara">
-            <p>{{ samaraIsMorinth ? "Morinth" : "Samara" }}</p>
+            <p>{{ squadmates.get('samara')?.get('name')?.value }}</p>
             <mat-checkbox formControlName="recruited"></mat-checkbox>
             <mat-checkbox formControlName="loyal"></mat-checkbox>
           </div>
@@ -107,7 +107,7 @@
         <mat-checkbox
           id="simCheckbox"
           [checked]="samaraIsMorinth"
-          (change)="samaraIsMorinth = !samaraIsMorinth"
+          (change)="toggleSamaraIsMorinth()"
           [labelPosition]="'before'"
           >Samara is Morinth</mat-checkbox
         >
