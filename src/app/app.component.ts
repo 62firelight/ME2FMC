@@ -41,21 +41,21 @@ export class AppComponent {
     }),
     mordin: this.fb.group({
       name: ['Mordin'],
-      recruited: [true, Validators.requiredTrue],
+      recruited: [{value: true, disabled: true}, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
     garrus: this.fb.group({
       name: ['Garrus'],
-      recruited: [true, Validators.requiredTrue],
+      recruited: [{value: true, disabled: true}, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
     miranda: this.fb.group({
       name: ['Miranda'],
-      recruited: [true, Validators.requiredTrue],
+      recruited: [{value: true, disabled: true}, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
@@ -69,7 +69,7 @@ export class AppComponent {
     }),
     jacob: this.fb.group({
       name: ['Jacob'],
-      recruited: [true, Validators.requiredTrue],
+      recruited: [{value: true, disabled: true}, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
@@ -83,7 +83,7 @@ export class AppComponent {
     }),
     jack: this.fb.group({
       name: ['Jack'],
-      recruited: [true, Validators.requiredTrue],
+      recruited: [{value: true, disabled: true}, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
@@ -294,10 +294,10 @@ export class AppComponent {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.recruitedSquadmates = [...Object.values(this.squadmates.value)].filter(squadmate => squadmate.recruited || squadmate.recruited == undefined).length;
+    this.recruitedSquadmates = [...Object.values(this.squadmates.getRawValue())].filter(squadmate => squadmate.recruited).length;
 
     this.squadmates.valueChanges.subscribe(result => {
-      this.recruitedSquadmates = [...Object.values(this.squadmates.value)].filter(squadmate => squadmate.recruited || squadmate.recruited == undefined).length;
+      this.recruitedSquadmates = [...Object.values(this.squadmates.getRawValue())].filter(squadmate => squadmate.recruited).length;
     });
   }
 
@@ -444,15 +444,21 @@ export class AppComponent {
       // Check if Legion is part of the squad
       this.legionAs8thSquadmate = true;
     } else if (this.recruitedSquadmates >= 8) {
-      if (this.samaraIsMorinth && this.squadmates.value.samara !== undefined) {
-        this.squadmates.value.samara.name = 'Morinth';
+      if (this.samaraIsMorinth) {
         // Morinth being present makes her loyal by default
-        this.squadmates.value.samara.loyal = true;
+        this.squadmates.patchValue({
+          samara: {
+            name: 'Morinth',
+            loyal: true
+          }
+        });
         // TODO: Disable Morinth's loyalty checkbox if Samara is Morinth
       }
 
-      this.availableSquadmates = [...Object.values(this.squadmates.value)];
+      this.availableSquadmates = [...Object.values(this.squadmates.getRawValue())];
       stepper.next();
+
+      console.log(this.availableSquadmates);
     } else {
       this.insufficientSquadmates = true;
     }

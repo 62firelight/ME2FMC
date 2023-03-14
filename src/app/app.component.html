@@ -616,7 +616,7 @@
 
       <h3>Hold the Line</h3>
       <p>
-        There {{ currentHtlScores.size > 1 ? "is" : "are" }}
+        There {{ currentHtlScores.size == 1 ? "is" : "are" }}
         <strong>{{ currentHtlScores.size }}</strong> squadmate{{
           currentHtlScores.size == 1 ? "" : "s"
         }}
