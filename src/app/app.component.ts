@@ -489,6 +489,10 @@ export class AppComponent {
     }
   }
 
+  getRecruitedSquadmates(): number {
+    return this.availableSquadmates.filter(squadmate => squadmate.recruited && squadmate.recruited).length;
+  }
+
   getAliveSquadmates(): number {
     return this.availableSquadmates.filter(squadmate => squadmate.recruited && squadmate.deathReason === '').length;
   }
@@ -503,6 +507,7 @@ export class AppComponent {
     } else if (this.recruitedSquadmates >= 8) {
       this.availableSquadmates = [...Object.values(this.squadmates.getRawValue())];
       stepper.next();
+      console.log(this.availableSquadmates);
     } else {
       this.insufficientSquadmates = true;
     }
