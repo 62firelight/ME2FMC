@@ -101,7 +101,6 @@ export class AppComponent {
   legionAs8thSquadmate = false;
   samaraIsMorinth = false;
 
-  squadmateColumns = ['name', 'recruited', 'loyal'];
   initialChoosableSquadmates = [
     'Zaeed',
     'Legion',
@@ -121,7 +120,6 @@ export class AppComponent {
   availableSquadmates: any[] = [];
   normandyCrewDead = false;
 
-  shipUpgradeColumns = ['name', 'included'];
   shipUpgrades = this.fb.nonNullable.group({
     armor: this.fb.nonNullable.group({
       name: ['Heavy Ship Armor'],
@@ -136,11 +134,6 @@ export class AppComponent {
       included: [true]
     })
   });
-  shipUpgradeData = [
-    { name: 'Heavy Ship Armor', included: false },
-    { name: 'Multicore Shielding', included: false },
-    { name: 'Thanix Cannon', included: false }
-  ];
   noArmorDeaths = [
     'Jack'
   ];
