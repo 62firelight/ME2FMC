@@ -586,7 +586,7 @@ export class AppComponent {
     this.assignSquadmates(activeSquadmates[0], activeSquadmates[1]);
 
     // Get ship upgrades
-    var shipUpgradeObjects = [...Object.values(this.shipUpgrades.value)];
+    var shipUpgradeObjects = [...Object.values(this.shipUpgrades.getRawValue())];
 
     var shield = shipUpgradeObjects[1];
     if (shield !== undefined && shield.included == false) {
@@ -652,7 +652,7 @@ export class AppComponent {
       var swarmSquadmate1Index = this.badBioticSpecialistDeaths.indexOf(swarmSquadmate1);
       var swarmSquadmate2Index = this.badBioticSpecialistDeaths.indexOf(swarmSquadmate2);
 
-      if (swarmSquadmate2Index >= swarmSquadmate1Index) {
+      if (swarmSquadmate1 != 'Miranda' && swarmSquadmate2Index >= swarmSquadmate1Index) {
         this.killSquadmate([swarmSquadmate1], this.badBioticSpecialistReason);
       } else {
         this.killSquadmate([swarmSquadmate2], this.badBioticSpecialistReason);

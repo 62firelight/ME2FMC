@@ -513,7 +513,7 @@
       >.
 
       <p>
-        <strong [style.color]="'green'">{{
+        <strong [style.color]="htlScore == 0 ? '' : 'green'">{{
           htlScore == currentHtlScores.size ? "All" : htlScore
         }}</strong>
         squadmate{{ htlScore == 1 ? "" : "s" }} holding the line will survive.
@@ -719,7 +719,7 @@
         </p>
 
         <p>
-          <strong [style.color]="'green'">{{
+          <strong [style.color]="htlScore == 0 ? '' : 'green'">{{
             htlScore == currentHtlScores.size ? "All" : htlScore
           }}</strong>
           squadmate{{ htlScore == 1 ? "" : "s" }} holding the line will survive.
