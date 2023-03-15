@@ -15,7 +15,7 @@
 
   <mat-stepper orientation="vertical" [linear]="true" #stepper>
     <!-- 1. Squadmate Status -->
-    <mat-step [stepControl]="squadmates" [editable]="false">
+    <mat-step [completed]="false" [editable]="false" #step1>
       <ng-template matStepLabel>Squadmate Status</ng-template>
 
       <h2>What is the status of the squad?</h2>
@@ -35,7 +35,7 @@
 
       <form
         [formGroup]="squadmates"
-        (ngSubmit)="submitSquadmateStatus(stepper)"
+        (ngSubmit)="submitSquadmateStatus(stepper, step1)"
       >
         <div class="squadmate-form">
           <div class="squadmate">
@@ -180,12 +180,12 @@
     </mat-step>
 
     <!-- 2. Ship Upgrades -->
-    <mat-step [editable]="false">
+    <mat-step [completed]="false" [editable]="false" #step2>
       <ng-template matStepLabel>Ship Upgrades</ng-template>
 
       <h2>What upgrades has the Normandy acquired?</h2>
 
-      <form [formGroup]="shipUpgrades" (ngSubmit)="submitShipUpgrades(stepper)">
+      <form [formGroup]="shipUpgrades" (ngSubmit)="submitShipUpgrades(stepper, step2)">
         <div class="squadmate-form">
           <!-- <div class="squadmate">
             <p><strong>Name</strong></p>
@@ -213,12 +213,12 @@
     </mat-step>
 
     <!-- 3. The Oculus -->
-    <mat-step [editable]="false">
+    <mat-step [completed]="false" [editable]="false" #step3>
       <ng-template matStepLabel>Omega-4 Relay: The Oculus</ng-template>
 
       <form
         [formGroup]="oculusSquadmates"
-        (ngSubmit)="submitOculusSquadmates(stepper)"
+        (ngSubmit)="submitOculusSquadmates(stepper, step3)"
       >
         <div class="multiple-select">
           <h2>Who will accompany Shepard to fight the Oculus?</h2>
@@ -275,12 +275,12 @@
     </mat-step>
 
     <!-- 4. Infiltration -->
-    <mat-step [editable]="false">
+    <mat-step [completed]="false" [editable]="false" #step4>
       <ng-template matStepLabel>Collector Base: Infiltration</ng-template>
 
       <form
         [formGroup]="infiltrationTeam"
-        (ngSubmit)="submitInfiltrationTeam(stepper)"
+        (ngSubmit)="submitInfiltrationTeam(stepper, step4)"
       >
         <div class="multiple-select">
           <h2>Who will go through the vents?</h2>
@@ -338,10 +338,10 @@
     </mat-step>
 
     <!-- 5. The Long Walk -->
-    <mat-step [editable]="false">
+    <mat-step [completed]="false" [editable]="false" #step5>
       <ng-template matStepLabel>Collector Base: The Long Walk</ng-template>
 
-      <form [formGroup]="longWalkTeam" (ngSubmit)="submitLongWalkTeam(stepper)">
+      <form [formGroup]="longWalkTeam" (ngSubmit)="submitLongWalkTeam(stepper, step5)">
         <div class="multiple-select">
           <h2>Who will create the biotic shield?</h2>
 
@@ -489,12 +489,12 @@
     </mat-step>
 
     <!-- 6. Final Battle -->
-    <mat-step [editable]="false">
+    <mat-step [completed]="false" [editable]="false" #step6>
       <ng-template matStepLabel>Collector Base: Final Battle</ng-template>
 
       <form
         [formGroup]="finalBattleTeam"
-        (ngSubmit)="submitFinalBattle(stepper)"
+        (ngSubmit)="submitFinalBattle(stepper, step6)"
       >
         <div class="multiple-select">
           <h2>Who will accompany Shepard to the final battle?</h2>

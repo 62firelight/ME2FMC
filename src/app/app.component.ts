@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { MatStepper } from '@angular/material/stepper';
+import { MatStep, MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-root',
@@ -530,7 +530,7 @@ export class AppComponent {
     return this.availableSquadmates.filter(squadmate => squadmate.recruited && squadmate.deathReason === '').length;
   }
 
-  submitSquadmateStatus(stepper: MatStepper) {
+  submitSquadmateStatus(stepper: MatStepper, step: MatStep) {
     this.insufficientSquadmates = false;
     this.legionAs8thSquadmate = false;
 
@@ -554,13 +554,14 @@ export class AppComponent {
         this.shipUpgrades.get('shield')?.enable();
       }
 
+      step.completed = true;
       stepper.next();
     } else {
       this.insufficientSquadmates = true;
     }
   }
 
-  submitShipUpgrades(stepper: MatStepper) {
+  submitShipUpgrades(stepper: MatStepper, step: MatStep) {
     // Check if armor was upgraded
     var shipUpgradeObjects = [...Object.values(this.shipUpgrades.getRawValue())];
 
@@ -571,10 +572,12 @@ export class AppComponent {
 
     // Update list of choosable squadmates for next section
     this.choosableSquadmates = this.updateSquadmateOptions(this.choosableSquadmates);
+
+    step.completed = true;
     stepper.next();
   }
 
-  submitOculusSquadmates(stepper: MatStepper) {
+  submitOculusSquadmates(stepper: MatStepper, step: MatStep) {
     // Find out who is currently in Shepard's squad when fighting the Oculus
     var activeSquadmates = [...Object.values(this.oculusSquadmates.value)];
 
@@ -599,10 +602,12 @@ export class AppComponent {
     // Update lists for next section
     this.techSpecialists = this.updateSquadmateOptions(this.techSpecialists);
     this.fireteamOneLeaders = this.updateSquadmateOptions(this.fireteamOneLeaders);
+
+    step.completed = true;
     stepper.next();
   }
 
-  submitInfiltrationTeam(stepper: MatStepper) {
+  submitInfiltrationTeam(stepper: MatStepper, step: MatStep) {
     var infiltrationTeam = [...Object.values(this.infiltrationTeam.value)];
     var techSpecialist = infiltrationTeam[0];
     var fireteamOneLeader = infiltrationTeam[1];
@@ -624,10 +629,12 @@ export class AppComponent {
     this.bioticSpecialists = this.updateSquadmateOptions(this.bioticSpecialists);
     this.fireteamOneLeaders = this.updateSquadmateOptions(this.fireteamOneLeaders);
     this.choosableSquadmates = this.updateSquadmateOptions(this.choosableSquadmates);
+
+    step.completed = true;
     stepper.next();
   }
 
-  submitLongWalkTeam(stepper: MatStepper) {
+  submitLongWalkTeam(stepper: MatStepper, step: MatStep) {
     var longWalkTeam = [...Object.values(this.longWalkTeam.value)];
     var bioticSpecialist = longWalkTeam[0];
     var fireteamTwoLeader = longWalkTeam[1];
@@ -683,10 +690,12 @@ export class AppComponent {
 
     // Update list for next section
     this.choosableSquadmates = this.updateSquadmateOptions(this.choosableSquadmates);
+
+    step.completed = true;
     stepper.next();
   }
 
-  submitFinalBattle(stepper: MatStepper) {
+  submitFinalBattle(stepper: MatStepper, step: MatStep) {
     var finalBattleTeam = [...Object.values(this.finalBattleTeam.value)];
     var finalSquadmate1 = finalBattleTeam[0];
     var finalSquadmate2 = finalBattleTeam[1];
@@ -812,6 +821,7 @@ export class AppComponent {
       console.log('Shepard died for reason: Less than 2 squadmates survived');
     }
 
+    step.completed = true;
     stepper.next();
   }
 
