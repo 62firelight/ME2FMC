@@ -1,15 +1,25 @@
 <div class="main">
   <h1>Mass Effect 2 Final Mission Calculator</h1>
 
-  <button
-    mat-raised-button
-    color="primary"
-    type="button"
-    id="reset"
-    (click)="resetCalculator(stepper)"
-  >
-    Reset
-  </button>
+  <div class="options">
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      id="reset"
+      (click)="resetCalculator(stepper)"
+    >
+      Reset
+    </button>
+
+    <mat-checkbox
+      [checked]="showLoyalSquadmates"
+      [labelPosition]="'before'"
+      (change)="showLoyalSquadmates = !showLoyalSquadmates"
+    >
+      Show Loyal Squadmates
+    </mat-checkbox>
+  </div>
 
   <mat-stepper orientation="vertical" [linear]="true" #stepper>
     <!-- 1. Squadmate Status -->
@@ -231,6 +241,12 @@
                 [disabled]="oculusSquadmate2.value === squadmate"
               >
                 {{ squadmate }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -244,6 +260,12 @@
                 [disabled]="oculusSquadmate1.value === squadmate"
               >
                 {{ squadmate }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -280,6 +302,12 @@
                 [disabled]="fireteamOneLeader.value === specialist"
               >
                 {{ specialist }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(specialist.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -295,6 +323,12 @@
                 [disabled]="techSpecialist.value === leader"
               >
                 {{ leader }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(leader.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -333,6 +367,12 @@
                 "
               >
                 {{ specialist }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(specialist.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -353,6 +393,12 @@
                 "
               >
                 {{ leader }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(leader.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -377,6 +423,12 @@
                   "
                 >
                   {{ squadmate }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
                 </mat-option>
               </ng-container>
             </mat-select>
@@ -398,6 +450,12 @@
                 "
               >
                 {{ squadmate }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -416,6 +474,12 @@
                 "
               >
                 {{ squadmate }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -456,6 +520,12 @@
                 [disabled]="finalSquadmate2.value === squadmate"
               >
                 {{ squadmate }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -469,6 +539,12 @@
                 [disabled]="finalSquadmate1.value === squadmate"
               >
                 {{ squadmate }}
+                {{
+                  showLoyalSquadmates &&
+                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
+                    ? "(L)"
+                    : ""
+                }}
               </mat-option>
             </mat-select>
           </mat-form-field>

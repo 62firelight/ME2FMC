@@ -10,6 +10,8 @@ import { MatStepper } from '@angular/material/stepper';
 export class AppComponent {
   title = 'ME2 Final Mission Calculator';
 
+  showLoyalSquadmates = false;
+
   squadmates = this.fb.nonNullable.group({
     zaeed: this.fb.nonNullable.group({
       name: ['Zaeed'],
@@ -707,6 +709,7 @@ export class AppComponent {
     }
 
     // Calculate scores for Hold the Line
+    this.totalHtlScore = 0;
     for (var squadmate of this.availableSquadmates) {
       if (!squadmate.recruited || squadmate.inCurrentSquad || squadmate.deathReason !== '') {
         continue;
