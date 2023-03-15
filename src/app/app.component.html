@@ -631,7 +631,7 @@
         <h3>Ship Upgrades</h3>
         <!-- <pre>{{ shipUpgrades.value | json }}</pre> -->
         <ul id="summary">
-          <li *ngFor="let shipUpgrade of shipUpgrades.value | keyvalue">
+          <li *ngFor="let shipUpgrade of shipUpgrades.getRawValue() | keyvalue">
             <ng-container *ngIf="shipUpgrade.value">
               <strong>{{ shipUpgrade.value.name | titlecase }}:</strong>
               {{ shipUpgrade.value.included ? "Acquired" : "Not Acquired" }}

@@ -544,7 +544,21 @@ export class AppComponent {
       this.legionAs8thSquadmate = true;
     } else if (this.recruitedSquadmates >= 8) {
       this.availableSquadmates = [...Object.values(this.squadmates.getRawValue())];
-      console.log(this.availableSquadmates);
+      // console.log(this.availableSquadmates);
+
+      // Account for possibility where shield upgrade is 
+      // unobtainable if Tali isn't recruited
+      if (!this.squadmates.getRawValue().tali.recruited) {
+        this.shipUpgrades.patchValue({
+          shield: {
+           included: false
+          }
+        });
+        this.shipUpgrades.get('shield')?.disable();
+      } else {
+        this.shipUpgrades.get('shield')?.enable();
+      }
+
       stepper.next();
     } else {
       this.insufficientSquadmates = true;
@@ -553,7 +567,7 @@ export class AppComponent {
 
   submitShipUpgrades(stepper: MatStepper) {
     // Check if armor was upgraded
-    var shipUpgradeObjects = [...Object.values(this.shipUpgrades.value)];
+    var shipUpgradeObjects = [...Object.values(this.shipUpgrades.getRawValue())];
 
     var armor = shipUpgradeObjects[0];
     if (armor !== undefined && armor.included == false) {
@@ -813,12 +827,18 @@ export class AppComponent {
 
     summary += 'Squadmate Status\n';
     for (var squadmate of Object.values(this.squadmates.getRawValue())) {
-      summary += `${squadmate.name}: ${squadmate.recruited ? 'Recruited' : 'Not Recruited'} and ${squadmate.loyal ? "Loyal" : "Not Loyal"}\n`;
+      summary += `${squadmate.name}: ${squadmate.recruited ? 'Recruited' : 'Not Recruited'}`;
+      if (squadmate.recruited) {
+        summary += ` and ${squadmate.loyal ? "Loyal" : "Not Loyal"}\n`;
+      } else {
+        summary +='\n';
+      }
+      
     }
     summary += '\n';
 
     summary += 'Ship Upgrades\n';
-    for (var shipUpgrade of Object.values(this.shipUpgrades.value)) {
+    for (var shipUpgrade of Object.values(this.shipUpgrades.getRawValue())) {
       summary += `${shipUpgrade.name}: ${shipUpgrade.included ? 'Acquired' : 'Not Acquired'}\n`
     }
     summary += '\n';
