@@ -162,9 +162,9 @@
           <p>
             <em
               >Legion cannot be the 8th squadmate as he can only be recruited
-              after the Collector Ship mission, which only triggers after 8
-              other squadmates are recruited. Either recruit another squadmate
-              or choose an alternative 8th squadmate.
+              after the Collector Ship mission, which triggers after 8 other
+              squadmates are recruited. Either recruit another squadmate or
+              choose an alternative 8th squadmate.
             </em>
           </p>
         </div>
@@ -185,7 +185,10 @@
 
       <h2>What upgrades has the Normandy acquired?</h2>
 
-      <form [formGroup]="shipUpgrades" (ngSubmit)="submitShipUpgrades(stepper, step2)">
+      <form
+        [formGroup]="shipUpgrades"
+        (ngSubmit)="submitShipUpgrades(stepper, step2)"
+      >
         <div class="squadmate-form">
           <!-- <div class="squadmate">
             <p><strong>Name</strong></p>
@@ -341,7 +344,10 @@
     <mat-step [completed]="false" [editable]="false" #step5>
       <ng-template matStepLabel>Collector Base: The Long Walk</ng-template>
 
-      <form [formGroup]="longWalkTeam" (ngSubmit)="submitLongWalkTeam(stepper, step5)">
+      <form
+        [formGroup]="longWalkTeam"
+        (ngSubmit)="submitLongWalkTeam(stepper, step5)"
+      >
         <div class="multiple-select">
           <h2>Who will create the biotic shield?</h2>
 
