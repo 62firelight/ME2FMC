@@ -10,85 +10,85 @@ import { MatStepper } from '@angular/material/stepper';
 export class AppComponent {
   title = 'ME2 Final Mission Calculator';
 
-  squadmates = this.fb.group({
-    zaeed: this.fb.group({
+  squadmates = this.fb.nonNullable.group({
+    zaeed: this.fb.nonNullable.group({
       name: ['Zaeed'],
       recruited: [true],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    legion: this.fb.group({
+    legion: this.fb.nonNullable.group({
       name: ['Legion'],
       recruited: [true],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    samara: this.fb.group({
+    samara: this.fb.nonNullable.group({
       name: ['Samara'],
       recruited: [true],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    tali: this.fb.group({
+    tali: this.fb.nonNullable.group({
       name: ['Tali'],
       recruited: [true],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    mordin: this.fb.group({
+    mordin: this.fb.nonNullable.group({
       name: ['Mordin'],
       recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    garrus: this.fb.group({
+    garrus: this.fb.nonNullable.group({
       name: ['Garrus'],
       recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    miranda: this.fb.group({
+    miranda: this.fb.nonNullable.group({
       name: ['Miranda'],
       recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    grunt: this.fb.group({
+    grunt: this.fb.nonNullable.group({
       name: ['Grunt'],
       recruited: [true],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    jacob: this.fb.group({
+    jacob: this.fb.nonNullable.group({
       name: ['Jacob'],
       recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    thane: this.fb.group({
+    thane: this.fb.nonNullable.group({
       name: ['Thane'],
       recruited: [true],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    jack: this.fb.group({
+    jack: this.fb.nonNullable.group({
       name: ['Jack'],
       recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
       loyal: [true],
       inCurrentSquad: [false],
       deathReason: ['']
     }),
-    kasumi: this.fb.group({
+    kasumi: this.fb.nonNullable.group({
       name: ['Kasumi'],
       recruited: [true],
       loyal: [true],
@@ -102,7 +102,7 @@ export class AppComponent {
   samaraIsMorinth = false;
 
   squadmateColumns = ['name', 'recruited', 'loyal'];
-  choosableSquadmates = [
+  initialChoosableSquadmates = [
     'Zaeed',
     'Legion',
     'Samara',
@@ -117,20 +117,21 @@ export class AppComponent {
     'Jack',
     'Kasumi'
   ];
+  choosableSquadmates: string[] = [];
   availableSquadmates: any[] = [];
   normandyCrewDead = false;
 
   shipUpgradeColumns = ['name', 'included'];
-  shipUpgrades = this.fb.group({
-    armor: this.fb.group({
+  shipUpgrades = this.fb.nonNullable.group({
+    armor: this.fb.nonNullable.group({
       name: ['Heavy Ship Armor'],
       included: [true]
     }),
-    shield: this.fb.group({
+    shield: this.fb.nonNullable.group({
       name: ['Multicore Shielding'],
       included: [true]
     }),
-    weapons: this.fb.group({
+    weapons: this.fb.nonNullable.group({
       name: ['Thanix Cannon'],
       included: [true]
     })
@@ -167,16 +168,16 @@ export class AppComponent {
   noShieldReason = 'No shield upgrade';
   noWeaponsReason = 'No weapons upgrade';
 
-  oculusSquadmates = this.fb.group({
+  oculusSquadmates = this.fb.nonNullable.group({
     oculusSquadmate1: ['', Validators.required],
     oculusSquadmate2: ['', Validators.required]
   });
 
-  infiltrationTeam = this.fb.group({
+  infiltrationTeam = this.fb.nonNullable.group({
     techSpecialist: ['', Validators.required],
     fireteamOneLeader: ['', Validators.required]
   });
-  techSpecialists = [
+  initialTechSpecialists = [
     'Tali',
     'Mordin',
     'Thane',
@@ -185,12 +186,13 @@ export class AppComponent {
     'Jacob',
     'Legion',
   ];
+  techSpecialists: string[] = [];
   goodTechSpecialists = [
     'Tali',
     'Legion',
     'Kasumi'
   ];
-  fireteamOneLeaders = [
+  initialFireteamOneLeaders = [
     'Tali',
     'Mordin',
     'Zaeed',
@@ -203,8 +205,9 @@ export class AppComponent {
     'Garrus',
     'Miranda',
     'Jacob',
-    'Legion',
+    'Legion'
   ];
+  fireteamOneLeaders: string[] = [];
   goodFireteamLeaders = [
     'Jacob',
     'Miranda',
@@ -213,14 +216,14 @@ export class AppComponent {
   badTechSpecialistReason = 'Bad tech specialist';
   badfireteamOneLeaderReason = 'Bad fireteam 1 leader';
 
-  longWalkTeam = this.fb.group({
+  longWalkTeam = this.fb.nonNullable.group({
     bioticSpecialist: ['', Validators.required],
     fireteamTwoLeader: ['', Validators.required],
     crewEscort: ['', Validators.required],
     swarmSquadmate1: ['', Validators.required],
     swarmSquadmate2: ['', Validators.required]
   });
-  bioticSpecialists = [
+  initialBioticSpecialists = [
     'Samara',
     'Morinth',
     'Jack',
@@ -228,6 +231,7 @@ export class AppComponent {
     'Miranda',
     'Jacob',
   ];
+  bioticSpecialists: string[] = [];
   goodBioticSpecialists = [
     'Samara',
     'Morinth',
@@ -251,7 +255,7 @@ export class AppComponent {
   badfireteamTwoLeaderReason = 'Bad fireteam 2 leader';
   badCrewEscortReason = 'Non-loyal escort';
 
-  finalBattleTeam = this.fb.group({
+  finalBattleTeam = this.fb.nonNullable.group({
     finalSquadmate1: ['', Validators.required],
     finalSquadmate2: ['', Validators.required]
   });
@@ -292,7 +296,21 @@ export class AppComponent {
   htlDeaths: string[] = [];
   htlDeathReason = 'Held the line';
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {
+    this.initializeOptions();
+  }
+
+  initializeOptions() {
+    this.choosableSquadmates = this.initialChoosableSquadmates;
+    this.techSpecialists = this.initialTechSpecialists;
+    this.fireteamOneLeaders = this.initialFireteamOneLeaders;
+    this.bioticSpecialists = this.initialBioticSpecialists;
+
+    this.normandyCrewDead = false;
+
+    this.currentHtlScores.clear();
+    this.htlDeaths = [];
+  }
 
   ngOnInit() {
     this.recruitedSquadmates = [...Object.values(this.squadmates.getRawValue())].filter(squadmate => squadmate.recruited).length;
@@ -300,6 +318,24 @@ export class AppComponent {
     this.squadmates.valueChanges.subscribe(result => {
       this.recruitedSquadmates = [...Object.values(this.squadmates.getRawValue())].filter(squadmate => squadmate.recruited).length;
     });
+  }
+
+  resetCalculator(stepper: MatStepper) {
+    // Reset stepper (and squadmate status with it)
+    stepper.reset();
+
+    // Reset all other forms
+    this.shipUpgrades.reset();
+    this.oculusSquadmates.reset();
+    this.infiltrationTeam.reset();
+    this.longWalkTeam.reset();
+    this.finalBattleTeam.reset();
+
+    if (this.samaraIsMorinth) {
+      this.toggleSamaraIsMorinth();
+    }
+
+    this.initializeOptions();
   }
 
   toggleSamaraIsMorinth() {
@@ -423,6 +459,8 @@ export class AppComponent {
   }
 
   killHtlDefenders(defenders: any[], numberOfHtlDeaths: number) {
+    this.htlDeaths = [];
+
     var squadmateDeathOrderMap: Map<number, string> = new Map();
     var deadSquadmateIndexes: Set<number> = new Set();
 
@@ -506,8 +544,8 @@ export class AppComponent {
       this.legionAs8thSquadmate = true;
     } else if (this.recruitedSquadmates >= 8) {
       this.availableSquadmates = [...Object.values(this.squadmates.getRawValue())];
-      stepper.next();
       console.log(this.availableSquadmates);
+      stepper.next();
     } else {
       this.insufficientSquadmates = true;
     }

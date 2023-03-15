@@ -1,9 +1,15 @@
 <div class="main">
   <h1>Mass Effect 2 Final Mission Calculator</h1>
 
-  <!-- <button mat-raised-button color="primary" (click)="squadmates.reset; stepper.reset()">
-        Reset
-      </button> -->
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    id="reset"
+    (click)="resetCalculator(stepper)"
+  >
+    Reset
+  </button>
 
   <mat-stepper orientation="vertical" [linear]="true" #stepper>
     <!-- 1. Squadmate Status -->
@@ -539,7 +545,14 @@
 
       <h2 id="htl">Mission complete!</h2>
 
-      <p>{{ getRecruitedSquadmates() === getAliveSquadmates() && normandyCrewDead == false ? "With no one left behind!" : "But at what cost...?" }}</p>
+      <p>
+        {{
+          getRecruitedSquadmates() === getAliveSquadmates() &&
+          normandyCrewDead == false
+            ? "With no one left behind!"
+            : "But at what cost...?"
+        }}
+      </p>
 
       <ul id="summary">
         <ng-container *ngFor="let squadmate of availableSquadmates">
