@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { infiltrationTeam } from './interfaces/InfiltrationTeam';
+import { LongWalkTeam } from './interfaces/LongWalkTeam';
 import { OculusSquadmates } from './interfaces/OculusSquadmates';
 import { ShipUpgrades } from './interfaces/ShipUpgrades';
 import { Squadmates } from './interfaces/Squadmates';
@@ -119,6 +120,14 @@ export class AppConstants {
     public INFILTRATION_TEAM: FormGroup<infiltrationTeam> = this.fb.nonNullable.group({
         techSpecialist: ['', Validators.required],
         fireteamOneLeader: ['', Validators.required]
+    });
+
+    public LONG_WALK_TEAM: FormGroup<LongWalkTeam> = this.fb.nonNullable.group({
+        bioticSpecialist: ['', Validators.required],
+        fireteamTwoLeader: ['', Validators.required],
+        crewEscort: ['', Validators.required],
+        swarmSquadmate1: ['', Validators.required],
+        swarmSquadmate2: ['', Validators.required]
     });
 
     constructor(private fb: FormBuilder) { }

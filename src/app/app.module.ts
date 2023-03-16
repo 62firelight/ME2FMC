@@ -18,6 +18,7 @@ import { SquadmateStatusComponent } from './components/squadmate-status/squadmat
 import { ShipUpgradesComponent } from './components/ship-upgrades/ship-upgrades.component';
 import { OculusSquadmatesComponent } from './components/oculus-squadmates/oculus-squadmates.component';
 import { InfiltrationTeamComponent } from './components/infiltration-team/infiltration-team.component';
+import { LongWalkTeamComponent } from './components/long-walk-team/long-walk-team.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { InfiltrationTeamComponent } from './components/infiltration-team/infilt
     SquadmateStatusComponent,
     ShipUpgradesComponent,
     OculusSquadmatesComponent,
-    InfiltrationTeamComponent
+    InfiltrationTeamComponent,
+    LongWalkTeamComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { AppConstants } from './app.constants';
 import { SquadmateStatusComponent } from './components/squadmate-status/squadmate-status.component';
 import { infiltrationTeam } from './interfaces/InfiltrationTeam';
+import { LongWalkTeam } from './interfaces/LongWalkTeam';
 import { OculusSquadmates } from './interfaces/OculusSquadmates';
 import { ShipUpgrades } from './interfaces/ShipUpgrades';
 import { Squadmates } from './interfaces/Squadmates';
@@ -110,13 +111,14 @@ export class AppComponent {
   badTechSpecialistReason = 'Bad tech specialist';
   badfireteamOneLeaderReason = 'Bad fireteam 1 leader';
 
-  longWalkTeam = this.fb.nonNullable.group({
-    bioticSpecialist: ['', Validators.required],
-    fireteamTwoLeader: ['', Validators.required],
-    crewEscort: ['', Validators.required],
-    swarmSquadmate1: ['', Validators.required],
-    swarmSquadmate2: ['', Validators.required]
-  });
+  longWalkTeam: FormGroup<LongWalkTeam>;
+  // longWalkTeam = this.fb.nonNullable.group({
+  //   bioticSpecialist: ['', Validators.required],
+  //   fireteamTwoLeader: ['', Validators.required],
+  //   crewEscort: ['', Validators.required],
+  //   swarmSquadmate1: ['', Validators.required],
+  //   swarmSquadmate2: ['', Validators.required]
+  // });
   initialBioticSpecialists = [
     'Samara',
     'Morinth',
@@ -197,6 +199,7 @@ export class AppComponent {
     this.shipUpgrades = constants.SHIP_UPGRADES;
     this.oculusSquadmates = constants.OCULUS_SQUADMATES;
     this.infiltrationTeam = constants.INFILTRATION_TEAM;
+    this.longWalkTeam = constants.LONG_WALK_TEAM;
 
     this.initializeOptions();
   }
@@ -398,7 +401,7 @@ export class AppComponent {
     // Retrieve state of ship upgrades
     const shipUpgrades = Object.values(this.shipUpgrades.getRawValue());
 
-    // Check if Jack is going to die
+    // Check armor upgrade
     const armor = shipUpgrades[0];
     if (armor && armor.included == false) {
       this.killSquadmate(this.noArmorDeaths, this.noArmorReason);
@@ -421,7 +424,7 @@ export class AppComponent {
     // Get ship upgrades
     const shipUpgrades = Object.values(this.shipUpgrades.getRawValue());
 
-    // Check if deaths will occur
+    // Check shield upgrade and weapons upgrade
     const shield = shipUpgrades[1];
     if (shield && shield.included == false) {
       this.killSquadmate(this.noShieldDeaths, this.noShieldReason, true);
@@ -443,6 +446,7 @@ export class AppComponent {
   }
 
   submitInfiltrationTeam(stepper: MatStepper, step: MatStep) {
+    // Retrieve chosen infiltration team
     const infiltrationTeam = Object.values(this.infiltrationTeam.value);
     const techSpecialist = infiltrationTeam[0];
     const fireteamOneLeader = infiltrationTeam[1];
@@ -452,11 +456,12 @@ export class AppComponent {
       return;
     }
 
-    const currentTechSpecialist = this.availableSquadmates.find(squadmate => squadmate.name === techSpecialist);
-    const currentFireteamOneLeader = this.availableSquadmates.find(squadmate => squadmate.name === fireteamOneLeader);
-    if (!this.goodTechSpecialists.includes(techSpecialist) || !currentTechSpecialist.loyal) {
+    // Check tech specialist and fireteam one leader
+    const chosenTechSpecialist = this.availableSquadmates.find(squadmate => squadmate.name === techSpecialist);
+    const chosenFireteamOneLeader = this.availableSquadmates.find(squadmate => squadmate.name === fireteamOneLeader);
+    if (!this.goodTechSpecialists.includes(techSpecialist) || !chosenTechSpecialist.loyal) {
       this.killSquadmate([techSpecialist], this.badTechSpecialistReason);
-    } else if (!this.goodFireteamLeaders.includes(fireteamOneLeader) || !currentFireteamOneLeader.loyal) {
+    } else if (!this.goodFireteamLeaders.includes(fireteamOneLeader) || !chosenFireteamOneLeader.loyal) {
       this.killSquadmate([techSpecialist], this.badfireteamOneLeaderReason);
     }
 
@@ -470,12 +475,13 @@ export class AppComponent {
   }
 
   submitLongWalkTeam(stepper: MatStepper, step: MatStep) {
-    var longWalkTeam = [...Object.values(this.longWalkTeam.value)];
-    var bioticSpecialist = longWalkTeam[0];
-    var fireteamTwoLeader = longWalkTeam[1];
-    var crewEscort = longWalkTeam[2];
-    var swarmSquadmate1 = longWalkTeam[3];
-    var swarmSquadmate2 = longWalkTeam[4];
+    // Retrieve chosen long walk team
+    const longWalkTeam = Object.values(this.longWalkTeam.value);
+    const bioticSpecialist = longWalkTeam[0];
+    const fireteamTwoLeader = longWalkTeam[1];
+    const crewEscort = longWalkTeam[2];
+    const swarmSquadmate1 = longWalkTeam[3];
+    const swarmSquadmate2 = longWalkTeam[4];
 
     if (bioticSpecialist === null || fireteamTwoLeader === null
       || crewEscort === null || swarmSquadmate1 === null
@@ -484,10 +490,12 @@ export class AppComponent {
       return;
     }
 
-    var bioticSpecialistObj = this.availableSquadmates.find(squadmate => squadmate.name === bioticSpecialist);
-    if (!this.goodBioticSpecialists.includes(bioticSpecialist) || !bioticSpecialistObj.loyal) {
-      var swarmSquadmate1Index = this.badBioticSpecialistDeaths.indexOf(swarmSquadmate1);
-      var swarmSquadmate2Index = this.badBioticSpecialistDeaths.indexOf(swarmSquadmate2);
+    // Check biotic specialist
+    const chosenBioticSpecialist = this.availableSquadmates.find(squadmate => squadmate.name === bioticSpecialist);
+    if (!this.goodBioticSpecialists.includes(bioticSpecialist) || !chosenBioticSpecialist.loyal) {
+      // Decide which of Shepard's squadmates is going to die
+      const swarmSquadmate1Index = this.badBioticSpecialistDeaths.indexOf(swarmSquadmate1);
+      const swarmSquadmate2Index = this.badBioticSpecialistDeaths.indexOf(swarmSquadmate2);
 
       if (swarmSquadmate1 != 'Miranda' && swarmSquadmate2Index >= swarmSquadmate1Index) {
         this.killSquadmate([swarmSquadmate1], this.badBioticSpecialistReason);
@@ -496,29 +504,32 @@ export class AppComponent {
       }
     }
 
+    // Check if crew escort was assigned
     if (crewEscort === 'None') {
       this.normandyCrewDead = true;
       console.log('Crew died for reason: No escort');
     } else {
-      // var crewEscortObj = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
-      var crewEscortObj = undefined;
-      for (var squadmate of this.availableSquadmates) {
+      // Check loyalty of crew escort
+      // const chosenCrewEscort = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
+      var chosenCrewEscort = undefined;
+      for (const squadmate of this.availableSquadmates) {
         if (squadmate.name === crewEscort) {
-          crewEscortObj = squadmate;
+          chosenCrewEscort = squadmate;
           break;
         }
       }
-      if (crewEscortObj !== undefined) {
-        if (!crewEscortObj.loyal) {
+      if (chosenCrewEscort !== undefined) {
+        if (!chosenCrewEscort.loyal) {
           this.killSquadmate([crewEscort], this.badCrewEscortReason);
         } else {
-          crewEscortObj.recruited = false;
+          chosenCrewEscort.recruited = false;
         }
       }
     }
 
-    var fireteamTwoLeaderObj = this.availableSquadmates.find(squadmate => squadmate.name === fireteamTwoLeader);
-    // Override death if there are only 3 more squadmates left
+    // Check fireteam two leader
+    // Prevent death if there are only 3 more squadmates left
+    const fireteamTwoLeaderObj = this.availableSquadmates.find(squadmate => squadmate.name === fireteamTwoLeader);
     if (fireteamTwoLeader !== 'Miranda' && ((!fireteamTwoLeaderObj.loyal || !this.goodFireteamLeaders.includes(fireteamTwoLeader)) && this.getAliveSquadmates() > 3)) {
       this.killSquadmate([fireteamTwoLeader], this.badfireteamTwoLeaderReason);
     }
@@ -639,16 +650,16 @@ export class AppComponent {
 
     var crewEscort = this.longWalkTeam.value.crewEscort;
     if (crewEscort !== undefined) {
-      var crewEscortObj = undefined;
+      var chosenCrewEscort = undefined;
       for (var squadmate of this.availableSquadmates) {
         if (squadmate.name === crewEscort) {
-          crewEscortObj = squadmate;
+          chosenCrewEscort = squadmate;
           break;
         }
       }
-      // var crewEscortObj = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
-      if (crewEscortObj !== undefined) {
-        crewEscortObj.recruited = true;
+      // var chosenCrewEscort = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
+      if (chosenCrewEscort !== undefined) {
+        chosenCrewEscort.recruited = true;
       }
     }
 
