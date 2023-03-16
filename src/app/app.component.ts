@@ -4,6 +4,7 @@ import { MatStep, MatStepper } from '@angular/material/stepper';
 import { Subject } from 'rxjs';
 import { AppConstants } from './app.constants';
 import { SquadmateStatusComponent } from './components/squadmate-status/squadmate-status.component';
+import { OculusSquadmates } from './interfaces/OculusSquadmates';
 import { ShipUpgrades } from './interfaces/ShipUpgrades';
 import { Squadmates } from './interfaces/Squadmates';
 
@@ -39,6 +40,8 @@ export class AppComponent {
   normandyCrewDead = false;
 
   shipUpgrades: FormGroup<ShipUpgrades>;
+
+  oculusSquadmates: FormGroup<OculusSquadmates>;
   noArmorDeaths = [
     'Jack'
   ];
@@ -65,11 +68,6 @@ export class AppComponent {
   noArmorReason = 'No armor upgrade';
   noShieldReason = 'No shield upgrade';
   noWeaponsReason = 'No weapons upgrade';
-
-  oculusSquadmates = this.fb.nonNullable.group({
-    oculusSquadmate1: ['', Validators.required],
-    oculusSquadmate2: ['', Validators.required]
-  });
 
   infiltrationTeam = this.fb.nonNullable.group({
     techSpecialist: ['', Validators.required],
@@ -199,6 +197,7 @@ export class AppComponent {
   constructor(private constants: AppConstants, private fb: FormBuilder) {
     this.squadmates = constants.SQUADMATES;
     this.shipUpgrades = constants.SHIP_UPGRADES;
+    this.oculusSquadmates = constants.OCULUS_SQUADMATES;
 
     this.initializeOptions();
   }
@@ -413,25 +412,26 @@ export class AppComponent {
 
   submitOculusSquadmates(stepper: MatStepper, step: MatStep) {
     // Find out who is currently in Shepard's squad when fighting the Oculus
-    var activeSquadmates = [...Object.values(this.oculusSquadmates.value)];
+    const oculusSquadmates = Object.values(this.oculusSquadmates.value);
 
-    this.assignSquadmates(activeSquadmates[0], activeSquadmates[1]);
+    // Assign active squadmates
+    this.assignSquadmates(oculusSquadmates[0], oculusSquadmates[1]);
 
     // Get ship upgrades
-    var shipUpgradeObjects = [...Object.values(this.shipUpgrades.getRawValue())];
+    const shipUpgrades = Object.values(this.shipUpgrades.getRawValue());
 
-    var shield = shipUpgradeObjects[1];
-    if (shield !== undefined && shield.included == false) {
+    const shield = shipUpgrades[1];
+    if (shield && shield.included == false) {
       this.killSquadmate(this.noShieldDeaths, this.noShieldReason, true);
     }
 
-    var weapons = shipUpgradeObjects[2];
-    if (weapons !== undefined && weapons.included == false) {
+    const weapons = shipUpgrades[2];
+    if (weapons && weapons.included == false) {
       this.killSquadmate(this.noWeaponsDeaths, this.noWeaponsReason, true);
     }
 
     // Unassign active squadmates
-    this.assignSquadmates(activeSquadmates[0], activeSquadmates[1], false);
+    this.assignSquadmates(oculusSquadmates[0], oculusSquadmates[1], false);
 
     // Update lists for next section
     this.techSpecialists = this.updateSquadmateOptions(this.techSpecialists);

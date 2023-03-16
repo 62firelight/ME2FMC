@@ -107,5 +107,10 @@ export class AppConstants {
         })
     });
 
+    public OCULUS_SQUADMATES = this.fb.nonNullable.group({
+        oculusSquadmate1: ['', Validators.required],
+        oculusSquadmate2: ['', Validators.required]
+    });
+
     constructor(private fb: FormBuilder) { }
 }

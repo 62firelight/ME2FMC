@@ -38,62 +38,11 @@
     <mat-step [completed]="false" [editable]="false" #step3>
       <ng-template matStepLabel>Omega-4 Relay: The Oculus</ng-template>
 
-      <form
-        [formGroup]="oculusSquadmates"
-        (ngSubmit)="submitOculusSquadmates(stepper, step3)"
-      >
-        <div class="multiple-select">
-          <h2>Who will accompany Shepard to fight the Oculus?</h2>
-          <!-- <p>Anyone who does not accompany Shepard will be at risk of dying.</p> -->
-
-          <mat-form-field appearance="fill">
-            <mat-label>Squadmate 1</mat-label>
-            <mat-select formControlName="oculusSquadmate1" #oculusSquadmate1>
-              <mat-option
-                *ngFor="let squadmate of choosableSquadmates"
-                [value]="squadmate"
-                [disabled]="oculusSquadmate2.value === squadmate"
-              >
-                {{ squadmate }}
-                {{
-                  showLoyalSquadmates &&
-                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
-                    ? "(L)"
-                    : ""
-                }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill">
-            <mat-label>Squadmate 2</mat-label>
-            <mat-select formControlName="oculusSquadmate2" #oculusSquadmate2>
-              <mat-option
-                *ngFor="let squadmate of choosableSquadmates"
-                [value]="squadmate"
-                [disabled]="oculusSquadmate1.value === squadmate"
-              >
-                {{ squadmate }}
-                {{
-                  showLoyalSquadmates &&
-                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
-                    ? "(L)"
-                    : ""
-                }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="!oculusSquadmates.valid"
-        >
-          Next
-        </button>
-      </form>
+      <app-oculus-squadmates
+        [choosableSquadmates]="choosableSquadmates"
+        [showLoyalSquadmates]="showLoyalSquadmates"
+        (newOculusSquadmatesEvent)="submitOculusSquadmates(stepper, step3)"
+      ></app-oculus-squadmates>
     </mat-step>
 
     <!-- 4. Infiltration -->

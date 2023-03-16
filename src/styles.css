@@ -69,3 +69,9 @@ em {
     font-style: normal;
     color: red;
 }
+
+.multiple-select {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+}

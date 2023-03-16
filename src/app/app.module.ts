@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SquadmateStatusComponent } from './components/squadmate-status/squadmate-status.component';
 import { ShipUpgradesComponent } from './components/ship-upgrades/ship-upgrades.component';
+import { OculusSquadmatesComponent } from './components/oculus-squadmates/oculus-squadmates.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ShipUpgradesComponent } from './components/ship-upgrades/ship-upgrades.
     ProfileEditorComponent,
     SquadmatesStatusPipe,
     SquadmateStatusComponent,
-    ShipUpgradesComponent
+    ShipUpgradesComponent,
+    OculusSquadmatesComponent
   ],
   imports: [
     BrowserModule,
