@@ -1,4 +1,71 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+form {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+form button {
+    align-self: flex-start;
+    margin: 0.5em 1em 0.5em 0;
+}
+
+.squadmate-form {
+    display: flex;
+    flex-flow: column nowrap;
+    margin: 0;
+}
+
+.squadmate {
+    display: flex;
+    align-items: center;
+}
+
+.squadmate strong, mat-checkbox {
+    width: 50%;
+    text-align: center;
+}
+
+#simCheckbox {
+    width: 25%;
+    text-align: left;
+}
+
+.squadmate p {
+    width: 40%;
+    margin: 0;
+}
+
+@media only screen and (min-width: 360px) {
+    .squadmate strong, mat-checkbox {
+        width: 25%;
+    }
+
+    .squadmate p {
+        width: 20%;
+    }
+}
+
+@media only screen and (min-width: 650px) {
+    .squadmate strong, mat-checkbox {
+        width: 12.5%;
+    }
+
+    .squadmate p {
+        width: 12.5%;
+    }
+}
+
+em {
+    font-style: normal;
+    color: red;
+}

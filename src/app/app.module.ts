@@ -14,13 +14,15 @@ import { ProfileEditorComponent } from './components/profile-editor/profile-edit
 import { SquadmatesStatusPipe } from './pipes/squadmates-status.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SquadmateStatusComponent } from './components/squadmate-status/squadmate-status.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NameEditorComponent,
     ProfileEditorComponent,
-    SquadmatesStatusPipe
+    SquadmatesStatusPipe,
+    SquadmateStatusComponent
   ],
   imports: [
     BrowserModule,

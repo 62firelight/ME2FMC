@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStep, MatStepper } from '@angular/material/stepper';
+import { Subject } from 'rxjs';
+import { AppConstants } from './app.constants';
+import { SquadmateStatusComponent } from './components/squadmate-status/squadmate-status.component';
+import { Squadmates } from './interfaces/Squadmates';
 
 @Component({
   selector: 'app-root',
@@ -12,93 +16,7 @@ export class AppComponent {
 
   showLoyalSquadmates = false;
 
-  squadmates = this.fb.nonNullable.group({
-    zaeed: this.fb.nonNullable.group({
-      name: ['Zaeed'],
-      recruited: [true],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    legion: this.fb.nonNullable.group({
-      name: ['Legion'],
-      recruited: [true],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    samara: this.fb.nonNullable.group({
-      name: ['Samara'],
-      recruited: [true],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    tali: this.fb.nonNullable.group({
-      name: ['Tali'],
-      recruited: [true],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    mordin: this.fb.nonNullable.group({
-      name: ['Mordin'],
-      recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    garrus: this.fb.nonNullable.group({
-      name: ['Garrus'],
-      recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    miranda: this.fb.nonNullable.group({
-      name: ['Miranda'],
-      recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    grunt: this.fb.nonNullable.group({
-      name: ['Grunt'],
-      recruited: [true],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    jacob: this.fb.nonNullable.group({
-      name: ['Jacob'],
-      recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    thane: this.fb.nonNullable.group({
-      name: ['Thane'],
-      recruited: [true],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    jack: this.fb.nonNullable.group({
-      name: ['Jack'],
-      recruited: [{ value: true, disabled: true }, Validators.requiredTrue],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-    kasumi: this.fb.nonNullable.group({
-      name: ['Kasumi'],
-      recruited: [true],
-      loyal: [true],
-      inCurrentSquad: [false],
-      deathReason: ['']
-    }),
-  });
-  recruitedSquadmates = 12;
+  squadmates: FormGroup<Squadmates>;
   insufficientSquadmates = false;
   legionAs8thSquadmate = false;
   samaraIsMorinth = false;
@@ -291,7 +209,11 @@ export class AppComponent {
   htlDeaths: string[] = [];
   htlDeathReason = 'Held the line';
 
-  constructor(private fb: FormBuilder) {
+  resetting: Subject<boolean> = new Subject();
+
+  constructor(private constants: AppConstants, private fb: FormBuilder) {
+    this.squadmates = constants.SQUADMATES;
+
     this.initializeOptions();
   }
 
@@ -307,85 +229,21 @@ export class AppComponent {
     this.htlDeaths = [];
   }
 
-  ngOnInit() {
-    this.recruitedSquadmates = [...Object.values(this.squadmates.getRawValue())].filter(squadmate => squadmate.recruited).length;
-
-    this.squadmates.valueChanges.subscribe(result => {
-      this.recruitedSquadmates = [...Object.values(this.squadmates.getRawValue())].filter(squadmate => squadmate.recruited).length;
-    });
-  }
+  ngOnInit() { }
 
   resetCalculator(stepper: MatStepper) {
-    // Reset stepper (and squadmate status with it)
+    // Reset stepper
     stepper.reset();
 
-    // Reset all other forms
+    // Reset all forms
+    this.resetting.next(true);
     this.shipUpgrades.reset();
     this.oculusSquadmates.reset();
     this.infiltrationTeam.reset();
     this.longWalkTeam.reset();
     this.finalBattleTeam.reset();
 
-    if (this.samaraIsMorinth) {
-      this.toggleSamaraIsMorinth();
-    }
-
     this.initializeOptions();
-  }
-
-  toggleSamaraIsMorinth() {
-    this.samaraIsMorinth = !this.samaraIsMorinth;
-
-    if (this.samaraIsMorinth) {
-      this.squadmates.patchValue({
-        samara: {
-          name: 'Morinth',
-          loyal: true
-        }
-      });
-      this.squadmates.get('samara')?.get('loyal')?.disable();
-    } else {
-      this.squadmates.patchValue({
-        samara: {
-          name: 'Samara'
-        }
-      });
-      this.squadmates.get('samara')?.get('loyal')?.enable();
-    }
-  }
-
-  toggleAllRecruited() {
-    var squadmates = Object.keys(this.squadmates.value);
-    var newRecruitedValue = !Object.values(this.squadmates.value).some(squadmate => squadmate.recruited);
-
-    for (var squadmate of squadmates) {
-      if (this.squadmates.get(squadmate)?.get('recruited')?.disabled) {
-        continue;
-      }
-
-      this.squadmates.patchValue({
-        [squadmate]: {
-          recruited: newRecruitedValue
-        }
-      })
-    }
-  }
-
-  toggleAllLoyal() {
-    var squadmates = Object.keys(this.squadmates.value);
-    var newLoyaltyValue = !Object.values(this.squadmates.value).some(squadmate => squadmate.loyal);
-
-    for (var squadmate of squadmates) {
-      if (this.samaraIsMorinth && squadmate == 'samara') {
-        continue;
-      }
-
-      this.squadmates.patchValue({
-        [squadmate]: {
-          loyal: newLoyaltyValue
-        }
-      })
-    }
   }
 
   updateSquadmateOptions(squadmateOptions: string[]): string[] {
@@ -531,34 +389,23 @@ export class AppComponent {
   }
 
   submitSquadmateStatus(stepper: MatStepper, step: MatStep) {
-    this.insufficientSquadmates = false;
-    this.legionAs8thSquadmate = false;
+    this.availableSquadmates = [...Object.values(this.squadmates.getRawValue())];
 
-    if (this.recruitedSquadmates == 8 && this.squadmates.value.legion?.recruited) {
-      // Check if Legion is part of the squad
-      this.legionAs8thSquadmate = true;
-    } else if (this.recruitedSquadmates >= 8) {
-      this.availableSquadmates = [...Object.values(this.squadmates.getRawValue())];
-      // console.log(this.availableSquadmates);
-
-      // Account for possibility where shield upgrade is 
-      // unobtainable if Tali isn't recruited
-      if (!this.squadmates.getRawValue().tali.recruited) {
-        this.shipUpgrades.patchValue({
-          shield: {
-           included: false
-          }
-        });
-        this.shipUpgrades.get('shield')?.disable();
-      } else {
-        this.shipUpgrades.get('shield')?.enable();
-      }
-
-      step.completed = true;
-      stepper.next();
+    // Account for possibility where shield upgrade is 
+    // unobtainable if Tali isn't recruited
+    if (!this.squadmates.getRawValue().tali.recruited) {
+      this.shipUpgrades.patchValue({
+        shield: {
+          included: false
+        }
+      });
+      this.shipUpgrades.get('shield')?.disable();
     } else {
-      this.insufficientSquadmates = true;
+      this.shipUpgrades.get('shield')?.enable();
     }
+
+    step.completed = true;
+    stepper.next();
   }
 
   submitShipUpgrades(stepper: MatStepper, step: MatStep) {
@@ -837,9 +684,9 @@ export class AppComponent {
       if (squadmate.recruited) {
         summary += ` and ${squadmate.loyal ? "Loyal" : "Not Loyal"}\n`;
       } else {
-        summary +='\n';
+        summary += '\n';
       }
-      
+
     }
     summary += '\n';
 
@@ -906,5 +753,9 @@ export class AppComponent {
 
     return summary;
     // return 'If you are seeing this, the copy text feature has not been fully implemented yet :(';
+  }
+
+  log(value: any) {
+    console.log(value);
   }
 }
