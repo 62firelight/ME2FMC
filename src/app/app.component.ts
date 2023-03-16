@@ -41,6 +41,7 @@ export class AppComponent {
   choosableSquadmates: string[] = [];
   availableSquadmates: any[] = [];
   normandyCrewDead = false;
+  shepardDead = false;
 
   shipUpgrades: FormGroup<ShipUpgrades>;
 
@@ -207,6 +208,7 @@ export class AppComponent {
     this.bioticSpecialists = this.initialBioticSpecialists;
 
     this.normandyCrewDead = false;
+    this.shepardDead = false;
 
     this.currentHtlScores.clear();
     this.htlDeaths = [];
@@ -665,6 +667,7 @@ export class AppComponent {
     }
 
     if (this.getAliveSquadmates() < 2) {
+      this.shepardDead = true;
       console.log('Shepard died for reason: Less than 2 squadmates survived');
     }
 
@@ -748,7 +751,7 @@ export class AppComponent {
       }
     }
     summary += `Normandy Crew - ${this.normandyCrewDead ? "Died (no escort)" : "Survived"}\n`;
-    summary += `Shepard - ${this.getAliveSquadmates() < 2 ? "Died (less than 2 squadmates survived)" : "Survived"}\n`;
+    summary += `Shepard - ${this.shepardDead ? "Died (less than 2 squadmates survived)" : "Survived"}\n`;
     summary += '\n';
 
     return summary;
