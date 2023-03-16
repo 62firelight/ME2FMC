@@ -49,63 +49,12 @@
     <mat-step [completed]="false" [editable]="false" #step4>
       <ng-template matStepLabel>Collector Base: Infiltration</ng-template>
 
-      <form
-        [formGroup]="infiltrationTeam"
-        (ngSubmit)="submitInfiltrationTeam(stepper, step4)"
-      >
-        <div class="multiple-select">
-          <h2>Who will go through the vents?</h2>
-
-          <mat-form-field appearance="fill">
-            <mat-label>Tech Specialist</mat-label>
-            <mat-select formControlName="techSpecialist" #techSpecialist>
-              <mat-option
-                *ngFor="let specialist of techSpecialists"
-                [value]="specialist"
-                [disabled]="fireteamOneLeader.value === specialist"
-              >
-                {{ specialist }}
-                {{
-                  showLoyalSquadmates &&
-                  squadmates.get(specialist.toLowerCase())?.get("loyal")?.value
-                    ? "(L)"
-                    : ""
-                }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <h2>Who will lead the first fireteam?</h2>
-
-          <mat-form-field appearance="fill">
-            <mat-label>Fireteam Leader 1</mat-label>
-            <mat-select formControlName="fireteamOneLeader" #fireteamOneLeader>
-              <mat-option
-                *ngFor="let leader of fireteamOneLeaders"
-                [value]="leader"
-                [disabled]="techSpecialist.value === leader"
-              >
-                {{ leader }}
-                {{
-                  showLoyalSquadmates &&
-                  squadmates.get(leader.toLowerCase())?.get("loyal")?.value
-                    ? "(L)"
-                    : ""
-                }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="!infiltrationTeam.valid"
-        >
-          Next
-        </button>
-      </form>
+      <app-infiltration-team
+        [techSpecialists]="techSpecialists"
+        [fireteamOneLeaders]="fireteamOneLeaders"
+        [showLoyalSquadmates]="showLoyalSquadmates"
+        (newInfiltrationTeamEvent)="submitInfiltrationTeam(stepper, step4)"
+      ></app-infiltration-team>
     </mat-step>
 
     <!-- 5. The Long Walk -->

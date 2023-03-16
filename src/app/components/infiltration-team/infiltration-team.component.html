@@ -1,0 +1,57 @@
+<form
+  [formGroup]="infiltrationTeam"
+  (ngSubmit)="newInfiltrationTeamEvent.emit(infiltrationTeam)"
+>
+  <div class="multiple-select">
+    <h2>Who will go through the vents?</h2>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Tech Specialist</mat-label>
+      <mat-select formControlName="techSpecialist" #techSpecialist>
+        <mat-option
+          *ngFor="let squadmate of techSpecialists"
+          [value]="squadmate"
+          [disabled]="fireteamOneLeader.value === squadmate"
+        >
+          {{ squadmate }}
+          {{
+            showLoyalSquadmates &&
+            squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
+              ? "(L)"
+              : ""
+          }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h2>Who will lead the first fireteam?</h2>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Fireteam Leader 1</mat-label>
+      <mat-select formControlName="fireteamOneLeader" #fireteamOneLeader>
+        <mat-option
+          *ngFor="let squadmate of fireteamOneLeaders"
+          [value]="squadmate"
+          [disabled]="techSpecialist.value === squadmate"
+        >
+          {{ squadmate }}
+          {{
+            showLoyalSquadmates &&
+            squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
+              ? "(L)"
+              : ""
+          }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="!infiltrationTeam.valid"
+  >
+    Next
+  </button>
+</form>

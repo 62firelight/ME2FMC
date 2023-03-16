@@ -4,6 +4,7 @@ import { MatStep, MatStepper } from '@angular/material/stepper';
 import { Subject } from 'rxjs';
 import { AppConstants } from './app.constants';
 import { SquadmateStatusComponent } from './components/squadmate-status/squadmate-status.component';
+import { infiltrationTeam } from './interfaces/InfiltrationTeam';
 import { OculusSquadmates } from './interfaces/OculusSquadmates';
 import { ShipUpgrades } from './interfaces/ShipUpgrades';
 import { Squadmates } from './interfaces/Squadmates';
@@ -69,10 +70,7 @@ export class AppComponent {
   noShieldReason = 'No shield upgrade';
   noWeaponsReason = 'No weapons upgrade';
 
-  infiltrationTeam = this.fb.nonNullable.group({
-    techSpecialist: ['', Validators.required],
-    fireteamOneLeader: ['', Validators.required]
-  });
+  infiltrationTeam: FormGroup<infiltrationTeam>;
   initialTechSpecialists = [
     'Tali',
     'Mordin',
@@ -198,6 +196,7 @@ export class AppComponent {
     this.squadmates = constants.SQUADMATES;
     this.shipUpgrades = constants.SHIP_UPGRADES;
     this.oculusSquadmates = constants.OCULUS_SQUADMATES;
+    this.infiltrationTeam = constants.INFILTRATION_TEAM;
 
     this.initializeOptions();
   }
@@ -375,7 +374,8 @@ export class AppComponent {
   }
 
   submitSquadmateStatus(stepper: MatStepper, step: MatStep) {
-    this.availableSquadmates = [...Object.values(this.squadmates.getRawValue())];
+    // Retrieve status of squadmates
+    this.availableSquadmates = Object.values(this.squadmates.getRawValue());
 
     // Account for possibility where shield upgrade is 
     // unobtainable if Tali isn't recruited
@@ -395,9 +395,10 @@ export class AppComponent {
   }
 
   submitShipUpgrades(stepper: MatStepper, step: MatStep) {
-    // Check if armor was upgraded
+    // Retrieve state of ship upgrades
     const shipUpgrades = Object.values(this.shipUpgrades.getRawValue());
 
+    // Check if Jack is going to die
     const armor = shipUpgrades[0];
     if (armor && armor.included == false) {
       this.killSquadmate(this.noArmorDeaths, this.noArmorReason);
@@ -411,26 +412,26 @@ export class AppComponent {
   }
 
   submitOculusSquadmates(stepper: MatStepper, step: MatStep) {
-    // Find out who is currently in Shepard's squad when fighting the Oculus
+    // Retrieve chosen squadmates for Oculus boss fight
     const oculusSquadmates = Object.values(this.oculusSquadmates.value);
 
-    // Assign active squadmates
+    // Assign chosen squadmates
     this.assignSquadmates(oculusSquadmates[0], oculusSquadmates[1]);
 
     // Get ship upgrades
     const shipUpgrades = Object.values(this.shipUpgrades.getRawValue());
 
+    // Check if deaths will occur
     const shield = shipUpgrades[1];
     if (shield && shield.included == false) {
       this.killSquadmate(this.noShieldDeaths, this.noShieldReason, true);
     }
-
     const weapons = shipUpgrades[2];
     if (weapons && weapons.included == false) {
       this.killSquadmate(this.noWeaponsDeaths, this.noWeaponsReason, true);
     }
 
-    // Unassign active squadmates
+    // Unassign chosen squadmates
     this.assignSquadmates(oculusSquadmates[0], oculusSquadmates[1], false);
 
     // Update lists for next section
@@ -442,20 +443,20 @@ export class AppComponent {
   }
 
   submitInfiltrationTeam(stepper: MatStepper, step: MatStep) {
-    var infiltrationTeam = [...Object.values(this.infiltrationTeam.value)];
-    var techSpecialist = infiltrationTeam[0];
-    var fireteamOneLeader = infiltrationTeam[1];
+    const infiltrationTeam = Object.values(this.infiltrationTeam.value);
+    const techSpecialist = infiltrationTeam[0];
+    const fireteamOneLeader = infiltrationTeam[1];
 
     if (techSpecialist === null || fireteamOneLeader === null) {
       // ERROR
       return;
     }
 
-    var techSpecialistObj = this.availableSquadmates.find(squadmate => squadmate.name === techSpecialist);
-    var fireteamOneLeaderObj = this.availableSquadmates.find(squadmate => squadmate.name === fireteamOneLeader);
-    if (!this.goodTechSpecialists.includes(techSpecialist) || !techSpecialistObj.loyal) {
+    const currentTechSpecialist = this.availableSquadmates.find(squadmate => squadmate.name === techSpecialist);
+    const currentFireteamOneLeader = this.availableSquadmates.find(squadmate => squadmate.name === fireteamOneLeader);
+    if (!this.goodTechSpecialists.includes(techSpecialist) || !currentTechSpecialist.loyal) {
       this.killSquadmate([techSpecialist], this.badTechSpecialistReason);
-    } else if (!this.goodFireteamLeaders.includes(fireteamOneLeader) || !fireteamOneLeaderObj.loyal) {
+    } else if (!this.goodFireteamLeaders.includes(fireteamOneLeader) || !currentFireteamOneLeader.loyal) {
       this.killSquadmate([techSpecialist], this.badfireteamOneLeaderReason);
     }
 

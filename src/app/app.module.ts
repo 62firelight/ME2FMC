@@ -17,6 +17,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SquadmateStatusComponent } from './components/squadmate-status/squadmate-status.component';
 import { ShipUpgradesComponent } from './components/ship-upgrades/ship-upgrades.component';
 import { OculusSquadmatesComponent } from './components/oculus-squadmates/oculus-squadmates.component';
+import { InfiltrationTeamComponent } from './components/infiltration-team/infiltration-team.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { OculusSquadmatesComponent } from './components/oculus-squadmates/oculus
     SquadmatesStatusPipe,
     SquadmateStatusComponent,
     ShipUpgradesComponent,
-    OculusSquadmatesComponent
+    OculusSquadmatesComponent,
+    InfiltrationTeamComponent
   ],
   imports: [
     BrowserModule,

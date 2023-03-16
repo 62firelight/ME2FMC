@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { infiltrationTeam } from './interfaces/InfiltrationTeam';
+import { OculusSquadmates } from './interfaces/OculusSquadmates';
+import { ShipUpgrades } from './interfaces/ShipUpgrades';
+import { Squadmates } from './interfaces/Squadmates';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AppConstants {
-    public SQUADMATES = this.fb.nonNullable.group({
+    public SQUADMATES: FormGroup<Squadmates> = this.fb.nonNullable.group({
         zaeed: this.fb.nonNullable.group({
             name: ['Zaeed'],
             recruited: [true],
@@ -92,7 +96,7 @@ export class AppConstants {
         }),
     });;
 
-    public SHIP_UPGRADES = this.fb.nonNullable.group({
+    public SHIP_UPGRADES: FormGroup<ShipUpgrades> = this.fb.nonNullable.group({
         armor: this.fb.nonNullable.group({
             name: ['Heavy Ship Armor'],
             included: [true]
@@ -107,9 +111,14 @@ export class AppConstants {
         })
     });
 
-    public OCULUS_SQUADMATES = this.fb.nonNullable.group({
+    public OCULUS_SQUADMATES: FormGroup<OculusSquadmates> = this.fb.nonNullable.group({
         oculusSquadmate1: ['', Validators.required],
         oculusSquadmate2: ['', Validators.required]
+    });
+
+    public INFILTRATION_TEAM: FormGroup<infiltrationTeam> = this.fb.nonNullable.group({
+        techSpecialist: ['', Validators.required],
+        fireteamOneLeader: ['', Validators.required]
     });
 
     constructor(private fb: FormBuilder) { }
