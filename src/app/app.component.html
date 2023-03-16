@@ -20,10 +20,7 @@
 
       <app-squadmate-status
         [resetEvent]="resetting"
-        (newSquadmateStatusEvent)="
-          squadmates = $event; 
-          submitSquadmateStatus(stepper, step1)
-        "
+        (newSquadmateStatusEvent)="submitSquadmateStatus(stepper, step1)"
       ></app-squadmate-status>
     </mat-step>
 
@@ -31,36 +28,10 @@
     <mat-step [completed]="false" [editable]="false" #step2>
       <ng-template matStepLabel>Ship Upgrades</ng-template>
 
-      <h2>What upgrades has the Normandy acquired?</h2>
-
-      <form
-        [formGroup]="shipUpgrades"
-        (ngSubmit)="submitShipUpgrades(stepper, step2)"
-      >
-        <div class="squadmate-form">
-          <!-- <div class="squadmate">
-            <p><strong>Name</strong></p>
-            <strong>Included?</strong>
-          </div> -->
-
-          <div class="squadmate" formGroupName="armor">
-            <p>Heavy Ship Armor</p>
-            <mat-checkbox formControlName="included"></mat-checkbox>
-          </div>
-
-          <div class="squadmate" formGroupName="shield">
-            <p>Multicore Shielding</p>
-            <mat-checkbox formControlName="included"></mat-checkbox>
-          </div>
-
-          <div class="squadmate" formGroupName="weapons">
-            <p>Thanix Cannon</p>
-            <mat-checkbox formControlName="included"></mat-checkbox>
-          </div>
-        </div>
-
-        <button mat-raised-button color="primary" type="submit">Next</button>
-      </form>
+      <app-ship-upgrades
+        [resetEvent]="resetting"
+        (newShipUpgradesEvent)="submitShipUpgrades(stepper, step2)"
+      ></app-ship-upgrades>
     </mat-step>
 
     <!-- 3. The Oculus -->

@@ -92,5 +92,20 @@ export class AppConstants {
         }),
     });;
 
+    public SHIP_UPGRADES = this.fb.nonNullable.group({
+        armor: this.fb.nonNullable.group({
+            name: ['Heavy Ship Armor'],
+            included: [true]
+        }),
+        shield: this.fb.nonNullable.group({
+            name: ['Multicore Shielding'],
+            included: [true]
+        }),
+        weapons: this.fb.nonNullable.group({
+            name: ['Thanix Cannon'],
+            included: [true]
+        })
+    });
+
     constructor(private fb: FormBuilder) { }
 }

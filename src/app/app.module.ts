@@ -15,6 +15,7 @@ import { SquadmatesStatusPipe } from './pipes/squadmates-status.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SquadmateStatusComponent } from './components/squadmate-status/squadmate-status.component';
+import { ShipUpgradesComponent } from './components/ship-upgrades/ship-upgrades.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SquadmateStatusComponent } from './components/squadmate-status/squadmat
     NameEditorComponent,
     ProfileEditorComponent,
     SquadmatesStatusPipe,
-    SquadmateStatusComponent
+    SquadmateStatusComponent,
+    ShipUpgradesComponent
   ],
   imports: [
     BrowserModule,

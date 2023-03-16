@@ -1,0 +1,25 @@
+<h2>What upgrades has the Normandy acquired?</h2>
+
+<form
+  [formGroup]="shipUpgrades"
+  (ngSubmit)="newShipUpgradesEvent.emit(shipUpgrades)"
+>
+  <div class="squadmate-form">
+    <div class="squadmate" formGroupName="armor">
+      <p>Heavy Ship Armor</p>
+      <mat-checkbox formControlName="included"></mat-checkbox>
+    </div>
+
+    <div class="squadmate" formGroupName="shield">
+      <p>Multicore Shielding</p>
+      <mat-checkbox formControlName="included"></mat-checkbox>
+    </div>
+
+    <div class="squadmate" formGroupName="weapons">
+      <p>Thanix Cannon</p>
+      <mat-checkbox formControlName="included"></mat-checkbox>
+    </div>
+  </div>
+
+  <button mat-raised-button color="primary" type="submit">Next</button>
+</form>

@@ -27,8 +27,6 @@ export class SquadmateStatusComponent {
 
   ngOnInit() {
     this.resetEvent.subscribe(result => {
-      this.squadmates.reset();
-
       if (this.samaraIsMorinth) {
         this.toggleSamaraIsMorinth();
       }
@@ -42,10 +40,10 @@ export class SquadmateStatusComponent {
   }
 
   toggleAllRecruited() {
-    var squadmates = Object.keys(this.squadmates.value);
-    var newRecruitedValue = !Object.values(this.squadmates.value).some(squadmate => squadmate.recruited);
+    const squadmates = Object.keys(this.squadmates.value);
+    const newRecruitedValue = !Object.values(this.squadmates.value).some(squadmate => squadmate.recruited);
 
-    for (var squadmate of squadmates) {
+    for (const squadmate of squadmates) {
       if (this.squadmates.get(squadmate)?.get('recruited')?.disabled) {
         continue;
       }
@@ -59,10 +57,10 @@ export class SquadmateStatusComponent {
   }
 
   toggleAllLoyal() {
-    var squadmates = Object.keys(this.squadmates.value);
-    var newLoyaltyValue = !Object.values(this.squadmates.value).some(squadmate => squadmate.loyal);
+    const squadmates = Object.keys(this.squadmates.value);
+    const newLoyaltyValue = !Object.values(this.squadmates.value).some(squadmate => squadmate.loyal);
 
-    for (var squadmate of squadmates) {
+    for (const squadmate of squadmates) {
       if (this.samaraIsMorinth && squadmate == 'samara') {
         continue;
       }

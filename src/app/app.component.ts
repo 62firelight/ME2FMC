@@ -4,6 +4,7 @@ import { MatStep, MatStepper } from '@angular/material/stepper';
 import { Subject } from 'rxjs';
 import { AppConstants } from './app.constants';
 import { SquadmateStatusComponent } from './components/squadmate-status/squadmate-status.component';
+import { ShipUpgrades } from './interfaces/ShipUpgrades';
 import { Squadmates } from './interfaces/Squadmates';
 
 @Component({
@@ -17,9 +18,6 @@ export class AppComponent {
   showLoyalSquadmates = false;
 
   squadmates: FormGroup<Squadmates>;
-  insufficientSquadmates = false;
-  legionAs8thSquadmate = false;
-  samaraIsMorinth = false;
 
   initialChoosableSquadmates = [
     'Zaeed',
@@ -40,20 +38,7 @@ export class AppComponent {
   availableSquadmates: any[] = [];
   normandyCrewDead = false;
 
-  shipUpgrades = this.fb.nonNullable.group({
-    armor: this.fb.nonNullable.group({
-      name: ['Heavy Ship Armor'],
-      included: [true]
-    }),
-    shield: this.fb.nonNullable.group({
-      name: ['Multicore Shielding'],
-      included: [true]
-    }),
-    weapons: this.fb.nonNullable.group({
-      name: ['Thanix Cannon'],
-      included: [true]
-    })
-  });
+  shipUpgrades: FormGroup<ShipUpgrades>;
   noArmorDeaths = [
     'Jack'
   ];
@@ -213,6 +198,7 @@ export class AppComponent {
 
   constructor(private constants: AppConstants, private fb: FormBuilder) {
     this.squadmates = constants.SQUADMATES;
+    this.shipUpgrades = constants.SHIP_UPGRADES;
 
     this.initializeOptions();
   }
@@ -237,6 +223,7 @@ export class AppComponent {
 
     // Reset all forms
     this.resetting.next(true);
+    this.squadmates.reset();
     this.shipUpgrades.reset();
     this.oculusSquadmates.reset();
     this.infiltrationTeam.reset();
@@ -410,10 +397,10 @@ export class AppComponent {
 
   submitShipUpgrades(stepper: MatStepper, step: MatStep) {
     // Check if armor was upgraded
-    var shipUpgradeObjects = [...Object.values(this.shipUpgrades.getRawValue())];
+    const shipUpgrades = Object.values(this.shipUpgrades.getRawValue());
 
-    var armor = shipUpgradeObjects[0];
-    if (armor !== undefined && armor.included == false) {
+    const armor = shipUpgrades[0];
+    if (armor && armor.included == false) {
       this.killSquadmate(this.noArmorDeaths, this.noArmorReason);
     }
 
