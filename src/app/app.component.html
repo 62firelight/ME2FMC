@@ -75,65 +75,11 @@
     <mat-step [completed]="false" [editable]="false" #step6>
       <ng-template matStepLabel>Collector Base: Final Battle</ng-template>
 
-      <form
-        [formGroup]="finalBattleTeam"
-        (ngSubmit)="submitFinalBattle(stepper, step6)"
-      >
-        <div class="multiple-select">
-          <h2>Who will accompany Shepard to the final battle?</h2>
-          <!-- <p>
-            Anyone who does not accompany Shepard will stay behind to hold the
-            line.
-          </p> -->
-
-          <mat-form-field appearance="fill">
-            <mat-label>Squadmate 1</mat-label>
-            <mat-select formControlName="finalSquadmate1" #finalSquadmate1>
-              <mat-option
-                *ngFor="let squadmate of choosableSquadmates"
-                [value]="squadmate"
-                [disabled]="finalSquadmate2.value === squadmate"
-              >
-                {{ squadmate }}
-                {{
-                  showLoyalSquadmates &&
-                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
-                    ? "(L)"
-                    : ""
-                }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill">
-            <mat-label>Squadmate 2</mat-label>
-            <mat-select formControlName="finalSquadmate2" #finalSquadmate2>
-              <mat-option
-                *ngFor="let squadmate of choosableSquadmates"
-                [value]="squadmate"
-                [disabled]="finalSquadmate1.value === squadmate"
-              >
-                {{ squadmate }}
-                {{
-                  showLoyalSquadmates &&
-                  squadmates.get(squadmate.toLowerCase())?.get("loyal")?.value
-                    ? "(L)"
-                    : ""
-                }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="!finalBattleTeam.valid"
-        >
-          Next
-        </button>
-      </form>
+      <app-final-battle-team
+        [choosableSquadmates]="choosableSquadmates"
+        [showLoyalSquadmates]="showLoyalSquadmates"
+        (newFinalBattleTeamEvent)="submitFinalBattleTeam(stepper, step6)"
+      ></app-final-battle-team>
     </mat-step>
 
     <!-- 7. Hold the Line -->

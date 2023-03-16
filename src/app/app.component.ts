@@ -4,6 +4,7 @@ import { MatStep, MatStepper } from '@angular/material/stepper';
 import { Subject } from 'rxjs';
 import { AppConstants } from './app.constants';
 import { SquadmateStatusComponent } from './components/squadmate-status/squadmate-status.component';
+import { FinalBattleTeam } from './interfaces/FinalBattleTeam';
 import { infiltrationTeam } from './interfaces/InfiltrationTeam';
 import { LongWalkTeam } from './interfaces/LongWalkTeam';
 import { OculusSquadmates } from './interfaces/OculusSquadmates';
@@ -112,13 +113,6 @@ export class AppComponent {
   badfireteamOneLeaderReason = 'Bad fireteam 1 leader';
 
   longWalkTeam: FormGroup<LongWalkTeam>;
-  // longWalkTeam = this.fb.nonNullable.group({
-  //   bioticSpecialist: ['', Validators.required],
-  //   fireteamTwoLeader: ['', Validators.required],
-  //   crewEscort: ['', Validators.required],
-  //   swarmSquadmate1: ['', Validators.required],
-  //   swarmSquadmate2: ['', Validators.required]
-  // });
   initialBioticSpecialists = [
     'Samara',
     'Morinth',
@@ -151,10 +145,11 @@ export class AppComponent {
   badfireteamTwoLeaderReason = 'Bad fireteam 2 leader';
   badCrewEscortReason = 'Non-loyal escort';
 
-  finalBattleTeam = this.fb.nonNullable.group({
-    finalSquadmate1: ['', Validators.required],
-    finalSquadmate2: ['', Validators.required]
-  });
+  finalBattleTeam: FormGroup<FinalBattleTeam>;
+  // finalBattleTeam = this.fb.nonNullable.group({
+  //   finalSquadmate1: ['', Validators.required],
+  //   finalSquadmate2: ['', Validators.required]
+  // });
   nonloyalFinalSquadmateReason = 'Non-loyal squadmate in final battle';
   htlScores = new Map([
     ['Grunt', 4],
@@ -200,6 +195,7 @@ export class AppComponent {
     this.oculusSquadmates = constants.OCULUS_SQUADMATES;
     this.infiltrationTeam = constants.INFILTRATION_TEAM;
     this.longWalkTeam = constants.LONG_WALK_TEAM;
+    this.finalBattleTeam = constants.FINAL_BATTLE_TEAM;
 
     this.initializeOptions();
   }
@@ -475,7 +471,7 @@ export class AppComponent {
   }
 
   submitLongWalkTeam(stepper: MatStepper, step: MatStep) {
-    // Retrieve chosen long walk team
+    // Retrieve chosen team for long walk
     const longWalkTeam = Object.values(this.longWalkTeam.value);
     const bioticSpecialist = longWalkTeam[0];
     const fireteamTwoLeader = longWalkTeam[1];
@@ -541,11 +537,13 @@ export class AppComponent {
     stepper.next();
   }
 
-  submitFinalBattle(stepper: MatStepper, step: MatStep) {
-    var finalBattleTeam = [...Object.values(this.finalBattleTeam.value)];
-    var finalSquadmate1 = finalBattleTeam[0];
-    var finalSquadmate2 = finalBattleTeam[1];
+  submitFinalBattleTeam(stepper: MatStepper, step: MatStep) {
+    // Retrieve chosen team for final battle
+    const finalBattleTeam = Object.values(this.finalBattleTeam.value);
+    const finalSquadmate1 = finalBattleTeam[0];
+    const finalSquadmate2 = finalBattleTeam[1];
 
+    // Assign chosen squadmates
     this.assignSquadmates(finalSquadmate1, finalSquadmate2);
 
     if (finalSquadmate1 === null || finalSquadmate2 === null) {
@@ -553,19 +551,19 @@ export class AppComponent {
       return;
     }
 
-    var finalSquadmate1Obj = this.availableSquadmates.find(squadmate => squadmate.name === finalSquadmate1);
-    if (!finalSquadmate1Obj.loyal) {
+    // Check loyalty of chosen squadmates
+    const chosenFinalSquadmate1 = this.availableSquadmates.find(squadmate => squadmate.name === finalSquadmate1);
+    if (!chosenFinalSquadmate1.loyal) {
       this.killSquadmate([finalSquadmate1], this.nonloyalFinalSquadmateReason);
     }
-
-    var finalSquadmate2Obj = this.availableSquadmates.find(squadmate => squadmate.name === finalSquadmate2);
-    if (!finalSquadmate2Obj.loyal) {
+    const chosenFinalSquadmate2 = this.availableSquadmates.find(squadmate => squadmate.name === finalSquadmate2);
+    if (!chosenFinalSquadmate2.loyal) {
       this.killSquadmate([finalSquadmate2], this.nonloyalFinalSquadmateReason);
     }
 
     // Calculate scores for Hold the Line
     this.totalHtlScore = 0;
-    for (var squadmate of this.availableSquadmates) {
+    for (const squadmate of this.availableSquadmates) {
       if (!squadmate.recruited || squadmate.inCurrentSquad || squadmate.deathReason !== '') {
         continue;
       }
@@ -597,6 +595,8 @@ export class AppComponent {
     if (numberOfDeaths > 0) {
       this.killHtlDefenders(defenders, numberOfDeaths);
     }
+
+    // OLD (thresholds are from flowchart)
     // if (numberOfDefenders >= 5) {
     //   if (this.htlScore < 2.0 && this.htlScore >= 1.5) {
     //     // Kill one squadmate
@@ -648,16 +648,17 @@ export class AppComponent {
     //   }
     // }
 
-    var crewEscort = this.longWalkTeam.value.crewEscort;
+    // Mark crew escort as recruited so they show up in the summary
+    const crewEscort = this.longWalkTeam.value.crewEscort;
     if (crewEscort !== undefined) {
       var chosenCrewEscort = undefined;
-      for (var squadmate of this.availableSquadmates) {
+      for (const squadmate of this.availableSquadmates) {
         if (squadmate.name === crewEscort) {
           chosenCrewEscort = squadmate;
           break;
         }
       }
-      // var chosenCrewEscort = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
+      // const chosenCrewEscort = this.availableSquadmates.find(squadmate => squadmate.name === crewEscort);
       if (chosenCrewEscort !== undefined) {
         chosenCrewEscort.recruited = true;
       }
