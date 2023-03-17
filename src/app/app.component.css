@@ -49,12 +49,6 @@ h1 {
     padding: 0;
 }
 
-#summary {
-    list-style: none;
-    margin: 0 0 1em 0;
-    padding: 0;
-}
-
 #copy {
     align-self: flex-start;
     margin: 0.5em 0 0 0;

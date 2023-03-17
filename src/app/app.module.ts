@@ -21,6 +21,7 @@ import { InfiltrationTeamComponent } from './components/infiltration-team/infilt
 import { LongWalkTeamComponent } from './components/long-walk-team/long-walk-team.component';
 import { FinalBattleTeamComponent } from './components/final-battle-team/final-battle-team.component';
 import { HoldTheLineComponent } from './components/hold-the-line/hold-the-line.component';
+import { FinalOutcomeComponent } from './components/final-outcome/final-outcome.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { HoldTheLineComponent } from './components/hold-the-line/hold-the-line.c
     InfiltrationTeamComponent,
     LongWalkTeamComponent,
     FinalBattleTeamComponent,
-    HoldTheLineComponent
+    HoldTheLineComponent,
+    FinalOutcomeComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,34 @@
+<h2 id="htl">{{ summary ? 'Final Outcome' : 'Mission complete!' }}</h2>
+
+<p *ngIf="!summary">
+  {{
+    recruitedSquadmates === aliveSquadmates &&
+    normandyCrewDead == false
+      ? "With no one left behind!"
+      : "But at what cost...?"
+  }}
+</p>
+
+<ul id="summary">
+  <ng-container *ngFor="let squadmate of availableSquadmates">
+    <li
+      *ngIf="squadmate.recruited"
+      [style.color]="squadmate.deathReason ? 'red' : 'green'"
+    >
+      <strong>{{ squadmate.name }}</strong> -
+      {{
+        squadmate.deathReason
+          ? "Died (" + squadmate.deathReason.toLowerCase() + ")"
+          : "Survived"
+      }}
+    </li>
+  </ng-container>
+  <li [style.color]="normandyCrewDead ? 'red' : 'green'">
+    <strong>Normandy Crew</strong> -
+    {{ normandyCrewDead ? "Died (no escort)" : "Survived" }}
+  </li>
+  <li [style.color]="shepardDead ? 'red' : 'green'">
+    <strong>Shepard</strong> -
+    {{ shepardDead ? "Died (less than 2 squadmates survived)" : "Survived" }}
+  </li>
+</ul>

@@ -570,91 +570,6 @@ export class AppComponent {
 
     // Calculate scores for Hold the Line
     this.calculateHtl.next(true);
-    // this.totalHtlScore = 0;
-    // for (const squadmate of this.availableSquadmates) {
-    //   if (!squadmate.recruited || squadmate.inCurrentSquad || squadmate.deathReason !== '') {
-    //     continue;
-    //   }
-
-    //   const htlScore = this.getHtlScore(squadmate.name, squadmate.loyal);
-
-    //   this.currentHtlScores.set(squadmate.name, htlScore);
-    //   this.totalHtlScore += htlScore;
-    // }
-
-    // // Calculate average
-    // // this.htlScore = this.totalHtlScore / this.currentHtlScores.size;
-    // this.htlScore = this.totalHtlScore / 3;
-
-    // // Round average to 1dp
-    // // this.htlScore = Math.round(this.htlScore * 10) / 10;
-
-    // // Round score down
-    // this.htlScore = Math.floor(this.htlScore);
-
-    // const numberOfDefenders = this.currentHtlScores.size;
-    // const defenders = [...this.currentHtlScores.keys()];
-
-    // if (this.htlScore > numberOfDefenders) {
-    //   this.htlScore = numberOfDefenders;
-    // }
-
-    // const numberOfDeaths = numberOfDefenders - this.htlScore;
-    // if (numberOfDeaths > 0) {
-    //   this.killHtlDefenders(defenders, numberOfDeaths);
-    // }
-
-    // OLD (thresholds are from flowchart)
-    // if (numberOfDefenders >= 5) {
-    //   if (this.htlScore < 2.0 && this.htlScore >= 1.5) {
-    //     // Kill one squadmate
-    //     this.killHtlDefenders(defenders, 1);
-    //   } else if (this.htlScore < 1.5 && this.htlScore >= 0.5) {
-    //     // Kill two squadmates
-    //     this.killHtlDefenders(defenders, 2);
-    //   } else if (this.htlScore < 0.5 && this.htlScore >= 0.0) {
-    //     // Kill three squadmates
-    //     this.killHtlDefenders(defenders, 3);
-    //   }
-    // } else if (numberOfDefenders === 4) {
-    //   if (this.htlScore < 2.0 && this.htlScore > 1.0) {
-    //     // Kill one squadmate
-    //     this.killHtlDefenders(defenders, 1);
-    //   } else if (this.htlScore <= 1.0 && this.htlScore >= 0.5) {
-    //     // Kill two squadmates
-    //     this.killHtlDefenders(defenders, 2);
-    //   } else if (this.htlScore < 0.5 && this.htlScore > 0.0) {
-    //     // Kill three squadmates
-    //     this.killHtlDefenders(defenders, 3);
-    //   } else if (this.htlScore <= 0.0) {
-    //     // Kill all squadmates
-    //     this.killHtlDefenders(defenders, 4);
-    //   }
-    // } else if (numberOfDefenders === 3) {
-    //   if (this.htlScore < 2.0 && this.htlScore >= 1.0) {
-    //     // Kill one squadmate
-    //     this.killHtlDefenders(defenders, 1);
-    //   } else if (this.htlScore < 1.0 && this.htlScore > 0.0) {
-    //     // Kill two squadmates
-    //     this.killHtlDefenders(defenders, 2);
-    //   } else if (this.htlScore <= 0.0) {
-    //     // Kill all three squadmates
-    //     this.killHtlDefenders(defenders, 3);
-    //   }
-    // } else if (numberOfDefenders === 2) {
-    //   if (this.htlScore < 2.0 && this.htlScore > 0.0) {
-    //     // Kill one squadmate
-    //     this.killHtlDefenders(defenders, 1);
-    //   } else if (this.htlScore <= 0.0) {
-    //     // Kill both squadmates
-    //     this.killHtlDefenders(defenders, 2);
-    //   }
-    // } else if (numberOfDefenders === 1) {
-    //   if (this.htlScore < 2.0 && this.htlScore >= 0.0) {
-    //     // Kill squadmate
-    //     this.killHtlDefenders(defenders, 1);
-    //   }
-    // }
 
     // Mark crew escort as recruited so they show up in the summary
     const crewEscort = this.longWalkTeam.value.crewEscort;
@@ -672,6 +587,7 @@ export class AppComponent {
       }
     }
 
+    // Check if Commander Shepard will survive
     if (this.getAliveSquadmates() < 2) {
       this.shepardDead = true;
       console.log('Shepard died for reason: Less than 2 squadmates survived');
