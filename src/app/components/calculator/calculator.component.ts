@@ -459,7 +459,7 @@ export class CalculatorComponent {
       const swarmSquadmate1Index = this.badBioticSpecialistDeaths.indexOf(swarmSquadmate1);
       const swarmSquadmate2Index = this.badBioticSpecialistDeaths.indexOf(swarmSquadmate2);
 
-      if (swarmSquadmate1 != 'Miranda' && swarmSquadmate2Index >= swarmSquadmate1Index) {
+      if (swarmSquadmate1 !== 'Miranda' && (swarmSquadmate2 === 'Miranda' || swarmSquadmate2Index >= swarmSquadmate1Index)) {
         this.killSquadmate([swarmSquadmate1], this.badBioticSpecialistReason);
       } else {
         this.killSquadmate([swarmSquadmate2], this.badBioticSpecialistReason);
