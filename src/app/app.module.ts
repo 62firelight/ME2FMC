@@ -22,6 +22,7 @@ import { LongWalkTeamComponent } from './components/long-walk-team/long-walk-tea
 import { FinalBattleTeamComponent } from './components/final-battle-team/final-battle-team.component';
 import { HoldTheLineComponent } from './components/hold-the-line/hold-the-line.component';
 import { FinalOutcomeComponent } from './components/final-outcome/final-outcome.component';
+import { SummaryComponent } from './components/summary/summary.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { FinalOutcomeComponent } from './components/final-outcome/final-outcome.
     LongWalkTeamComponent,
     FinalBattleTeamComponent,
     HoldTheLineComponent,
-    FinalOutcomeComponent
+    FinalOutcomeComponent,
+    SummaryComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,22 @@
+.summary-section {
+    margin: 0;
+}
+
+.summary-section h2 {
+    margin-block-end: 0;
+}
+
+.summary-section h3 {
+    margin-block-end: 0;
+    margin: 0.5em 0 0.5em 0;
+}
+
+.mat-icon-button {
+    margin: 0;
+    padding: 0;
+}
+
+#copy {
+    align-self: flex-start;
+    margin: 0.5em 0 0 0;
+}

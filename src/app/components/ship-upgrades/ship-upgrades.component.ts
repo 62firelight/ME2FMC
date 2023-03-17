@@ -12,7 +12,6 @@ import { ShipUpgrades } from 'src/app/interfaces/ShipUpgrades';
 export class ShipUpgradesComponent {
   shipUpgrades: FormGroup<ShipUpgrades>;
 
-  @Input() resetEvent = new Observable<boolean>();
   @Output() newShipUpgradesEvent = new EventEmitter<FormGroup>();
 
   constructor(private constants: AppConstants) {

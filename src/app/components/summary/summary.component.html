@@ -1,0 +1,106 @@
+<div class="summary-section">
+  <h2>Mass Effect 2 Suicide Mission Summary</h2>
+</div>
+
+<button
+  mat-raised-button
+  color="primary"
+  type="button"
+  id="copy"
+  [cdkCopyToClipboard]="getSummary()"
+>
+  Copy to Clipboard
+</button>
+
+<div class="summary-section">
+  <h3>Squadmate Status</h3>
+  <ul id="summary">
+    <li *ngFor="let squadmate of squadmates.getRawValue() | keyvalue">
+      <ng-container *ngIf="squadmate.value">
+        <strong>{{ squadmate.value.name | titlecase }}:</strong>
+        {{ squadmate.value.recruited ? "Recruited" : "Not Recruited" }}
+        <ng-container *ngIf="squadmate.value.recruited"
+          >and {{ squadmate.value.loyal ? "Loyal" : "Not Loyal" }}</ng-container
+        ></ng-container
+      >
+    </li>
+  </ul>
+</div>
+
+<div class="summary-section">
+  <h3>Ship Upgrades</h3>
+  <ul id="summary">
+    <li *ngFor="let shipUpgrade of shipUpgrades.getRawValue() | keyvalue">
+      <ng-container *ngIf="shipUpgrade.value">
+        <strong>{{ shipUpgrade.value.name | titlecase }}:</strong>
+        {{ shipUpgrade.value.included ? "Acquired" : "Not Acquired" }}
+      </ng-container>
+    </li>
+  </ul>
+</div>
+
+<div class="summary-section">
+  <h3>Oculus Squadmates</h3>
+  <ul id="summary">
+    <li *ngFor="let oculusSquadmate of oculusSquadmates.value | keyvalue">
+      <ng-container>
+        <strong>{{ convertFromCamelCase(oculusSquadmate.key) }}:</strong>
+        {{ oculusSquadmate.value ? oculusSquadmate.value : "None" }}
+      </ng-container>
+    </li>
+  </ul>
+</div>
+
+<div class="summary-section">
+  <h3>Infiltration</h3>
+  <ul id="summary">
+    <li *ngFor="let infiltration of infiltrationTeam.value | keyvalue">
+      <ng-container>
+        <strong>{{ convertFromCamelCase(infiltration.key) }}:</strong>
+        {{ infiltration.value ? infiltration.value : "None" }}
+      </ng-container>
+    </li>
+  </ul>
+</div>
+
+<div class="summary-section">
+  <h3>The Long Walk</h3>
+  <ul id="summary">
+    <li *ngFor="let longWalk of longWalkTeam.value | keyvalue">
+      <ng-container>
+        <strong>{{ convertFromCamelCase(longWalk.key) }}:</strong>
+        {{ longWalk.value ? longWalk.value : "None" }}
+      </ng-container>
+    </li>
+  </ul>
+</div>
+
+<div class="summary-section">
+  <h3>Final Battle</h3>
+  <ul id="summary">
+    <li *ngFor="let finalBattle of finalBattleTeam.value | keyvalue">
+      <ng-container>
+        <strong>{{ convertFromCamelCase(finalBattle.key) }}:</strong>
+        {{ finalBattle.value ? finalBattle.value : "None" }}
+      </ng-container>
+    </li>
+  </ul>
+</div>
+
+<div class="summary-section">
+  <app-hold-the-line
+    [summary]="true"
+  ></app-hold-the-line>
+</div>
+
+<div class="summary-section">
+  <app-final-outcome
+    [recruitedSquadmates]="recruitedSquadmates"
+    [aliveSquadmates]="aliveSquadmates"
+    [availableSquadmates]="availableSquadmates"
+    [normandyCrewDead]="normandyCrewDead"
+    [shepardDead]="shepardDead"
+    [summary]="true"
+  >
+  </app-final-outcome>
+</div>

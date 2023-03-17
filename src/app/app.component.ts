@@ -163,9 +163,6 @@ export class AppComponent {
     ['Tali', 1],
     ['Mordin', 1],
   ]);
-  currentHtlScores: Map<string, number> = new Map();
-  totalHtlScore = 0;
-  htlScore = 0;
   htlDeathsOrder = [
     'Mordin',
     'Tali',
@@ -181,7 +178,6 @@ export class AppComponent {
     'Zaeed',
     'Grunt'
   ];
-  htlDeaths: string[] = [];
   htlDeathReason = 'Held the line';
 
   resetting: Subject<boolean> = new Subject();
@@ -207,9 +203,6 @@ export class AppComponent {
 
     this.normandyCrewDead = false;
     this.shepardDead = false;
-
-    this.currentHtlScores.clear();
-    this.htlDeaths = [];
   }
 
   ngOnInit() { }
@@ -278,28 +271,11 @@ export class AppComponent {
     }
   }
 
-  getHtlScore(name: string, loyal: boolean): number {
-    const htlScore = this.htlScores.get(name);
-
-    if (htlScore === undefined) {
-      return 0;
-    }
-
-    return htlScore + (loyal ? 1 : 0);
-  }
-
-  convertFromCamelCase(text: string): string {
-    // insert a space before all caps
-    return text.replace(/([A-Z0-9])/g, ' $1')
-      // uppercase the first character
-      .replace(/^./, function (str) { return str.toUpperCase(); })
-  }
-
   killHtlDefenders(defenders: any[], numberOfHtlDeaths: number) {
-    this.htlDeaths = [];
+    var htlDeaths: string[] = [];
 
     if (numberOfHtlDeaths <= 0) {
-      this.finishDeathCalculation.next(this.htlDeaths);
+      this.finishDeathCalculation.next(htlDeaths);
       return;
     }
 
@@ -328,7 +304,7 @@ export class AppComponent {
       // var squadmateObj = this.availableSquadmates.find(squadmate => squadmate == squadmateName);
 
       if (squadmateObj !== undefined && squadmateObj.loyal === false) {
-        this.htlDeaths.push(squadmateName);
+        htlDeaths.push(squadmateName);
         this.killSquadmate([squadmateName], this.htlDeathReason);
         numberOfHtlDeaths--;
         deadSquadmateIndexes.add(index);
@@ -356,7 +332,7 @@ export class AppComponent {
         // var squadmateObj = this.availableSquadmates.find(squadmate => squadmate == squadmateName);
 
         if (squadmateObj !== undefined) {
-          this.htlDeaths.push(squadmateName);
+          htlDeaths.push(squadmateName);
           this.killSquadmate([squadmateName], this.htlDeathReason);
           numberOfHtlDeaths--;
           deadSquadmateIndexes.add(index);
@@ -368,7 +344,7 @@ export class AppComponent {
       }
     }
 
-    this.finishDeathCalculation.next(this.htlDeaths);
+    this.finishDeathCalculation.next(htlDeaths);
   }
 
   getRecruitedSquadmates(): number {
@@ -595,92 +571,5 @@ export class AppComponent {
 
     step.completed = true;
     stepper.next();
-  }
-
-  getSummary(): string {
-    var summary =
-      `Mass Effect 2 Suicide Mission Summary
-    
-`;
-
-    summary += 'Squadmate Status\n';
-    for (var squadmate of Object.values(this.squadmates.getRawValue())) {
-      summary += `${squadmate.name}: ${squadmate.recruited ? 'Recruited' : 'Not Recruited'}`;
-      if (squadmate.recruited) {
-        summary += ` and ${squadmate.loyal ? "Loyal" : "Not Loyal"}\n`;
-      } else {
-        summary += '\n';
-      }
-
-    }
-    summary += '\n';
-
-    summary += 'Ship Upgrades\n';
-    for (var shipUpgrade of Object.values(this.shipUpgrades.getRawValue())) {
-      summary += `${shipUpgrade.name}: ${shipUpgrade.included ? 'Acquired' : 'Not Acquired'}\n`
-    }
-    summary += '\n';
-
-    summary += 'Omega-4 Relay: The Oculus\n';
-    for (var os in this.oculusSquadmates.controls) {
-      const selection = this.oculusSquadmates.get(os)?.value;
-      summary += `${this.convertFromCamelCase(os)}: ${selection ? selection : 'None'}\n`;
-    }
-    summary += '\n';
-
-    summary += 'Collector Base: Infiltration\n';
-    for (var i in this.infiltrationTeam.controls) {
-      const selection = this.infiltrationTeam.get(i)?.value;
-      summary += `${this.convertFromCamelCase(i)}: ${selection ? selection : 'None'}\n`;
-    }
-    summary += '\n';
-
-    summary += 'Collector Base: The Long Walk\n';
-    for (var l in this.longWalkTeam.controls) {
-      const selection = this.longWalkTeam.get(l)?.value;
-      summary += `${this.convertFromCamelCase(l)}: ${selection ? selection : 'None'}\n`;
-    }
-    summary += '\n';
-
-    summary += 'Collector Base: Final Battle\n';
-    for (var f in this.finalBattleTeam.controls) {
-      const selection = this.finalBattleTeam.get(f)?.value;
-      summary += `${this.convertFromCamelCase(f)}: ${selection ? selection : 'None'}\n`;
-    }
-    summary += '\n';
-
-    summary += 'Collector Base: Hold the Line\n';
-    summary += `There ${this.currentHtlScores.size == 1 ? "is" : "are"} ${this.currentHtlScores.size} squadmate${this.currentHtlScores.size == 1 ? "" : "s"} holding the line. Their individual score${this.currentHtlScores.size == 1 ? " is" : "s are"} as follows:\n`
-    for (var [individual, score] of this.currentHtlScores) {
-      summary += `* ${individual}: ${score}\n`;
-    }
-    summary += `The total squadmate score is ${this.totalHtlScore}.`;
-
-    summary += `\n\n${this.htlScore == this.currentHtlScores.size ? "All" : this.htlScore} squadmate${this.htlScore == 1 ? "" : "s"} holding the line will survive. (${this.totalHtlScore} / 3 = ${this.htlScore} rounded down)\n`;
-
-    if (this.htlDeaths.length > 0) {
-      summary += `\n${this.htlDeaths.length} squadmate${this.htlDeaths.length == 1 ? "" : "s"} died holding the line, including:\n`
-      for (var death of this.htlDeaths) {
-        summary += `* ${death}\n`;
-      }
-    }
-    summary += '\n';
-
-    summary += 'Final Outcome\n';
-    for (var sm of this.availableSquadmates) {
-      if (sm.recruited) {
-        summary += `${sm.name} - ${sm.deathReason ? `Died (${sm.deathReason.toLowerCase()})` : "Survived"}\n`;
-      }
-    }
-    summary += `Normandy Crew - ${this.normandyCrewDead ? "Died (no escort)" : "Survived"}\n`;
-    summary += `Shepard - ${this.shepardDead ? "Died (less than 2 squadmates survived)" : "Survived"}\n`;
-    summary += '\n';
-
-    return summary;
-    // return 'If you are seeing this, the copy text feature has not been fully implemented yet :(';
-  }
-
-  log(value: any) {
-    console.log(value);
   }
 }

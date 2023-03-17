@@ -1,4 +1,5 @@
-<h2 id="htl">{{ summary ? 'Final Outcome' : 'Mission complete!' }}</h2>
+<h2 *ngIf="!summary; else altHeading" id="htl">Mission complete!</h2>
+<ng-template #altHeading><h3 id="htl">Final Outcome</h3></ng-template>
 
 <p *ngIf="!summary">
   {{

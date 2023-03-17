@@ -14,6 +14,7 @@ export class HoldTheLineComponent {
   @Input() calculateHtlEvent = new Observable<boolean>;
   @Input() finishDeathCalculationEvent = new Observable<string[]>;
   @Input() resetEvent = new Observable<boolean>;
+  @Input() summary = false;
   @Output() finishHtlCalculationEvent = new EventEmitter<{
     defenders: string[],
     numberOfHtlDeaths: number
