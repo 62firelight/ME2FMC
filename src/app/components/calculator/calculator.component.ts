@@ -16,9 +16,8 @@ import { Squadmates } from 'src/app/interfaces/Squadmates';
   styleUrls: ['./calculator.component.css']
 })
 export class CalculatorComponent {
-  showLoyalSquadmates = false;
 
-  squadmates: FormGroup<Squadmates>;
+  showLoyalSquadmates = false;
 
   initialChoosableSquadmates = [
     'Zaeed',
@@ -35,14 +34,71 @@ export class CalculatorComponent {
     'Jack',
     'Kasumi'
   ];
+  initialTechSpecialists = [
+    'Tali',
+    'Mordin',
+    'Thane',
+    'Kasumi',
+    'Garrus',
+    'Jacob',
+    'Legion',
+  ];
+  initialFireteamOneLeaders = [
+    'Tali',
+    'Mordin',
+    'Zaeed',
+    'Grunt',
+    'Samara',
+    'Morinth',
+    'Jack',
+    'Thane',
+    'Kasumi',
+    'Garrus',
+    'Miranda',
+    'Jacob',
+    'Legion'
+  ];
+  initialBioticSpecialists = [
+    'Samara',
+    'Morinth',
+    'Jack',
+    'Thane',
+    'Miranda',
+    'Jacob',
+  ];
+
   choosableSquadmates: string[] = [];
   availableSquadmates: any[] = [];
+  techSpecialists: string[] = [];
+  fireteamOneLeaders: string[] = [];
+  bioticSpecialists: string[] = [];
+  
   normandyCrewDead = false;
   shepardDead = false;
 
+  squadmates: FormGroup<Squadmates>;
   shipUpgrades: FormGroup<ShipUpgrades>;
-
   oculusSquadmates: FormGroup<OculusSquadmates>;
+  infiltrationTeam: FormGroup<infiltrationTeam>;
+  longWalkTeam: FormGroup<LongWalkTeam>;
+  finalBattleTeam: FormGroup<FinalBattleTeam>;
+
+  goodTechSpecialists = [
+    'Tali',
+    'Legion',
+    'Kasumi'
+  ];
+  goodFireteamLeaders = [
+    'Jacob',
+    'Miranda',
+    'Garrus'
+  ];
+  goodBioticSpecialists = [
+    'Samara',
+    'Morinth',
+    'Jack'
+  ];
+
   noArmorDeaths = [
     'Jack'
   ];
@@ -66,65 +122,6 @@ export class CalculatorComponent {
     'Samara',
     'Morinth'
   ];
-  noArmorReason = 'No armor upgrade';
-  noShieldReason = 'No shield upgrade';
-  noWeaponsReason = 'No weapons upgrade';
-
-  infiltrationTeam: FormGroup<infiltrationTeam>;
-  initialTechSpecialists = [
-    'Tali',
-    'Mordin',
-    'Thane',
-    'Kasumi',
-    'Garrus',
-    'Jacob',
-    'Legion',
-  ];
-  techSpecialists: string[] = [];
-  goodTechSpecialists = [
-    'Tali',
-    'Legion',
-    'Kasumi'
-  ];
-  initialFireteamOneLeaders = [
-    'Tali',
-    'Mordin',
-    'Zaeed',
-    'Grunt',
-    'Samara',
-    'Morinth',
-    'Jack',
-    'Thane',
-    'Kasumi',
-    'Garrus',
-    'Miranda',
-    'Jacob',
-    'Legion'
-  ];
-  fireteamOneLeaders: string[] = [];
-  goodFireteamLeaders = [
-    'Jacob',
-    'Miranda',
-    'Garrus'
-  ];
-  badTechSpecialistReason = 'Bad tech specialist';
-  badfireteamOneLeaderReason = 'Bad fireteam 1 leader';
-
-  longWalkTeam: FormGroup<LongWalkTeam>;
-  initialBioticSpecialists = [
-    'Samara',
-    'Morinth',
-    'Jack',
-    'Thane',
-    'Miranda',
-    'Jacob',
-  ];
-  bioticSpecialists: string[] = [];
-  goodBioticSpecialists = [
-    'Samara',
-    'Morinth',
-    'Jack'
-  ];
   badBioticSpecialistDeaths = [
     'Thane',
     'Jack',
@@ -139,27 +136,6 @@ export class CalculatorComponent {
     'Zaeed',
     'Morinth'
   ];
-  badBioticSpecialistReason = 'Bad biotic specialist';
-  badfireteamTwoLeaderReason = 'Bad fireteam 2 leader';
-  badCrewEscortReason = 'Non-loyal escort';
-
-  finalBattleTeam: FormGroup<FinalBattleTeam>;
-  nonloyalFinalSquadmateReason = 'Non-loyal squadmate in final battle';
-  htlScores = new Map([
-    ['Grunt', 4],
-    ['Zaeed', 4],
-    ['Garrus', 4],
-    ['Thane', 2],
-    ['Legion', 2],
-    ['Samara', 2],
-    ['Morinth', 2],
-    ['Jacob', 2],
-    ['Miranda', 2],
-    ['Jack', 1],
-    ['Kasumi', 1],
-    ['Tali', 1],
-    ['Mordin', 1],
-  ]);
   htlDeathsOrder = [
     'Mordin',
     'Tali',
@@ -175,6 +151,16 @@ export class CalculatorComponent {
     'Zaeed',
     'Grunt'
   ];
+
+  noArmorReason = 'No armor upgrade';
+  noShieldReason = 'No shield upgrade';
+  noWeaponsReason = 'No weapons upgrade';
+  badTechSpecialistReason = 'Bad tech specialist';
+  badfireteamOneLeaderReason = 'Bad fireteam 1 leader';
+  badBioticSpecialistReason = 'Bad biotic specialist';
+  badfireteamTwoLeaderReason = 'Bad fireteam 2 leader';
+  badCrewEscortReason = 'Non-loyal escort';
+  nonloyalFinalSquadmateReason = 'Non-loyal squadmate in final battle';
   htlDeathReason = 'Held the line';
 
   resetting: Subject<boolean> = new Subject();
