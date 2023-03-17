@@ -23,6 +23,7 @@ import { FinalBattleTeamComponent } from './components/final-battle-team/final-b
 import { HoldTheLineComponent } from './components/hold-the-line/hold-the-line.component';
 import { FinalOutcomeComponent } from './components/final-outcome/final-outcome.component';
 import { SummaryComponent } from './components/summary/summary.component';
+import { CalculatorComponent } from './components/calculator/calculator.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { SummaryComponent } from './components/summary/summary.component';
     FinalBattleTeamComponent,
     HoldTheLineComponent,
     FinalOutcomeComponent,
-    SummaryComponent
+    SummaryComponent,
+    CalculatorComponent
   ],
   imports: [
     BrowserModule,
