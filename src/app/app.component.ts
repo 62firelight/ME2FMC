@@ -147,10 +147,6 @@ export class AppComponent {
   badCrewEscortReason = 'Non-loyal escort';
 
   finalBattleTeam: FormGroup<FinalBattleTeam>;
-  // finalBattleTeam = this.fb.nonNullable.group({
-  //   finalSquadmate1: ['', Validators.required],
-  //   finalSquadmate2: ['', Validators.required]
-  // });
   nonloyalFinalSquadmateReason = 'Non-loyal squadmate in final battle';
   htlScores = new Map([
     ['Grunt', 4],
@@ -189,6 +185,8 @@ export class AppComponent {
   htlDeathReason = 'Held the line';
 
   resetting: Subject<boolean> = new Subject();
+  calculateHtl: Subject<boolean> = new Subject();
+  finishDeathCalculation: Subject<string[]> = new Subject();
 
   constructor(private constants: AppConstants, private fb: FormBuilder) {
     this.squadmates = constants.SQUADMATES;
@@ -300,6 +298,11 @@ export class AppComponent {
   killHtlDefenders(defenders: any[], numberOfHtlDeaths: number) {
     this.htlDeaths = [];
 
+    if (numberOfHtlDeaths <= 0) {
+      this.finishDeathCalculation.next(this.htlDeaths);
+      return;
+    }
+
     var squadmateDeathOrderMap: Map<number, string> = new Map();
     var deadSquadmateIndexes: Set<number> = new Set();
 
@@ -364,6 +367,8 @@ export class AppComponent {
         }
       }
     }
+
+    this.finishDeathCalculation.next(this.htlDeaths);
   }
 
   getRecruitedSquadmates(): number {
@@ -564,39 +569,40 @@ export class AppComponent {
     }
 
     // Calculate scores for Hold the Line
-    this.totalHtlScore = 0;
-    for (const squadmate of this.availableSquadmates) {
-      if (!squadmate.recruited || squadmate.inCurrentSquad || squadmate.deathReason !== '') {
-        continue;
-      }
+    this.calculateHtl.next(true);
+    // this.totalHtlScore = 0;
+    // for (const squadmate of this.availableSquadmates) {
+    //   if (!squadmate.recruited || squadmate.inCurrentSquad || squadmate.deathReason !== '') {
+    //     continue;
+    //   }
 
-      const htlScore = this.getHtlScore(squadmate.name, squadmate.loyal);
+    //   const htlScore = this.getHtlScore(squadmate.name, squadmate.loyal);
 
-      this.currentHtlScores.set(squadmate.name, htlScore);
-      this.totalHtlScore += htlScore;
-    }
+    //   this.currentHtlScores.set(squadmate.name, htlScore);
+    //   this.totalHtlScore += htlScore;
+    // }
 
-    // Calculate average
-    // this.htlScore = this.totalHtlScore / this.currentHtlScores.size;
-    this.htlScore = this.totalHtlScore / 3;
+    // // Calculate average
+    // // this.htlScore = this.totalHtlScore / this.currentHtlScores.size;
+    // this.htlScore = this.totalHtlScore / 3;
 
-    // Round average to 1dp
-    // this.htlScore = Math.round(this.htlScore * 10) / 10;
+    // // Round average to 1dp
+    // // this.htlScore = Math.round(this.htlScore * 10) / 10;
 
-    // Round score down
-    this.htlScore = Math.floor(this.htlScore);
+    // // Round score down
+    // this.htlScore = Math.floor(this.htlScore);
 
-    const numberOfDefenders = this.currentHtlScores.size;
-    const defenders = [...this.currentHtlScores.keys()];
+    // const numberOfDefenders = this.currentHtlScores.size;
+    // const defenders = [...this.currentHtlScores.keys()];
 
-    if (this.htlScore > numberOfDefenders) {
-      this.htlScore = numberOfDefenders;
-    }
+    // if (this.htlScore > numberOfDefenders) {
+    //   this.htlScore = numberOfDefenders;
+    // }
 
-    const numberOfDeaths = numberOfDefenders - this.htlScore;
-    if (numberOfDeaths > 0) {
-      this.killHtlDefenders(defenders, numberOfDeaths);
-    }
+    // const numberOfDeaths = numberOfDefenders - this.htlScore;
+    // if (numberOfDeaths > 0) {
+    //   this.killHtlDefenders(defenders, numberOfDeaths);
+    // }
 
     // OLD (thresholds are from flowchart)
     // if (numberOfDefenders >= 5) {

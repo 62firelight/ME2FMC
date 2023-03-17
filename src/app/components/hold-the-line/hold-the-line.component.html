@@ -1,0 +1,48 @@
+<h2 id="htl">Hold the Line!</h2>
+<p>
+  There {{ htlResult.currentHtlScores.size == 1 ? "is" : "are" }}
+  <strong>{{ htlResult.currentHtlScores.size }}</strong> squadmate{{
+    htlResult.currentHtlScores.size == 1 ? "" : "s"
+  }}
+  holding the line. Their individual score{{
+    htlResult.currentHtlScores.size == 1 ? " is" : "s are"
+  }}
+  as follows:
+</p>
+
+<ul>
+  <ng-container *ngFor="let entry of htlResult.currentHtlScores | keyvalue">
+    <li>
+      <strong>{{ entry.key }}:</strong> {{ entry.value }}
+    </li>
+  </ng-container>
+</ul>
+
+The total squadmate score is <strong>{{ htlResult.totalHtlScore }}</strong
+>.
+
+<p>
+  <strong [style.color]="htlResult.htlScore == 0 ? '' : 'green'">{{
+    htlResult.htlScore == htlResult.currentHtlScores.size ? "All" : htlResult.htlScore
+  }}</strong>
+  squadmate{{ htlResult.htlScore == 1 ? "" : "s" }} holding the line will survive. ({{
+    htlResult.totalHtlScore
+  }}
+  / 3 = {{ htlResult.htlScore }} rounded down)
+</p>
+
+<ng-container *ngIf="htlResult.htlDeaths.length > 0">
+  <p>
+    <strong
+      ><em>{{ htlResult.htlDeaths.length }}</em></strong
+    >
+    squadmate{{ htlResult.htlDeaths.length == 1 ? "" : "s" }}
+    died holding the line, including:
+  </p>
+
+  <ul>
+    <li *ngFor="let htlDeath of htlResult.htlDeaths">
+      <em>{{ htlDeath }}</em>
+    </li>
+  </ul>
+</ng-container>

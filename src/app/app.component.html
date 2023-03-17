@@ -86,52 +86,15 @@
     <mat-step [editable]="false">
       <ng-template matStepLabel>Collector Base: Hold the Line</ng-template>
 
-      <h2 id="htl">Hold the Line!</h2>
-      <p>
-        There {{ currentHtlScores.size == 1 ? "is" : "are" }}
-        <strong>{{ currentHtlScores.size }}</strong> squadmate{{
-          currentHtlScores.size == 1 ? "" : "s"
-        }}
-        holding the line. Their individual score{{
-          currentHtlScores.size == 1 ? " is" : "s are"
-        }}
-        as follows:
-      </p>
-
-      <ul>
-        <ng-container *ngFor="let entry of currentHtlScores | keyvalue">
-          <li>
-            <strong>{{ entry.key }}:</strong> {{ entry.value }}
-          </li>
-        </ng-container>
-      </ul>
-
-      The total squadmate score is <strong>{{ totalHtlScore }}</strong
-      >.
-
-      <p>
-        <strong [style.color]="htlScore == 0 ? '' : 'green'">{{
-          htlScore == currentHtlScores.size ? "All" : htlScore
-        }}</strong>
-        squadmate{{ htlScore == 1 ? "" : "s" }} holding the line will survive.
-        ({{ totalHtlScore }} / 3 = {{ htlScore }} rounded down)
-      </p>
-
-      <ng-container *ngIf="htlDeaths.length > 0">
-        <p>
-          <strong
-            ><em>{{ htlDeaths.length }}</em></strong
-          >
-          squadmate{{ htlDeaths.length == 1 ? "" : "s" }}
-          died holding the line, including:
-        </p>
-
-        <ul>
-          <li *ngFor="let htlDeath of htlDeaths">
-            <em>{{ htlDeath }}</em>
-          </li>
-        </ul>
-      </ng-container>
+      <app-hold-the-line
+        [availableSquadmates]="availableSquadmates"
+        [calculateHtlEvent]="calculateHtl"
+        [finishDeathCalculationEvent]="finishDeathCalculation"
+        [resetEvent]="resetting"
+        (finishHtlCalculationEvent)="
+          killHtlDefenders($event.defenders, $event.numberOfHtlDeaths)
+        "
+      ></app-hold-the-line>
 
       <button mat-raised-button color="primary" matStepperNext>Finish</button>
     </mat-step>
@@ -172,9 +135,7 @@
         <li [style.color]="shepardDead ? 'red' : 'green'">
           <strong>Shepard</strong> -
           {{
-            shepardDead
-              ? "Died (less than 2 squadmates survived)"
-              : "Survived"
+            shepardDead ? "Died (less than 2 squadmates survived)" : "Survived"
           }}
         </li>
       </ul>
@@ -182,9 +143,7 @@
       <hr />
 
       <div class="summary-section">
-        <h2>
-          Mass Effect 2 Suicide Mission Summary
-        </h2>
+        <h2>Mass Effect 2 Suicide Mission Summary</h2>
       </div>
 
       <button
@@ -282,54 +241,16 @@
       </div>
 
       <div class="summary-section">
-        <h3>Hold the Line</h3>
-        <p>
-          There {{ currentHtlScores.size == 1 ? "is" : "are" }}
-          <strong>{{ currentHtlScores.size }}</strong> squadmate{{
-            currentHtlScores.size == 1 ? "" : "s"
-          }}
-          holding the line. Their individual score{{
-            currentHtlScores.size == 1 ? " is" : "s are"
-          }}
-          as follows:
-        </p>
-
-        <ul>
-          <ng-container *ngFor="let entry of currentHtlScores | keyvalue">
-            <li>
-              <strong>{{ entry.key }}:</strong> {{ entry.value }}
-            </li>
-          </ng-container>
-        </ul>
-
-        <p>
-          The total squadmate score is <strong>{{ totalHtlScore }}</strong
-          >.
-        </p>
-
-        <p>
-          <strong [style.color]="htlScore == 0 ? '' : 'green'">{{
-            htlScore == currentHtlScores.size ? "All" : htlScore
-          }}</strong>
-          squadmate{{ htlScore == 1 ? "" : "s" }} holding the line will survive.
-          ({{ totalHtlScore }} / 3 = {{ htlScore }} rounded down)
-        </p>
-
-        <ng-container *ngIf="htlDeaths.length > 0">
-          <p>
-            <strong
-              ><em>{{ htlDeaths.length }}</em></strong
-            >
-            squadmate{{ htlDeaths.length == 1 ? "" : "s" }}
-            died holding the line, including:
-          </p>
-
-          <ul>
-            <li *ngFor="let htlDeath of htlDeaths">
-              <em>{{ htlDeath }}</em>
-            </li>
-          </ul>
-        </ng-container>
+        <app-hold-the-line></app-hold-the-line>
+        <!-- <app-hold-the-line
+          [availableSquadmates]="availableSquadmates"
+          [calculateHtlEvent]="calculateHtl"
+          [finishDeathCalculationEvent]="finishDeathCalculation"
+          [resetEvent]="resetting"
+          (finishHtlCalculationEvent)="
+            killHtlDefenders($event.defenders, $event.numberOfHtlDeaths)
+          "
+        ></app-hold-the-line> -->
       </div>
 
       <div class="summary-section">

@@ -20,6 +20,7 @@ import { OculusSquadmatesComponent } from './components/oculus-squadmates/oculus
 import { InfiltrationTeamComponent } from './components/infiltration-team/infiltration-team.component';
 import { LongWalkTeamComponent } from './components/long-walk-team/long-walk-team.component';
 import { FinalBattleTeamComponent } from './components/final-battle-team/final-battle-team.component';
+import { HoldTheLineComponent } from './components/hold-the-line/hold-the-line.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FinalBattleTeamComponent } from './components/final-battle-team/final-b
     OculusSquadmatesComponent,
     InfiltrationTeamComponent,
     LongWalkTeamComponent,
-    FinalBattleTeamComponent
+    FinalBattleTeamComponent,
+    HoldTheLineComponent
   ],
   imports: [
     BrowserModule,
