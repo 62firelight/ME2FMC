@@ -4,7 +4,8 @@
 <p *ngIf="!summary">
   {{
     recruitedSquadmates === aliveSquadmates &&
-    normandyCrewDead == false
+    normandyCrewDead == false && 
+    shepardDead == false
       ? "With no one left behind!"
       : "But at what cost...?"
   }}
