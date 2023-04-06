@@ -2,7 +2,9 @@
 
 **WARNING: Contains major spoilers for the end of Mass Effect 2!**
 
-A calculator app that uses player-chosen decisions to determine the survival of squadmates during the final mission of the game Mass Effect 2. 
+A calculator app that uses player-chosen decisions to determine the survival of squadmates during the final mission of the game Mass Effect 2.
+
+Heavily inspired by [Suicide Mission Survival Calculator](https://www.nexusmods.com/masseffect2/mods/146).
 
 ## Usage
 
