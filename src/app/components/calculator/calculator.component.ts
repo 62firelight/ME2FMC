@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatStepper, MatStep } from '@angular/material/stepper';
 import { Subject } from 'rxjs';
 import { AppConstants } from 'src/app/app.constants';
@@ -9,6 +10,7 @@ import { LongWalkTeam } from 'src/app/interfaces/LongWalkTeam';
 import { OculusSquadmates } from 'src/app/interfaces/OculusSquadmates';
 import { ShipUpgrades } from 'src/app/interfaces/ShipUpgrades';
 import { Squadmates } from 'src/app/interfaces/Squadmates';
+import { ConfirmDialog } from './confirm-dialog';
 
 @Component({
   selector: 'app-calculator',
@@ -72,7 +74,7 @@ export class CalculatorComponent {
   techSpecialists: string[] = [];
   fireteamOneLeaders: string[] = [];
   bioticSpecialists: string[] = [];
-  
+
   normandyCrewDead = false;
   shepardDead = false;
 
@@ -167,7 +169,7 @@ export class CalculatorComponent {
   calculateHtl: Subject<boolean> = new Subject();
   finishDeathCalculation: Subject<string[]> = new Subject();
 
-  constructor(private constants: AppConstants, private fb: FormBuilder) {
+  constructor(private constants: AppConstants, private fb: FormBuilder, public dialog: MatDialog) {
     this.squadmates = constants.SQUADMATES;
     this.shipUpgrades = constants.SHIP_UPGRADES;
     this.oculusSquadmates = constants.OCULUS_SQUADMATES;
@@ -191,19 +193,25 @@ export class CalculatorComponent {
   ngOnInit() { }
 
   resetCalculator(stepper: MatStepper) {
-    // Reset stepper
-    stepper.reset();
+    const dialogRef = this.dialog.open(ConfirmDialog);
 
-    // Reset all forms
-    this.resetting.next(true);
-    this.squadmates.reset();
-    this.shipUpgrades.reset();
-    this.oculusSquadmates.reset();
-    this.infiltrationTeam.reset();
-    this.longWalkTeam.reset();
-    this.finalBattleTeam.reset();
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        // Reset stepper
+        stepper.reset();
 
-    this.initializeOptions();
+        // Reset all forms
+        this.resetting.next(true);
+        this.squadmates.reset();
+        this.shipUpgrades.reset();
+        this.oculusSquadmates.reset();
+        this.infiltrationTeam.reset();
+        this.longWalkTeam.reset();
+        this.finalBattleTeam.reset();
+
+        this.initializeOptions();
+      }
+    });
   }
 
   updateSquadmateOptions(squadmateOptions: string[]): string[] {

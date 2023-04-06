@@ -24,6 +24,8 @@ import { HoldTheLineComponent } from './components/hold-the-line/hold-the-line.c
 import { FinalOutcomeComponent } from './components/final-outcome/final-outcome.component';
 import { SummaryComponent } from './components/summary/summary.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialog } from './components/calculator/confirm-dialog';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { CalculatorComponent } from './components/calculator/calculator.componen
     HoldTheLineComponent,
     FinalOutcomeComponent,
     SummaryComponent,
-    CalculatorComponent
+    CalculatorComponent,
+    ConfirmDialog
   ],
   imports: [
     BrowserModule,
@@ -52,7 +55,8 @@ import { CalculatorComponent } from './components/calculator/calculator.componen
     MatButtonModule,
     ReactiveFormsModule,
     MatIconModule,
-    ClipboardModule
+    ClipboardModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
