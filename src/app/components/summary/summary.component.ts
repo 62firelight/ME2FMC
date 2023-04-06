@@ -49,7 +49,7 @@ export class SummaryComponent {
 
   getSummary(): string {
     var summary =
-      `Mass Effect 2 Suicide Mission Summary
+      `Mass Effect 2 Final Mission Summary
     
 `;
 
