@@ -1,16 +1,17 @@
 <div class="main">
   <div class="heading">
-    <h1>Mass Effect 2 Final Mission Calculator</h1>
-
-    <button
-      mat-raised-button
-      color="primary"
-      type="button"
-      id="reset"
-      (click)="resetCalculator(stepper)"
-    >
-      Reset
-    </button>
+    <h1>
+      Mass Effect 2 Final Mission Calculator
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        id="reset"
+        (click)="resetCalculator(stepper)"
+      >
+        Reset
+      </button>
+    </h1>
   </div>
 
   <mat-stepper orientation="vertical" [linear]="true" #stepper>
